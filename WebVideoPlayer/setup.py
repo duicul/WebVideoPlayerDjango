@@ -6,5 +6,7 @@ Created on Oct 27, 2020
 import os
 myCmd = 'sudo apt install nginx uwsgi uwsgi-plugin-python3'
 os.system(myCmd)
+myCmd = 'pip3 install django'
+os.system(myCmd)
 import Createuwsgiconfig
 import Createnginxconfig
