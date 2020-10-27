@@ -7,7 +7,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 print(BASE_DIR)
 str_out="server { \n"
-str_out+="    listen 80;\n"
+str_out+="    listen 7700;\n"
 str_out+="server_name 0.0.0.0; # customize with your domain name\n"
 str_out+="\n"
 str_out+="    location / {\n"
