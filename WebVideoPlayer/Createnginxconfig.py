@@ -28,7 +28,7 @@ str_out+="        # media files, uploaded by users\n"
 str_out+="        alias "+os.path.join(BASE_DIR,"media")+"/; # ending slash is required\n"
 str_out+="    }\n"
 str_out+="}\n"
-f = open("/etc/nginx/sites-enabled/djano", "w")
+f = open("/etc/nginx/sites-enabled/django", "w")
 f.write(str_out)
 f.close()
 myCmd = 'service nginx restart'
