@@ -4,7 +4,7 @@ Created on Oct 27, 2020
 @author: duicul
 '''
 import os
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 print(BASE_DIR)
 str_out="server { \n"
 str_out+="    listen 80;\n"
