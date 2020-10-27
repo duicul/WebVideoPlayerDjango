@@ -1,0 +1,5 @@
+[26/Oct/2020:22:30:36] ENGINE Listening for SIGTERM.
+[26/Oct/2020:22:30:36] ENGINE Bus STARTING
+[26/Oct/2020:22:30:36] ENGINE Set handler for console events.
+[26/Oct/2020:22:30:37] ENGINE Serving on http://127.0.0.1:8080
+[26/Oct/2020:22:30:37] ENGINE Bus STARTED
