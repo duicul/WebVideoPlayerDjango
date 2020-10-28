@@ -28,7 +28,7 @@ def redirect_internal(request,path):
     logger.info("debug = "+str(settings.DEBUG))
     response = HttpResponse()
     response['X-Accel-Redirect'] = '/media-internal/' + path
-    logger.info("redirect_internal"+str(response['X-Accel-Redirect']))
+    logger.info("redirect_internal = "+str(response['X-Accel-Redirect']))
     return response
     """if request.user.is_authenticated:
         response = HttpResponse()
