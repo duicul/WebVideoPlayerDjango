@@ -13,7 +13,7 @@ def parse_dir(path):
     t=[]
     main_path=path
     exten = ['.mp4','.avi','.m3u8']
-    for dirpath, dirnames, files in os.walk(path):
+    for dirpath, dirnames, files in os.walk(path,followlinks=True):
         for name in files:
             for ext in exten:
                 if name.lower().endswith(ext):
