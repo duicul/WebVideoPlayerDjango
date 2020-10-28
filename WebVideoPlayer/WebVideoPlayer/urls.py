@@ -18,11 +18,14 @@ from django.urls import path,include
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.conf import settings
 from django.conf.urls.static import static
+import video_player
 urlpatterns = [
      path('utils/', include('utils.urls')),
     path('video_player/', include('video_player.urls')),
     path('admin/', admin.site.urls),
 ]
+if(not settings.DEBUG):
+    urlpatterns.append(path('media/<path:path>', video_player.views.redirect_internal,name="redirect_internal"))
 
 if settings.DEBUG:
     urlpatterns +=  static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
