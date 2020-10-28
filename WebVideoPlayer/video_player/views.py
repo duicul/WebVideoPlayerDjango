@@ -25,7 +25,7 @@ def file_render_html5(request):
 
 def redirect_internal(request,path):
     print(settings.DEBUG)
-    logger.info(redirect_internal+str(settings.DEBUG))
+    logger.info("debug = "+str(settings.DEBUG))
     response = HttpResponse()
     response['X-Accel-Redirect'] = '/media-internal/' + path
     logger.info("redirect_internal"+str(response['X-Accel-Redirect']))
