@@ -51,6 +51,7 @@ function present_video(relative_path){
     myVideo.src([
         {/*type: "application/x-mpegURL", */src: "/media/"+relative_path},
     ]); 
+    myVideo.dimensions(480, 720);
    //myVideo.load();  
    //myVideo.play();
       
