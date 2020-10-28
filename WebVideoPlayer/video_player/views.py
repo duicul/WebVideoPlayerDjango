@@ -6,7 +6,7 @@ from django.core.exceptions import PermissionDenied
 import logging
 
 # Get an instance of a logger
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("django")
 #import video_player_utils
 # Create your views here.
 def index(request):
