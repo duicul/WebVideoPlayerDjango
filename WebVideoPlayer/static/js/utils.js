@@ -47,12 +47,33 @@ function load_videos(){
 }
 
 function present_video(relative_path){
-    let myVideo = videojs('my-video');
+    location.replace("/video_player?play=/media/"+relative_path);
+    /*let str_src="<video";
+    str_src+="id=\"my-video\"";
+    str_src+="class=\"video-js\"";
+    str_src+="controls=\"true\"";
+    str_src+="preload=\"auto\"";
+    str_src+="width=\"640\"";
+    str_src+="height=\"264\"";
+    str_src+="data-setup=\"{}\" >";
+    str_src+="<source src=\""+"/media/"+relative_path+"\"/>";
+    str_src+="<p class=\"vjs-no-js\">";
+    str_src+= " To view this video please enable JavaScript, and consider upgrading to a ";
+    str_src+= " web browser that";
+    str_src+=" <a href=\"https://videojs.com/html5-video-support/\" target=\"_blank\"";
+    str_src+=" >supports HTML5 video</a>";
+    str_src+="</p></video>";
+    $("#video_window").html(str_src);*/
+  /*    let myVideo = videojs('my-video');
     myVideo.src([
-        {/*type: "application/x-mpegURL", */src: "/media/"+relative_path},
+        {type: "application/x-mpegURL", src: "/media/"+relative_path},
     ]); 
     myVideo.dimensions(720,480);
-   //myVideo.load();  
-   //myVideo.play();
+    myVideo.reset()
+   myVideo.load();  
+   myVideo.play();
+   myVideo.triggerReady();
+   myVideo.show();
+   console.log(myVideo.duration())*/
       
 }
