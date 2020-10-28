@@ -170,7 +170,12 @@ LOGGING = {
             'filename': './logs/log_file.log',
             'formatter':'Simple_Format'
         },
- 
+        'file_request': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': './logs/log_file_request.log',
+            'formatter':'Simple_Format'
+        },
         'console': {
             'level': 'INFO',
             'class': 'logging.StreamHandler',
@@ -180,6 +185,10 @@ LOGGING = {
     'loggers': {
         'django': {
             'handlers': ['file', 'console'],
+            'level': 'DEBUG',
+        },
+        'django.request': {
+            'handlers': ['file_request'],
             'level': 'DEBUG',
         },
     },
