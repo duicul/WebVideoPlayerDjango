@@ -9,4 +9,4 @@ urlpatterns = [
     path('file_html5',views.file_render_html5,name="file_render_html5")
 ]
 if(not settings.DEBUG):
-    urlpatterns+= path('media/<path>', views.redirect_internal,name="redirect_internal")
+    urlpatterns.append(path('media/<path>', views.redirect_internal,name="redirect_internal"))
