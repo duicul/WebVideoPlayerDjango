@@ -28,7 +28,7 @@
     height="264"
     data-setup="{}"
   >
-    <source src="/video_player/media/hls/video.m3u8"/>
+    <source src=""/>
     <p class="vjs-no-js">
       To view this video please enable JavaScript, and consider upgrading to a
       web browser that
@@ -38,6 +38,24 @@
     </p>
   </video> 
   
+  <video
+    id="my-video"
+    class="video-js"
+    controls="true"
+    preload="auto"
+    width="640"
+    height="264"
+    data-setup="{}"
+  >
+    <source src="https://ch.iptvmate.net/b8799300af8ecf28e89b77029dfa9e6d.m3u8?checkedby:hlscat.com"/>
+    <p class="vjs-no-js">
+      To view this video please enable JavaScript, and consider upgrading to a
+      web browser that
+      <a href="https://videojs.com/html5-video-support/" target="_blank"
+        >supports HTML5 video</a
+      >
+    </p>
+  </video> 
   <p id="list_dir"></p>
   <script src="https://vjs.zencdn.net/7.8.4/video.js"></script>
 
