@@ -158,7 +158,7 @@ LOGGING = {
  
     'formatters':{
         'Simple_Format':{
-            'format': '{asctime} {levelname} {message}',
+            'format': '{asctime} {levelname} in {module} : {message}',
             'style': '{',
         }
     },
