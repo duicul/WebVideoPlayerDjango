@@ -17,18 +17,21 @@
     <meta content="utf-8" http-equiv="encoding">
 </head>
 
-<body >
+<body onload="load_videos();">
+    
 <h1>Welcome to this file</h1>
+    <div id="video_files"></div>
+
  <video
     id="my-video"
     class="video-js"
     controls="true"
-    preload="metadata"
+    preload="auto"
     width="640"
     height="264"
     data-setup="{}"
   >
-    <source src="/video_player/media/video.mp4"/>
+    <source src=""/>
     <p class="vjs-no-js">
       To view this video please enable JavaScript, and consider upgrading to a
       web browser that
@@ -37,27 +40,6 @@
       >
     </p>
   </video> 
-  
-  <video
-    id="my-video"
-    class="video-js"
-    controls="true"
-    preload="metadata"
-    width="640"
-    height="264"
-    data-setup="{}"
-  >
-    <source src="http://ipnfofuxpslepnbjo.go.ro:7700/video_player/media/video_shinobi/SInA59O3Ka/1NYDABDlr2/2020-10-27T22-30-00.mp4"/>
-    <p class="vjs-no-js">
-      To view this video please enable JavaScript, and consider upgrading to a
-      web browser that
-      <a href="https://videojs.com/html5-video-support/" target="_blank"
-        >supports HTML5 video</a
-      >
-    </p>
-  </video>s
-  
-  <p id="list_dir"></p>
   <script src="https://vjs.zencdn.net/7.8.4/video.js"></script>
 
 

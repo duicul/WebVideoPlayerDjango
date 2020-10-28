@@ -10,7 +10,8 @@ logger = logging.getLogger("django")
 #import video_player_utils
 # Create your views here.
 def index(request):
-    return HttpResponse("Hello, world. You're at the polls index.")
+    return render(request,"main.html")
+    #return HttpResponse("Hello, world. You're at the polls index.")
 
 def bday(request):
     return HttpResponse("Happy B-Day !!")
