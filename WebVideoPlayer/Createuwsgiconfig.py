@@ -9,7 +9,7 @@ print(BASE_DIR)
 str_out="[uwsgi] \nchdir = "
 str_out+=BASE_DIR
 str_out+="\n"
-str_out+="logger = file:"+BASE_DIR+"/log\n"
+str_out+="logger = file:"+BASE_DIR+"/logs\n"
 str_out+="plugins = python3\n"
 str_out+="module=WebVideoPlayer.wsgi:application\n"
 str_out+="env = 'DJANGO_SETTINGS_MODULE=WebVideoPlayer.settings' # customize with your settings module \n"
