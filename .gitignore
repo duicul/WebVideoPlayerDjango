@@ -1,2 +1,6 @@
 /.metadata/
 *.pyc
+*.ts
+*.mp4
+*.m3u8
+*.log
