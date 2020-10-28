@@ -158,7 +158,7 @@ LOGGING = {
  
     'formatters':{
         'Simple_Format':{
-            'format': '{levelname} {message}',
+            'format': '%(asctime)-15s {levelname} {message}',
             'style': '{',
         }
     },
