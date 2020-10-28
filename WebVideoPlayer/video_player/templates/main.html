@@ -24,8 +24,7 @@
 <body onload="load_videos();">
     
 <h1>Welcome to this file</h1>
-    <div id="video_files"></div>
-
+    {% if not play_src == None %}
  <video
     id="my-video"
     class="video-js"
@@ -35,7 +34,7 @@
     height="264"
     data-setup="{}"
   >
-    <source src=""/>
+    <source src="{{play_src}}"/>
     <p class="vjs-no-js">
       To view this video please enable JavaScript, and consider upgrading to a
       web browser that
@@ -44,6 +43,9 @@
       >
     </p>
   </video> 
+  {% endif %}
+   <div id="video_files"></div>
+   <div id="video_window">{{play_src}}</div>
   <script src="https://vjs.zencdn.net/7.8.4/video.js"></script>
 
 
