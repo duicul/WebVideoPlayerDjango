@@ -24,3 +24,31 @@ function list_dir(path,parent_el){
    }
    });
 }
+function load_videos(){
+   var url_list_dir="/utils/list_video_files";
+   console.log(url_list_dir);
+   $.ajax({url: url_list_dir, success: function(result){
+        console.log(result);
+        var ret_str="<div class=\"list-group\">";
+        var space_ind=0;
+        console.log(Object.keys(result));
+        result.forEach(function(item_par){
+            ret_str+="<div class=\"list-group-item\" onclick=\"present_video('"+item_par[1].replace("\\","/")+"');\" >"+item_par[0];
+            ret_str+="</div>";
+        }
+        
+        );
+        ret_str+="</div>";
+        $("#video_files").html(ret_str);
+   }
+   });
+    
+    
+}
+
+function present_video(relative_path){
+    var myVideo = videojs('my-video');
+    myVideo.src([
+        {/*type: "application/x-mpegURL",*/ src: "/media/"+relative_path},
+    ]);    
+}
