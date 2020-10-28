@@ -47,8 +47,11 @@ function load_videos(){
 }
 
 function present_video(relative_path){
-    var myVideo = videojs('my-video');
+    let myVideo = videojs('my-video');
     myVideo.src([
-        {/*type: "application/x-mpegURL",*/ src: "/media/"+relative_path},
-    ]);    
+        {type: "application/x-mpegURL", src: "/media/"+relative_path},
+    ]); 
+    myVideo.load();  
+   myVideo.play();
+      
 }
