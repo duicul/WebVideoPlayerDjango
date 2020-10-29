@@ -21,17 +21,19 @@
 </style>
 </head>
 
-<body onload="load_videos();">
-    
-<h1>Welcome to this file</h1>
+<body onload="load_videos();" onresize="load_videos();">
     {% if not play_src == None %}
+ <div class="row">
+ <div class="col-3"></div>
+ <div class="col-8" >
+ 
  <video
     id="my-video"
-    class="video-js"
+    class="video-js vjs-default-skin vjs-big-play-centered"
     controls="true"
     preload="auto"
-    width="640"
-    height="264"
+    width="720"
+    height="400"
     data-setup="{}"
   >
     <source src="{{play_src}}"/>
@@ -43,9 +45,12 @@
       >
     </p>
   </video> 
+  </div>
+  <div class="col-3"></div>
+  </div>
   {% endif %}
    <div id="video_files"></div>
-   <div id="video_window">{{play_src}}</div>
+   <!--<div id="video_window">{{play_src}}</div>-->
   <script src="https://vjs.zencdn.net/7.8.4/video.js"></script>
 
 
