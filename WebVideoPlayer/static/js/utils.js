@@ -26,14 +26,14 @@ function list_dir(path,parent_el){
 }
 function load_videos(){
    var url_list_dir="/utils/list_video_files";
-   console.log(url_list_dir);
+   //console.log(url_list_dir);
    $.ajax({url: url_list_dir, success: function(result){
         let img_w=250;
         let img_h=250;
         movies_per_slide=Math.floor(window.innerWidth*0.9/img_w);
         slides=Math.ceil(result.length/movies_per_slide)
-        console.log(movies_per_slide)
-        console.log(slides)
+        //console.log(movies_per_slide)
+        //console.log(slides)
         let ret_str="<div id=\"demo\" class=\"carousel slide\" data-ride=\"carousel\" style=\"background-color: lightblue;\">";
         ret_str+="<ul class=\"carousel-indicators\">";
         ret_str+="<li data-target=\"#demo\" data-slide-to=\"0\" class=\"active\"></li>";
@@ -74,7 +74,7 @@ function load_videos(){
         ret_str+="<a class=\"carousel-control-next\" href=\"#demo\" data-slide=\"next\">";
         ret_str+="<span class=\"carousel-control-next-icon\"></span></a>";
         ret_str+="</div>";
-        console.log(result);
+        //console.log(result);
        /* var ret_str="<div class=\"list-group\">";
         var space_ind=0;
         console.log(Object.keys(result));
