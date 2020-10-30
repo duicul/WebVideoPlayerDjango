@@ -45,7 +45,7 @@ function load_videos(){
         ret_str+="<div class=\"carousel-inner\">";
             ret_str+="<div class=\"carousel-item active\" style=\"text-align: center\">";
             for (i = 0; i < movies_per_slide; i++) {
-                ret_str+="<a href=\"/video_player/?play="+result[i]["movie_url"]+"\">";
+                ret_str+="<a data-toggle=\"tooltip\" title=\""+result[i]["name"]+"\" href=\"/video_player/?play="+result[i]["movie_url"]+"\">";
                 ret_str+="<img style=\"border-radius: 8%;cursor: pointer;\" src=\""+result[i]["img_url"];
                 ret_str+="\" alt=\""+result[i]["name"]+"\" width=\""+img_w+"\" height=\""+img_h+"\">";
                 ret_str+="</a>";
@@ -59,7 +59,7 @@ function load_videos(){
                     current_index=slide_i*movies_per_slide+i;
                     if(current_index>=result.length)
                         break;
-                    ret_str+="<a href=\"/video_player/?play="+result[current_index]["movie_url"]+"\">";
+                    ret_str+="<a data-toggle=\"tooltip\" title=\""+result[current_index]["name"]+"\" href=\"/video_player/?play="+result[current_index]["movie_url"]+"\">";
                     ret_str+="<img style=\"border-radius: 8%;cursor: pointer;\" src=\""+result[current_index]["img_url"];
                     ret_str+="\" alt=\""+result[current_index]["name"]+"\" onclick=\"present_video('"+result[current_index]["movie_url"]+"');\" width=\""+img_w+"\" height=\""+img_h+"\">";
                     ret_str+="</a>";
