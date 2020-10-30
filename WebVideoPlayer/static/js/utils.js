@@ -133,7 +133,9 @@ function load_videos(){
     
 }
 
-
+function video_scroll(el){
+    console.log(el.scrollTop )
+}
 
 function present_video(relative_path){
     location.replace("/video_player?play="+relative_path);
