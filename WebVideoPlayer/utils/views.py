@@ -58,6 +58,13 @@ def login(request):
     return HttpResponseRedirect("/?login=wrong")
             
 def register(request):
+    logged_user=None
+    try:
+        logged_user=request.session['username']
+    except:
+        pass
+    if logged_user == None:
+        return HttpResponseRedirect("/")
     username=None
     password=None
     MyLoginForm=None
