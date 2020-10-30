@@ -39,53 +39,50 @@ a {
 </style>
 </head>
 
-<body onload="load_videos();" onresize="load_videos();">
+<body onload="load_videos();" onresize="load_videos();" style="text-align:center;">
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
- {% if play_src == None %}
- Hi {{username}}
- {% else %}
- <a href="/video_player/">
-  <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-arrow-left" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-  <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
-    </svg>
-    Back
-    </a>
- {% endif %}
- <div style="margin-left: auto; ">
-  <a href="/logout">
-  <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-power" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-  <path fill-rule="evenodd" d="M5.578 4.437a5 5 0 1 0 4.922.044l.5-.866a6 6 0 1 1-5.908-.053l.486.875z"/>
-  <path fill-rule="evenodd" d="M7.5 8V1h1v7h-1z"/>
-</svg> Logout
- </a>
- </div>
+ Web Video Player
 </nav>
-    {% if not play_src == None %} 
-    <div style="width:100%;height:100%;">
- <video-js onscroll="video_scroll(this);"
-    id="my-video"
-    class="video-js vjs-default-skin vjs-big-play-centered "
-    controls="true"
-    preload="auto"
-    data-setup=''
-    type='application/x-mpegURL'
-  >
-    <source src="{{play_src}}"/>
-    <p class="vjs-no-js">
-      To view this video please enable JavaScript, and consider upgrading to a
-      web browser that
-      <a href="https://videojs.com/html5-video-support/" target="_blank"
-        >supports HTML5 video</a
-      >
-    </p>
-  </video> 
-  </div>
-  {% else %}
-  <div id="video_files"></div>
-  {% endif %}
-   
-   <!--<div id="video_window">{{play_src}}</div>-->
-   
-
+    <div style="height:10%;">
+    </div>
+    <div style="margin-left:40%;">
+   <form style="width:40%;background-color:#A495F5" name = "form" action = "{% url 'login' %}" 
+         method = "POST" >{% csrf_token %}
+         
+         <div style = "max-width:470px;">
+            <center> 
+               <input type = "text" style = "" 
+                  placeholder = "Username" name = "username" required />
+            </center>
+         </div>
+            
+         <br>
+         
+         <div style = "max-width:470px;">
+            <center>
+               <input type = "password" style = "" 
+                  placeholder = "Password" name = "password" required/>
+            </center>
+         </div>
+            
+         <br>
+         {% ifequal  login "wrong" %}
+         <span style="color:#FF0000;">Wrong password</span>
+         <br>
+         {% endifequal %}
+         <div style = "max-width:470px;">
+            <center> 
+            
+               <button style = "border:0px; background-color:#4285F4; margin-top:8%;
+                  height:35px; width:80%;" type = "submit" 
+                  value = "Login" >
+                  <strong>Login</strong>
+               </button>
+               
+            </center>
+         </div>
+         
+      </form>  
+    </div>
 </body>
 </html>

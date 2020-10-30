@@ -19,10 +19,15 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.conf import settings
 from django.conf.urls.static import static
 import video_player
+import utils
 urlpatterns = [
      path('utils/', include('utils.urls')),
     path('video_player/', include('video_player.urls')),
     path('admin/', admin.site.urls),
+    path('login', utils.views.login,name="login"),
+    path('logout',utils.views.logout,name="logout"),
+    path('register',utils.views.register,name="register"),
+    path('', video_player.views.index,name="main_index"),
 ]
 if(not settings.DEBUG):
     urlpatterns.append(path('media/<path:path>', video_player.views.redirect_internal,name="redirect_internal"))
