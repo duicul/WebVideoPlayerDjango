@@ -6,7 +6,8 @@ from django.core.exceptions import PermissionDenied
 import logging
 from django.views.generic import TemplateView
 from django.http import HttpResponseRedirect
-
+from utils.models import Movie_db
+from django.core.exceptions import ObjectDoesNotExist
 # Get an instance of a logger
 logger = logging.getLogger("django")
 #import video_player_utils
@@ -21,7 +22,15 @@ def video(request):
     if(username==None):
         return HttpResponseRedirect("/")
     else:
-        return render(request,"main.html",{"play_src":request.GET.get("play"),"username":username})
+        uuid=request.GET.get("play")
+        logger.info("uuid "+str(uuid))
+        play_src=""
+        try:
+            mv_db=Movie_db.objects.get(unique_id=uuid)
+            play_src=mv_db.movie_url
+        except ObjectDoesNotExist:
+            pass
+        return render(request,"main.html",{"play_src":play_src,"username":username})
     #return HttpResponse("Hello, world. You're at the polls index.")
 
 def index(request):

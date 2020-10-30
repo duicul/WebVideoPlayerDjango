@@ -5,12 +5,15 @@ import json
 import sys
 from utils.LoginForm import LoginForm
 from utils.path_walker import parse_media_dir
-from utils.models import User_db
+from utils.models import User_db,Movie_db
 import video_player
 from django.http import HttpResponseRedirect
 import WebVideoPlayer
 import utils
 import hashlib
+import logging
+
+logger = logging.getLogger("django")
 #import video_player_utils
 # Create your views here.
 def list_dir(request):
@@ -33,9 +36,8 @@ def list_dir(request):
     return HttpResponse(json.dumps(t), content_type="application/json")
 
 def list_video_files(request):
-    dirs=parse_media_dir()
-    return HttpResponse(json.dumps(dirs), content_type="application/json")
-
+    return HttpResponse(json.dumps([mv.getDict() for mv in Movie_db.objects.all()]), content_type="application/json")
+    
 def login(request):
     username=None
     password=None
@@ -83,7 +85,19 @@ def register(request):
         user_db.save()
         print("register "+str(username)+" "+str(password)+" "+encrypt_pass)
     return HttpResponseRedirect("/")
-    
+
+def rescan_db(request):
+    logged_user=None
+    try:
+        logged_user=request.session['username']
+    except:
+        pass
+    if logged_user == None:
+        return HttpResponseRedirect("/")
+    Movie_db.objects.all().delete()
+    parse_media_dir()
+    logger.info("scan_db")
+    return HttpResponse()
 def logout(request):
     try:
         del request.session['username']

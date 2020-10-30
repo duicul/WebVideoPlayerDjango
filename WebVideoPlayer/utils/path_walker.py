@@ -6,11 +6,17 @@ Created on Oct 28, 2020
 from pathlib import Path
 import os
 import re
+import uuid
+from utils.models import Movie_db
+import logging
+
+logger = logging.getLogger("django")
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 #print(BASE_DIR)
 def parse_dir(path):
     #print(path)
-    t=[]
+    #t=[]
     main_path=path
     #print(main_path)
     exten = ['.mp4','.avi','.m3u8']
@@ -38,10 +44,17 @@ def parse_dir(path):
                     main_file_name=''.join(main_file_name[0:len(main_file_name)-1])
                     #print(main_file_name)
                     #print(img_path)
-                    new_entry={"name":main_file_name,"img_url":img_path,"movie_url":"/media/"+os.path.relpath(out_path,start=main_path).replace("\\","/")}
+                    video_url="/media/"+os.path.relpath(out_path,start=main_path).replace("\\","/")
+                    #new_entry={"name":main_file_name,"img_url":img_path,"movie_url":video_url}
                     #print(new_entry)
-                    t.append(new_entry)
-    return t
+                    #t.append(new_entry)
+                    uuid_u= uuid.uuid4()
+                    try:
+                        movie_db=Movie_db(name=main_file_name,abs_path=out_path,img_url=img_path,movie_url=video_url,sub_json="[]",unique_id=uuid_u.hex)
+                        movie_db.save()
+                    except Exception as e:
+                        logger.error(str(e))
+    #return t
 
 def parse_media_dir():
     return parse_dir(os.path.join(BASE_DIR,'media'))
