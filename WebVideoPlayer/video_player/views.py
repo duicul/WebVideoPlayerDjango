@@ -22,7 +22,7 @@ def video(request):
         username=None
     #print(username)
     if(username==None):
-        return HttpResponseRedirect("/")
+        return index(request)   #HttpResponseRedirect("/")
     else:
         uuid=request.GET.get("play")
         logger.info("uuid "+str(uuid))

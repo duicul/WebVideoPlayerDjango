@@ -140,7 +140,7 @@ def upload_file(request):
         #logger.info(str(form))
         if form.is_valid():
             handle_uploaded_file(request.FILES['file'],form.cleaned_data["folder"])
-            return HttpResponseRedirect('/file_upload_form')
+            return file_upload_form(request)  #HttpResponseRedirect('/file_upload_form')
         return HttpResponseRedirect('/file_upload_form?uploaded=wrong')
     else:
         return HttpResponseRedirect('/file_upload_form?uploaded=wrong')
