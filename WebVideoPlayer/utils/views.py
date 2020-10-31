@@ -8,8 +8,6 @@ from utils.path_walker import parse_media_dir
 from utils.models import User_db,Movie_db
 import video_player
 from django.http import HttpResponseRedirect
-import WebVideoPlayer
-import utils
 import hashlib
 import logging
 from django.core.exceptions import PermissionDenied

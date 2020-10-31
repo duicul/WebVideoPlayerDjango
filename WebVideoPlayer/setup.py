@@ -17,6 +17,10 @@ myCmd = 'chmod a+w .'
 os.system(myCmd)
 myCmd = 'chmod a+w ..'
 os.system(myCmd)
+myCmd = 'chmod a+w ./*'
+os.system(myCmd)
+myCmd = 'chmod a+w ../*'
+os.system(myCmd)
 myCmd = 'chmod a+w logs'
 os.system(myCmd)
 import Createuwsgiconfig
