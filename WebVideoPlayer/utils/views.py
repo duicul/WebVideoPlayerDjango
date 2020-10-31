@@ -22,7 +22,7 @@ def list_dir(request):
        path=request.GET.get("path")
     except:
         path=""
-    print("list_dir "+str(path))
+    #print("list_dir "+str(path))
     t={}
     if path==None or len(path)==0:
         if sys.platform=="win32":
@@ -59,7 +59,7 @@ def login(request):
         text_pass = hashlib.sha512(password.encode())
         encrypt_pass = text_pass.hexdigest()
         user_db=User_db.objects.filter(username = username)
-        print("user_db "+str(user_db))
+        #print("user_db "+str(user_db))
         if len(user_db)>0 and encrypt_pass == user_db[0].password:
             request.session['username']=username
             return HttpResponseRedirect("/")

@@ -37,7 +37,7 @@ def parse_dir(path):
                     subs_path=os.path.join(main_moive_path,"Subs")
                     subs=[]
                     subs_names=[]
-                    print("subs_path "+str(subs_path))
+                    #print("subs_path "+str(subs_path))
                     if(os.path.isdir(subs_path)):
                         for sub in os.listdir(subs_path):
                             sub_path=os.path.join(subs_path,sub)

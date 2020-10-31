@@ -20,7 +20,7 @@ def video(request):
         username=request.session['username']
     except KeyError:
         username=None
-    print(username)
+    #print(username)
     if(username==None):
         return HttpResponseRedirect("/")
     else:
@@ -49,7 +49,7 @@ def index(request):
         login=request.GET.get("login")
     except KeyError:
         login=None
-    print(username)
+    #print(username)
     if(username==None):
         return render(request,"index.html",{"login":login})
     else:
@@ -59,11 +59,11 @@ def bday(request):
     return HttpResponse("Happy B-Day !!")
 
 def file_render(request):
-    print(request)
+    #print(request)
     return render(request,"file.html")
 
 def file_render_html5(request):
-    print(request)
+    #print(request)
     return render(request,"file_html5.html")
 
 def redirect_internal(request,path):

@@ -39,28 +39,27 @@ a {
 </style>
 </head>
 
-<body onload="load_videos();" onresize="load_videos();" style="text-align:center;">
+<body style="text-align:center;">
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
  Web Video Player
 </nav>
-    <div style="height:10%;">
-    </div>
-    <div style="margin-left:40%;">
-   <form style="width:40%;background-color:#A495F5" name = "form" action = "{% url 'login' %}" 
+    <!--<div style="margin-left:40%;">-->
+    <center>
+   <form style="width:40%;height:40%;background-color:#A495F5" name = "form" action = "{% url 'login' %}" 
          method = "POST" >{% csrf_token %}
          
-         <div style = "max-width:470px;">
+         <div style = "max-width:70%;">
             <center> 
-               <input type = "text" style = "" 
+               <input type = "text" style = "width:80%;" 
                   placeholder = "Username" name = "username" required />
             </center>
          </div>
             
          <br>
          
-         <div style = "max-width:470px;">
+         <div style = "max-width:70%;">
             <center>
-               <input type = "password" style = "" 
+               <input type = "password" style = "width:80%;" 
                   placeholder = "Password" name = "password" required/>
             </center>
          </div>
@@ -70,7 +69,7 @@ a {
          <span style="color:#FF0000;">Wrong password</span>
          <br>
          {% endifequal %}
-         <div style = "max-width:470px;">
+         <div style = "max-width:70%;">
             <center> 
             
                <button style = "border:0px; background-color:#4285F4; margin-top:8%;
@@ -83,6 +82,7 @@ a {
          </div>
          
       </form>  
+       </center>
     </div>
 </body>
 </html>
