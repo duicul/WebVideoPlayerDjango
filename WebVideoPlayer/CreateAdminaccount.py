@@ -17,7 +17,6 @@ django.setup()
 from utils.models import User_db
 import hashlib
 if __name__ == '__main__':
-    
     username="admin"
     password="admin"
     text_pass = hashlib.sha512(password.encode())
