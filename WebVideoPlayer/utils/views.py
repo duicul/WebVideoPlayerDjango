@@ -12,6 +12,7 @@ import WebVideoPlayer
 import utils
 import hashlib
 import logging
+from django.core.exceptions import PermissionDenied
 
 logger = logging.getLogger("django")
 #import video_player_utils
@@ -36,6 +37,11 @@ def list_dir(request):
     return HttpResponse(json.dumps(t), content_type="application/json")
 
 def list_video_files(request):
+    username=None
+    try:
+        username=request.session['username']
+    except KeyError:
+        raise PermissionDenied()
     return HttpResponse(json.dumps([mv.getDict() for mv in Movie_db.objects.all()]), content_type="application/json")
     
 def login(request):
@@ -63,10 +69,8 @@ def register(request):
     logged_user=None
     try:
         logged_user=request.session['username']
-    except:
-        pass
-    if logged_user == None:
-        return HttpResponseRedirect("/")
+    except KeyError:
+        return HttpResponseRedirect("/")        
     username=None
     password=None
     MyLoginForm=None
@@ -83,21 +87,20 @@ def register(request):
         encrypt_pass = text_pass.hexdigest()
         user_db=User_db(username=username,password=encrypt_pass)
         user_db.save()
-        print("register "+str(username)+" "+str(password)+" "+encrypt_pass)
+        #print("register "+str(username)+" "+str(password)+" "+encrypt_pass)
     return HttpResponseRedirect("/")
 
 def rescan_db(request):
     logged_user=None
     try:
         logged_user=request.session['username']
-    except:
-        pass
-    if logged_user == None:
+    except KeyError:
         return HttpResponseRedirect("/")
     Movie_db.objects.all().delete()
     parse_media_dir()
     logger.info("scan_db")
     return HttpResponse()
+
 def logout(request):
     try:
         del request.session['username']

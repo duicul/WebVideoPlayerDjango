@@ -67,15 +67,14 @@ def file_render_html5(request):
     return render(request,"file_html5.html")
 
 def redirect_internal(request,path):
-    print(settings.DEBUG)
+    #print(settings.DEBUG)
+    username=None
+    try:
+        username=request.session['username']
+    except KeyError:
+        raise PermissionDenied()
     logger.info("debug = "+str(settings.DEBUG))
     response = HttpResponse()
     response['X-Accel-Redirect'] = '/media-internal/' + path
     logger.info("redirect_internal = "+str(response['X-Accel-Redirect']))
     return response
-    """if request.user.is_authenticated:
-        response = HttpResponse()
-        response['X-Accel-Redirect'] = '/media-internal/' + path
-        return response
-    else:
-        raise PermissionDenied()"""
