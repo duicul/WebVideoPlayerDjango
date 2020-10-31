@@ -6,8 +6,8 @@ Created on Oct 27, 2020
 import os
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 print(BASE_DIR)
-str_out="http{\n"
-str_out+="include       mime.types;\n"
+#str_out="http{\n"
+str_out="include       mime.types;\n"
 str_out+="types {\n"
 str_out+="    text/vtt vtt;\n"
 str_out+="}\n"
@@ -37,7 +37,7 @@ str_out+="        internal;\n"
 str_out+="        alias "+os.path.join(BASE_DIR,"media")+"/; # ending slash is required\n"
 str_out+="    }\n"
 str_out+="}\n"
-str_out+="}\n"
+#str_out+="}\n"
 f = open("/etc/nginx/sites-enabled/django", "w")
 f.write(str_out)
 f.close()
