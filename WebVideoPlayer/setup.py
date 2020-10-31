@@ -29,5 +29,5 @@ myCmd = 'chmod a+w ./*'
 os.system(myCmd)
 myCmd = 'chmod a+w ../*'
 os.system(myCmd)
-import CreateAdminaccount
 import restartServices
+import CreateAdminaccount
