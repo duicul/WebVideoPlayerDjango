@@ -56,8 +56,11 @@ def extract_correct_subs(main_path,main_moive_path):
             sub_path=os.path.join(subs_path,sub)
             if(os.path.isfile(sub_path)):
                 if( sub_path.endswith(".srt")):
-                    webvtt_sub = webvtt.from_srt(sub_path)
-                    webvtt_sub.save()
+                    try:
+                        webvtt_sub = webvtt.from_srt(sub_path)
+                        webvtt_sub.save()
+                    except Exception as e:
+                        logger.error(str(e))
                 if(not sub_path.endswith(".vtt")):
                     os.rename(sub_path,os.path.join(old_subs_path,sub))  
     
