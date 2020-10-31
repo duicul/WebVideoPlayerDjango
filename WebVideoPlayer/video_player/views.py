@@ -4,6 +4,8 @@ from django.conf import settings
 from django.http import HttpResponse
 from django.core.exceptions import PermissionDenied
 import logging
+import json
+import os
 from django.views.generic import TemplateView
 from django.http import HttpResponseRedirect
 from utils.models import Movie_db
@@ -25,12 +27,15 @@ def video(request):
         uuid=request.GET.get("play")
         logger.info("uuid "+str(uuid))
         play_src=""
+        subs=[]
         try:
             mv_db=Movie_db.objects.get(unique_id=uuid)
             play_src=mv_db.movie_url
+            subs=json.loads(mv_db.sub_json)
+            subs=[(sub,os.path.basename(sub)) for sub in subs]
         except ObjectDoesNotExist:
             pass
-        return render(request,"main.html",{"play_src":play_src,"username":username})
+        return render(request,"main.html",{"play_src":play_src,"username":username,"subs":subs})
     #return HttpResponse("Hello, world. You're at the polls index.")
 
 def index(request):

@@ -83,6 +83,9 @@ a {
     type='application/x-mpegURL'
   >
     <source src="{{play_src}}"/>
+    {% for sub_url,sub_label in subs %}
+        <track kind="subtitles" src='{{sub_url}}' label='{{sub_label}}' />
+    {% endfor %}
     <p class="vjs-no-js">
       To view this video please enable JavaScript, and consider upgrading to a
       web browser that

@@ -7,9 +7,10 @@ from pathlib import Path
 import os
 import re
 import uuid
+import webvtt
 from utils.models import Movie_db
 import logging
-
+import json
 logger = logging.getLogger("django")
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,16 +25,7 @@ def parse_dir(path):
         for name in files:
             for ext in exten:
                 if name.lower().endswith(ext):
-                    #print(name)
-                    #print(dirpath)
-                    #print(os.path.join(dirpath, name))
-                    #t.append(os.path.join(dirpath, name))
                     out_path=os.path.join(dirpath, name)
-                    #print(out_path)
-                    #print(main_path)
-                    #print(os.path.relpath(out_path,start=main_path))
-                    #print(re.sub(r'^\.\\','',out_path))
-                    #print()
                     main_moive_path=Path(out_path).resolve().parent.parent if ext == ".m3u8" else Path(out_path).resolve().parent
                     img_path=os.path.join(main_moive_path,"poster.jpg")
                     if not os.path.isfile(img_path):
@@ -42,6 +34,22 @@ def parse_dir(path):
                         img_path="/media/"+os.path.relpath(img_path,start=main_path).replace("\\","/")
                     main_file_name=name.split(".")
                     main_file_name=''.join(main_file_name[0:len(main_file_name)-1])
+                    subs_path=os.path.join(main_moive_path,"Subs")
+                    subs=[]
+                    subs_names=[]
+                    print("subs_path "+str(subs_path))
+                    if(os.path.isdir(subs_path)):
+                        for sub in os.listdir(subs_path):
+                            sub_path=os.path.join(subs_path,sub)
+                            if(os.path.isfile(sub_path) and sub_path.endswith(".srt")):
+                                #print(sub_path)
+                                webvtt_sub = webvtt.from_srt(sub_path)
+                                #os.remove(sub_path) 
+                                #print(sub_path)
+                                webvtt_sub.save()
+                    if(os.path.isdir(subs_path)):
+                        subs=list(map(lambda x: os.path.relpath(os.path.join(subs_path,x),start=main_path).replace("\\","/"),os.listdir(subs_path)))
+                    subs=list(map(lambda sub_url:"/media/"+str(sub_url),filter(lambda sub:sub.endswith(".vtt"),subs)))
                     #print(main_file_name)
                     #print(img_path)
                     video_url="/media/"+os.path.relpath(out_path,start=main_path).replace("\\","/")
@@ -50,7 +58,7 @@ def parse_dir(path):
                     #t.append(new_entry)
                     uuid_u= uuid.uuid4()
                     try:
-                        movie_db=Movie_db(name=main_file_name,abs_path=out_path,img_url=img_path,movie_url=video_url,sub_json="[]",unique_id=uuid_u.hex)
+                        movie_db=Movie_db(name=main_file_name,abs_path=out_path,img_url=img_path,movie_url=video_url,sub_json=json.dumps(subs),unique_id=uuid_u.hex)
                         movie_db.save()
                     except Exception as e:
                         logger.error(str(e))
