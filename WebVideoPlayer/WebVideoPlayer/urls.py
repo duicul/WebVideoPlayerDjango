@@ -21,12 +21,13 @@ from django.conf.urls.static import static
 import video_player
 import utils
 urlpatterns = [
-     path('utils/', include('utils.urls')),
+    path('utils/', include('utils.urls')),
     path('video_player/', include('video_player.urls')),
-    path('admin/', admin.site.urls),
+    #path('admin/', admin.site.urls),
     path('login', utils.views.login,name="login"),
     path('logout',utils.views.logout,name="logout"),
     path('register',utils.views.register,name="register"),
+    path('list_users',utils.views.list_users,name="list_users"),
     path('', video_player.views.index,name="main_index"),
 ]
 if(not settings.DEBUG):

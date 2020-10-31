@@ -5,7 +5,8 @@ import json
 class User_db(models.Model): 
    username = models.CharField(max_length = 100 , unique=True)
    password = models.CharField(max_length = 100)
-
+   def getDict(self):
+        return {"username":self.username,"password":self.password}
 
 class Movie_db(models.Model):
     name = models.CharField(max_length = 100)

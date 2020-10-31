@@ -13,7 +13,7 @@ import logging
 from django.core.exceptions import PermissionDenied
 
 logger = logging.getLogger("django")
-#import video_player_utils
+
 # Create your views here.
 def list_dir(request):
     try:
@@ -68,7 +68,7 @@ def register(request):
     try:
         logged_user=request.session['username']
     except KeyError:
-        return HttpResponseRedirect("/")        
+        raise PermissionDenied() 
     username=None
     password=None
     MyLoginForm=None
@@ -93,7 +93,7 @@ def rescan_db(request):
     try:
         logged_user=request.session['username']
     except KeyError:
-        return HttpResponseRedirect("/")
+        raise PermissionDenied()
     Movie_db.objects.all().delete()
     parse_media_dir()
     logger.info("scan_db")
@@ -106,3 +106,11 @@ def logout(request):
         pass
     video_player.views.index(request)
     return HttpResponseRedirect("/")
+
+def list_users(request):
+    logged_user=None
+    try:
+        logged_user=request.session['username']
+    except KeyError:
+        raise PermissionDenied() 
+    return HttpResponse(json.dumps([user.getDict() for user in User_db.objects.all()]), content_type="application/json")
