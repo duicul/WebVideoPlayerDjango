@@ -120,8 +120,7 @@ def logout(request):
         del request.session['username']
     except:
         pass
-    video_player.views.index(request)
-    return video_player.views.index
+    return video_player.views.index(request)
 
 def list_users(request):
     logged_user=None
