@@ -17,10 +17,6 @@ myCmd = 'chmod a+w .'
 os.system(myCmd)
 myCmd = 'chmod a+w ..'
 os.system(myCmd)
-myCmd = 'chmod a+w ./*'
-os.system(myCmd)
-myCmd = 'chmod a+w ../*'
-os.system(myCmd)
 myCmd = 'chmod a+w logs'
 os.system(myCmd)
 import Createuwsgiconfig
@@ -28,6 +24,10 @@ import Createnginxconfig
 myCmd = 'python3 manage.py makemigrations'
 os.system(myCmd)
 myCmd = 'python3 manage.py migrate'
+os.system(myCmd)
+myCmd = 'chmod a+w ./*'
+os.system(myCmd)
+myCmd = 'chmod a+w ../*'
 os.system(myCmd)
 import CreateAdminaccount
 import restartServices
