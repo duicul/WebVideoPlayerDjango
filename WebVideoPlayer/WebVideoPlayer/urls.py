@@ -34,7 +34,7 @@ urlpatterns = [
 ]
 if(not settings.DEBUG):
     urlpatterns.append(path('media/<path:path>', video_player.views.redirect_internal,name="redirect_internal"))
-    urlpatterns.append(path('static/<path:path>', video_player.views.static_redirect_internal,name="redirect_internal"))
+    urlpatterns.append(path('static/<path:path>', video_player.views.static_redirect_internal,name="redirect_static"))
 if settings.DEBUG:
     urlpatterns +=  static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
