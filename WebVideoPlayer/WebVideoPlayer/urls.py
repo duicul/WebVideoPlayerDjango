@@ -29,6 +29,8 @@ urlpatterns = [
     path('register',utils.views.register,name="register"),
     path('list_users',utils.views.list_users,name="list_users"),
     path('', video_player.views.index,name="main_index"),
+    path('upload_file', utils.views.upload_file,name="upload_file"),
+    path('file_upload_form', utils.views.file_upload_form,name="file_upload_form"),
 ]
 if(not settings.DEBUG):
     urlpatterns.append(path('media/<path:path>', video_player.views.redirect_internal,name="redirect_internal"))

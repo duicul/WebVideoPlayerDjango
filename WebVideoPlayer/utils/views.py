@@ -11,10 +11,25 @@ from django.http import HttpResponseRedirect
 import hashlib
 import logging
 from django.core.exceptions import PermissionDenied
-
+from utils.FileUploadForm import FileUploadForm
+from utils.FileUploadHandling import handle_uploaded_file
 logger = logging.getLogger("django")
 
 # Create your views here.
+def file_upload_form(request):
+    username=None
+    login=None
+    try:
+        username=request.session['username']
+    except KeyError:
+        raise PermissionDenied()
+    try:
+        uploaded=request.GET.get("uploaded")
+    except KeyError:
+        uploaded=None
+    form=FileUploadForm()
+    return render(request,"file_upload.html",{"uploaded":uploaded,"form":form})
+
 def list_dir(request):
     try:
        path=request.GET.get("path")
@@ -114,3 +129,19 @@ def list_users(request):
     except KeyError:
         raise PermissionDenied() 
     return HttpResponse(json.dumps([user.getDict() for user in User_db.objects.all()]), content_type="application/json")
+
+
+def upload_file(request):
+    logger.info(" file upload ")
+    if request.method == 'POST':
+        form = FileUploadForm(request.POST, request.FILES)
+        logger.info("file upload form valid : "+str(form.is_valid()))
+        logger.info("file upload form erros : "+str(form.errors.as_data()))
+        #logger.info(str(form))
+        if form.is_valid():
+            handle_uploaded_file(request.FILES['file'],form.cleaned_data["folder"])
+            return HttpResponseRedirect('/file_upload_form')
+        return HttpResponseRedirect('/file_upload_form?uploaded=wrong')
+    else:
+        return HttpResponseRedirect('/file_upload_form?uploaded=wrong')
+    #return render(request, 'upload.html', {'form': form})
