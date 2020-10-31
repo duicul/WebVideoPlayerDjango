@@ -13,6 +13,7 @@ import logging
 from django.core.exceptions import PermissionDenied
 from utils.FileUploadForm import FileUploadForm
 from utils.FileUploadHandling import handle_uploaded_file
+from video_player.views import index
 logger = logging.getLogger("django")
 
 # Create your views here.
@@ -75,7 +76,7 @@ def login(request):
         #print("user_db "+str(user_db))
         if len(user_db)>0 and encrypt_pass == user_db[0].password:
             request.session['username']=username
-            return HttpResponseRedirect("/")
+            return video_player.views.index(request)
     return HttpResponseRedirect("/?login=wrong")
             
 def register(request):
@@ -101,7 +102,7 @@ def register(request):
         user_db=User_db(username=username,password=encrypt_pass)
         user_db.save()
         #print("register "+str(username)+" "+str(password)+" "+encrypt_pass)
-    return HttpResponseRedirect("/")
+    return video_player.views.index(request)
 
 def rescan_db(request):
     logged_user=None
@@ -120,7 +121,7 @@ def logout(request):
     except:
         pass
     video_player.views.index(request)
-    return HttpResponseRedirect("/")
+    return video_player.views.index
 
 def list_users(request):
     logged_user=None
