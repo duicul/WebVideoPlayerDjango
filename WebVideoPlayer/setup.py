@@ -30,3 +30,4 @@ os.system(myCmd)
 myCmd = 'python3 manage.py migrate'
 os.system(myCmd)
 import CreateAdminaccount
+import restartServices
