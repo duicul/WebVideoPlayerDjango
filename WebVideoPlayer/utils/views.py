@@ -76,7 +76,7 @@ def login(request):
         #print("user_db "+str(user_db))
         if len(user_db)>0 and encrypt_pass == user_db[0].password:
             request.session['username']=username
-            return video_player.views.index(request)
+            return  HttpResponseRedirect("/entry_point")
     return HttpResponseRedirect("/?login=wrong")
             
 def register(request):
@@ -102,7 +102,7 @@ def register(request):
         user_db=User_db(username=username,password=encrypt_pass)
         user_db.save()
         #print("register "+str(username)+" "+str(password)+" "+encrypt_pass)
-    return video_player.views.index(request)
+    return HttpResponseRedirect("/entry_point")
 
 def rescan_db(request):
     logged_user=None
@@ -120,7 +120,7 @@ def logout(request):
         del request.session['username']
     except:
         pass
-    return video_player.views.index(request)
+    return HttpResponseRedirect("/entry_point")
 
 def list_users(request):
     logged_user=None
@@ -140,7 +140,7 @@ def upload_file(request):
         #logger.info(str(form))
         if form.is_valid():
             handle_uploaded_file(request.FILES['file'],form.cleaned_data["folder"])
-            return file_upload_form(request)  #HttpResponseRedirect('/file_upload_form')
+            return HttpResponseRedirect('/file_upload_form')
         return HttpResponseRedirect('/file_upload_form?uploaded=wrong')
     else:
         return HttpResponseRedirect('/file_upload_form?uploaded=wrong')
