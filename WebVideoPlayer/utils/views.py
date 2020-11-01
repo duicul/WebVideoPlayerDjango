@@ -5,7 +5,7 @@ import json
 import sys
 from utils.LoginForm import LoginForm
 from utils.path_walker import parse_media_dir
-from utils.models import User_db,Movie_db
+from utils.models import User_db,Movie_db, Category_db
 import video_player
 from django.http import HttpResponseRedirect
 import hashlib
@@ -56,7 +56,10 @@ def list_video_files(request):
         username=request.session['username']
     except KeyError:
         raise PermissionDenied()
-    return HttpResponse(json.dumps([mv.getDict() for mv in Movie_db.objects.all()]), content_type="application/json")
+    categories=Category_db.objects.all()
+    #print(categories[0].category_path)
+    ret=[{'parent_folder_path':categ.category_path,'parent_folder_name':categ.category_name,'movies':[mv.getDict() for mv in Movie_db.objects.filter(category=categ.pk)]}  for categ in categories]
+    return HttpResponse(json.dumps(ret), content_type="application/json")
     
 def login(request):
     username=None
@@ -77,7 +80,7 @@ def login(request):
         if len(user_db)>0 and encrypt_pass == user_db[0].password:
             request.session['username']=username
             return  HttpResponseRedirect("/entry_point")
-    return HttpResponseRedirect("/?login=wrong")
+    return HttpResponseRedirect("/entry_point?login=wrong")
             
 def register(request):
     logged_user=None

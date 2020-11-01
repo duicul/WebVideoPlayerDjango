@@ -8,9 +8,11 @@ import os
 import re
 import uuid
 import webvtt
-from utils.models import Movie_db
+from utils.models import Movie_db,Category_db
 import logging
 import json
+from  django.db.utils import IntegrityError
+import django
 logger = logging.getLogger("django")
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -34,9 +36,16 @@ def parse_dir(path):
                     main_file_name=''.join(main_file_name[0:len(main_file_name)-1])
                     subs=extract_correct_subs(main_path,main_moive_path)
                     video_url="/media/"+os.path.relpath(out_path,start=main_path).replace("\\","/")
+                    parent_folder_path=Path(main_moive_path).resolve().parent
+                    try:
+                        category_db = Category_db(category_path=parent_folder_path,category_name=os.path.basename(parent_folder_path))
+                        category_db.save()
+                    except django.db.utils.IntegrityError as e:
+                        logger.error(e)
+                    category_db=Category_db.objects.get(category_path=parent_folder_path)
                     uuid_u= uuid.uuid4()
                     try:
-                        movie_db=Movie_db(name=main_file_name,abs_path=out_path,img_url=img_path,movie_url=video_url,sub_json=json.dumps(subs),unique_id=uuid_u.hex)
+                        movie_db=Movie_db(name=main_file_name,abs_path=out_path,img_url=img_path,movie_url=video_url,sub_json=json.dumps(subs),unique_id=uuid_u.hex,category=category_db)
                         movie_db.save()
                     except Exception as e:
                         logger.error(str(e))

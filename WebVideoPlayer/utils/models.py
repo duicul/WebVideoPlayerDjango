@@ -8,6 +8,13 @@ class User_db(models.Model):
    def getDict(self):
         return {"username":self.username,"password":self.password}
 
+class Category_db(models.Model):
+    category_path = models.CharField(max_length = 200 , unique=True)
+    category_name = models.CharField(max_length = 30)
+    
+    def getDict(self):
+        return {"category_path":self.category_path,"category_name":self.category_name}
+
 class Movie_db(models.Model):
     name = models.CharField(max_length = 100)
     abs_path = models.CharField(max_length = 100 , unique=True )
@@ -16,6 +23,11 @@ class Movie_db(models.Model):
     desc_url = models.CharField(max_length = 100)
     sub_json = models.CharField(max_length = 100)
     unique_id = models.CharField(max_length = 100 , unique=True)
+    category =  models.ForeignKey(Category_db, on_delete=models.CASCADE)
+    
     
     def getDict(self):
         return {"name":self.name,"abs_path":self.abs_path,"img_url":self.img_url,"movie_url":self.movie_url,"desc_url":self.desc_url,"sub_json":self.sub_json,"unique_id":self.unique_id}
+    
+
+  

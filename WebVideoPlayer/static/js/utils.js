@@ -34,64 +34,67 @@ function load_videos(){
         slides=Math.ceil(result.length/movies_per_slide)
         //console.log(movies_per_slide)
         //console.log(slides)
-        let ret_str="<div id=\"demo\" class=\"carousel slide\" data-ride=\"carousel\" style=\"background-color: lightblue;\">";
-        ret_str+="<ul class=\"carousel-indicators\">";
-        ret_str+="<li data-target=\"#demo\" data-slide-to=\"0\" class=\"active\"></li>";
-        var i;
-        for (i = 1; i < slides; i++) {
-            ret_str+="<li data-target=\"#demo\" data-slide-to=\""+i+"\"></li>";
-        } 
-        ret_str+="</ul>";
-        ret_str+="<div class=\"carousel-inner\">";
+        let ret_str="";
+        result.forEach(function(parent_dir){
+            ret_str+=parent_dir["parent_folder_name"]+"<br/>";
+            let movies=parent_dir["movies"]
+            slides=Math.ceil(movies.length/movies_per_slide)
+        
+            ret_str+="<div id=\"demo"+parent_dir["parent_folder_name"]+"\" class=\"carousel slide\" data-ride=\"carousel\" style=\"background-color: lightblue;\">";
+            ret_str+="<ul class=\"carousel-indicators\">";
+            ret_str+="<li data-target=\"#demo\" data-slide-to=\"0\" class=\"active\"></li>";
+            
+            let i;
+            for (i = 1; i < slides; i++) {
+                ret_str+="<li data-target=\"#demo"+parent_dir["parent_folder_name"]+"\" data-slide-to=\""+i+"\"></li>";}
+                 
+            ret_str+="</ul>";
+            ret_str+="<div class=\"carousel-inner\">";
             ret_str+="<div class=\"carousel-item active\" style=\"text-align: center\">";
             for (i = 0; i < movies_per_slide; i++) {
-                ret_str+="<a data-toggle=\"tooltip\" title=\""+result[i]["name"]+"\" href=\"/video_player/?play="+result[i]["unique_id"]+"\">";
-                ret_str+="<img style=\"border-radius: 8%;cursor: pointer;\" src=\""+result[i]["img_url"];
-                ret_str+="\" alt=\""+result[i]["name"]+"\" width=\""+img_w+"\" height=\""+img_h+"\">";
+                //console.log(movies[i])
+                if(i>=movies.length)
+                    break;
+                ret_str+="<a data-toggle=\"tooltip\" title=\""+movies[i]["name"]+"\" href=\"/video_player/?play="+movies[i]["unique_id"]+"\">";
+                ret_str+="<img style=\"border-radius: 8%;cursor: pointer;\" src=\""+movies[i]["img_url"];
+                ret_str+="\" alt=\""+movies[i]["name"]+"\" width=\""+img_w+"\" height=\""+img_h+"\">";
                 ret_str+="</a>";
-                ret_str+="<span> </span>";
-            } 
+                ret_str+="<span> </span>";}
+                 
             ret_str+="</div>";
+            
             var slide_i;
             for (slide_i = 1; slide_i < slides;slide_i++) {
             ret_str+="<div class=\"carousel-item\" style=\"text-align: center\">";
                 for (i = 0; i < movies_per_slide; i++) {
                     current_index=slide_i*movies_per_slide+i;
-                    if(current_index>=result.length)
+                    //console.log(current_index)
+                    //console.log(movies[current_index])
+                    if(current_index>=movies.length)
                         break;
-                    ret_str+="<a data-toggle=\"tooltip\" title=\""+result[current_index]["name"]+"\" href=\"/video_player/?play="+result[current_index]["unique_id"]+"\">";
-                    ret_str+="<img style=\"border-radius: 8%;cursor: pointer;\" src=\""+result[current_index]["img_url"];
-                    ret_str+="\" alt=\""+result[current_index]["name"]+"\" onclick=\"present_video('"+result[current_index]["movie_url"]+"');\" width=\""+img_w+"\" height=\""+img_h+"\">";
+                    ret_str+="<a data-toggle=\"tooltip\" title=\""+movies[current_index]["name"]+"\" href=\"/video_player/?play="+movies[current_index]["unique_id"]+"\">";
+                    ret_str+="<img style=\"border-radius: 8%;cursor: pointer;\" src=\""+movies[current_index]["img_url"];
+                    ret_str+="\" alt=\""+movies[current_index]["name"]+"\" onclick=\"present_video('"+movies[current_index]["movie_url"]+"');\" width=\""+img_w+"\" height=\""+img_h+"\">";
                     ret_str+="</a>";
                     ret_str+="<span>  </span>";
                 } 
+            ret_str+="</div>";}
+            
+            ret_str+="</div>";
+            ret_str+="<a class=\"carousel-control-prev\" href=\"#demo"+parent_dir["parent_folder_name"]+"\" data-slide=\"prev\">";
+            ret_str+="<span class=\"carousel-control-prev-icon\"></span></a>";
+            ret_str+="<a class=\"carousel-control-next\" href=\"#demo"+parent_dir["parent_folder_name"]+"\" data-slide=\"next\">";
+            ret_str+="<span class=\"carousel-control-next-icon\"></span></a>";
+            ret_str+="</div>";
             ret_str+="</div>";
             
-            }
-        ret_str+="</div>";
-        ret_str+="<a class=\"carousel-control-prev\" href=\"#demo\" data-slide=\"prev\">";
-        ret_str+="<span class=\"carousel-control-prev-icon\"></span></a>";
-        ret_str+="<a class=\"carousel-control-next\" href=\"#demo\" data-slide=\"next\">";
-        ret_str+="<span class=\"carousel-control-next-icon\"></span></a>";
-        ret_str+="</div>";
-        //console.log(result);
-       /* var ret_str="<div class=\"list-group\">";
-        var space_ind=0;
-        console.log(Object.keys(result));
-        result.forEach(function(item_par){
-        console.log(item_par["name"])
-            ret_str+="<div class=\"list-group-item\" onclick=\"present_video('"+item_par["movie_url"]+"');\" >";
-            ret_str+="<img src=\"";
-            ret_str+=item_par["img_url"];
-            ret_str+="\" alt=\""+item_par["name"]+"\" width=\"100\" height=\"100\">";
-            ret_str+="</div>";
+            ret_str+="<br/>";
         }
-        
-        );
-        ret_str+="</div>";*/
+    );
+
         $("#video_files").html(ret_str);
-   }//put multiple videos in one carousel item
-   });}
+   }});
+}
 
 function video_scroll(el){
     console.log(el.scrollTop )
