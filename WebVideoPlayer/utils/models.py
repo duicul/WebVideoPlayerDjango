@@ -18,16 +18,20 @@ class Category_db(models.Model):
 class Movie_db(models.Model):
     name = models.CharField(max_length = 100)
     abs_path = models.CharField(max_length = 100 , unique=True )
-    img_url = models.CharField(max_length = 100)
-    movie_url = models.CharField(max_length = 100)
-    desc_url = models.CharField(max_length = 100)
-    sub_json = models.CharField(max_length = 100)
+    img_url = models.CharField(max_length = 100,default="")
+    movie_url = models.CharField(max_length = 100,default="")
+    descr = models.TextField(default="")
+    sub_json = models.CharField(max_length = 100,default="[]")
     unique_id = models.CharField(max_length = 100 , unique=True)
     category =  models.ForeignKey(Category_db, on_delete=models.CASCADE)
     
     
     def getDict(self):
-        return {"name":self.name,"abs_path":self.abs_path,"img_url":self.img_url,"movie_url":self.movie_url,"desc_url":self.desc_url,"sub_json":self.sub_json,"unique_id":self.unique_id}
+        return {"name":self.name,"abs_path":self.abs_path,"img_url":self.img_url,"movie_url":self.movie_url,"descr":self.descr,"sub_json":self.sub_json,"unique_id":self.unique_id}
     
+    def getDescHTML(self):
+        descr_html=""
+        for plot_line in json.loads(self.descr) :
+            descr_html+=plot_line+"<br>"
 
   

@@ -13,6 +13,8 @@ import logging
 import json
 from  django.db.utils import IntegrityError
 import django
+from imdb import IMDb
+
 logger = logging.getLogger("django")
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -44,8 +46,18 @@ def parse_dir(path):
                         logger.error(e)
                     category_db=Category_db.objects.get(category_path=parent_folder_path)
                     uuid_u= uuid.uuid4()
+                    ia = IMDb()
+                    movie_imdb = ia.search_movie(main_file_name)
+                    logger.info("path_walker : "+str(main_file_name))
+                    descr=[]
+                    if(len(movie_imdb)>0):
+                        mv=ia.get_movie(movie_imdb[0].movieID)
+                        try:
+                            descr=mv["plot"]
+                        except Exception as e:
+                            pass
                     try:
-                        movie_db=Movie_db(name=main_file_name,abs_path=out_path,img_url=img_path,movie_url=video_url,sub_json=json.dumps(subs),unique_id=uuid_u.hex,category=category_db)
+                        movie_db=Movie_db(name=main_file_name,abs_path=out_path,img_url=img_path,movie_url=video_url,sub_json=json.dumps(subs),unique_id=uuid_u.hex,descr=descr,category=category_db)
                         movie_db.save()
                     except Exception as e:
                         logger.error(str(e))
