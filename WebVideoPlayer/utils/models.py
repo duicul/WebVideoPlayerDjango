@@ -27,11 +27,8 @@ class Movie_db(models.Model):
     
     
     def getDict(self):
-        return {"name":self.name,"abs_path":self.abs_path,"img_url":self.img_url,"movie_url":self.movie_url,"descr":self.descr,"sub_json":self.sub_json,"unique_id":self.unique_id}
+        return {"name":self.name,"abs_path":self.abs_path,"img_url":self.img_url,"movie_url":self.movie_url,"sub_json":self.sub_json,"unique_id":self.unique_id}
     
     def getDescHTML(self):
-        descr_html=""
-        for plot_line in json.loads(self.descr) :
-            descr_html+=plot_line+"<br>"
-
+        return self.descr
   

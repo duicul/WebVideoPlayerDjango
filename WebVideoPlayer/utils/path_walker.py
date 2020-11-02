@@ -53,11 +53,18 @@ def parse_dir(path):
                     if(len(movie_imdb)>0):
                         mv=ia.get_movie(movie_imdb[0].movieID)
                         try:
-                            descr=mv["plot"]
+                            descr=mv["synopsis"]
                         except Exception as e:
-                            pass
+                            logger.error(e)
+                            try:
+                                descr=mv["plot"]
+                            except Exception as e1:
+                                logger.error(e1)
                     try:
-                        movie_db=Movie_db(name=main_file_name,abs_path=out_path,img_url=img_path,movie_url=video_url,sub_json=json.dumps(subs),unique_id=uuid_u.hex,descr=descr,category=category_db)
+                        descr_html=""
+                        for line in descr:
+                            descr_html+=line+"<br/>"
+                        movie_db=Movie_db(name=main_file_name,abs_path=out_path,img_url=img_path,movie_url=video_url,sub_json=json.dumps(subs),unique_id=uuid_u.hex,descr=descr_html,category=category_db)
                         movie_db.save()
                     except Exception as e:
                         logger.error(str(e))

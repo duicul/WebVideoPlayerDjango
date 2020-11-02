@@ -50,12 +50,25 @@ def list_dir(request):
         t=list(map(lambda x:x.replace("\n",""),os.listdir(path)))
     return HttpResponse(json.dumps(t), content_type="application/json")
 
-def list_video_files(request):
+def list_video(request):
     username=None
     try:
         username=request.session['username']
     except KeyError:
         raise PermissionDenied()
+    if request.method == 'GET':
+        try:
+            uuid=request.GET.get("uuid")
+            print(uuid)
+            if uuid != None:    
+                try:
+                    mv=Movie_db.objects.get(unique_id=uuid)
+                    return HttpResponse(json.dumps([{"name":mv.name,"descript_html":mv.getDescHTML()}]), content_type="application/json")
+                except Exception as e:
+                    logger.error(e)
+                    return HttpResponse(json.dumps([]), content_type="application/json")
+        except:
+            pass  
     categories=Category_db.objects.all()
     #print(categories[0].category_path)
     ret=[{'parent_folder_path':categ.category_path,'parent_folder_name':categ.category_name,'movies':[mv.getDict() for mv in Movie_db.objects.filter(category=categ.pk)]}  for categ in categories]
