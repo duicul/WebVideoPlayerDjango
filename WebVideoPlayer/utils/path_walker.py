@@ -55,11 +55,11 @@ def parse_dir(path):
                         mv=ia.get_movie(movie_imdb[0].movieID)
                         movie_title=movie_imdb[0]["title"]
                         try:
-                            descr=mv["synopsis"]
+                            descr=mv["plot"]
                         except Exception as e:
                             logger.error(e)
                             try:
-                                descr=mv["plot"]
+                                descr=mv["synopsis"]
                             except Exception as e1:
                                 logger.error(e1)
                     try:
