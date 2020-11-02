@@ -98,7 +98,6 @@ function load_videos(){
    }});
    $(document).ready(function(){
     ids.forEach(function(id){
-    $(id).carousel();
     $(id).carousel();});
     });
 
