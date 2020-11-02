@@ -43,7 +43,7 @@ function load_videos(){
             slides=Math.ceil(movies.length/movies_per_slide)
             target_id=("demo"+parent_dir["parent_folder_name"]).replaceAll(" ","_");
             ids.push(target_id);
-            ret_str+="<div id=\"#"+target_id+"\" class=\"carousel slide\" data-ride=\"carousel\" style=\"background-color: lightblue;\">";
+            ret_str+="<div id=\""+target_id+"\" class=\"carousel slide\" data-ride=\"carousel\" style=\"background-color: lightblue;\">";
             ret_str+="<ul class=\"carousel-indicators\">";
             ret_str+="<li data-target=\"#"+target_id+"\" data-slide-to=\"0\" class=\"active\"></li>";
             
