@@ -44,7 +44,7 @@ function load_videos(){
             ids.push("demo"+parent_dir["parent_folder_name"]);
             ret_str+="<div id=\"demo"+parent_dir["parent_folder_name"]+"\" class=\"carousel slide\" data-ride=\"carousel\" style=\"background-color: lightblue;\">";
             ret_str+="<ul class=\"carousel-indicators\">";
-            ret_str+="<li data-target=\"#demo\" data-slide-to=\"0\" class=\"active\"></li>";
+            ret_str+="<li data-target=\"#demo"+parent_dir["parent_folder_name"]+"\" data-slide-to=\"0\" class=\"active\"></li>";
             
             let i;
             for (i = 1; i < slides; i++) {
@@ -97,6 +97,7 @@ function load_videos(){
         $("#video_files").html(ret_str);
    }});
    $(document).ready(function(){
+   console.log(ids)
     ids.forEach(function(id){
     $(id).carousel();});
     });
