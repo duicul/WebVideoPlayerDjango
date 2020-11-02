@@ -59,11 +59,11 @@ def list_video(request):
     if request.method == 'GET':
         try:
             uuid=request.GET.get("uuid")
-            print(uuid)
+            #print(uuid)
             if uuid != None:    
                 try:
                     mv=Movie_db.objects.get(unique_id=uuid)
-                    return HttpResponse(json.dumps([{"name":mv.name,"descript_html":mv.getDescHTML()}]), content_type="application/json")
+                    return HttpResponse(json.dumps([{"name":mv.movie_title,"descript_html":mv.getDescHTML()}]), content_type="application/json")
                 except Exception as e:
                     logger.error(e)
                     return HttpResponse(json.dumps([]), content_type="application/json")
@@ -126,8 +126,12 @@ def rescan_db(request):
         logged_user=request.session['username']
     except KeyError:
         raise PermissionDenied()
-    Movie_db.objects.all().delete()
-    parse_media_dir()
+    try:
+        Movie_db.objects.all().delete()
+        parse_media_dir()
+    except Exception as e:
+        logger.error(e)
+        return HttpResponse(status=500)
     logger.info("scan_db")
     return HttpResponse()
 

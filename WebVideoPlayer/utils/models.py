@@ -19,6 +19,7 @@ class Movie_db(models.Model):
     name = models.CharField(max_length = 100)
     abs_path = models.CharField(max_length = 100 , unique=True )
     img_url = models.CharField(max_length = 100,default="")
+    movie_title = models.CharField(max_length = 100,default="")
     movie_url = models.CharField(max_length = 100,default="")
     descr = models.TextField(default="")
     sub_json = models.CharField(max_length = 100,default="[]")
@@ -27,7 +28,7 @@ class Movie_db(models.Model):
     
     
     def getDict(self):
-        return {"name":self.name,"abs_path":self.abs_path,"img_url":self.img_url,"movie_url":self.movie_url,"sub_json":self.sub_json,"unique_id":self.unique_id}
+        return {"movie_title":self.movie_title,"name":self.name,"abs_path":self.abs_path,"img_url":self.img_url,"movie_url":self.movie_url,"sub_json":self.sub_json,"unique_id":self.unique_id}
     
     def getDescHTML(self):
         return self.descr
