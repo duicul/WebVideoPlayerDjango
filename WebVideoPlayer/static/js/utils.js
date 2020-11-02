@@ -41,14 +41,15 @@ function load_videos(){
             ret_str+=parent_dir["parent_folder_name"]+"<br/>";
             let movies=parent_dir["movies"]
             slides=Math.ceil(movies.length/movies_per_slide)
-            ids.push("demo"+parent_dir["parent_folder_name"]);
-            ret_str+="<div id=\"demo"+parent_dir["parent_folder_name"]+"\" class=\"carousel slide\" data-ride=\"carousel\" style=\"background-color: lightblue;\">";
+            target_id=("demo"+parent_dir["parent_folder_name"]).replaceAll(" ","_");
+            ids.push(target_id);
+            ret_str+="<div id=\"#"+target_id+"\" class=\"carousel slide\" data-ride=\"carousel\" style=\"background-color: lightblue;\">";
             ret_str+="<ul class=\"carousel-indicators\">";
-            ret_str+="<li data-target=\"#demo"+parent_dir["parent_folder_name"]+"\" data-slide-to=\"0\" class=\"active\"></li>";
+            ret_str+="<li data-target=\"#"+target_id+"\" data-slide-to=\"0\" class=\"active\"></li>";
             
             let i;
             for (i = 1; i < slides; i++) {
-                ret_str+="<li data-target=\"#demo"+parent_dir["parent_folder_name"]+"\" data-slide-to=\""+i+"\"></li>";}
+                ret_str+="<li data-target=\"#"+target_id+"\" data-slide-to=\""+i+"\"></li>";}
                  
             ret_str+="</ul>";
             ret_str+="<div class=\"carousel-inner\">";
@@ -83,9 +84,9 @@ function load_videos(){
             ret_str+="</div>";}
             
             ret_str+="</div>";
-            ret_str+="<a class=\"carousel-control-prev\" href=\"#demo"+parent_dir["parent_folder_name"]+"\" data-slide=\"prev\">";
+            ret_str+="<a class=\"carousel-control-prev\" href=\"#"+target_id+"\" data-slide=\"prev\">";
             ret_str+="<span class=\"carousel-control-prev-icon\"></span></a>";
-            ret_str+="<a class=\"carousel-control-next\" href=\"#demo"+parent_dir["parent_folder_name"]+"\" data-slide=\"next\">";
+            ret_str+="<a class=\"carousel-control-next\" href=\"#"+target_id+"\" data-slide=\"next\">";
             ret_str+="<span class=\"carousel-control-next-icon\"></span></a>";
             ret_str+="</div>";
             ret_str+="</div>";
