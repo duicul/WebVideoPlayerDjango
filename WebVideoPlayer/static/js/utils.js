@@ -1,3 +1,4 @@
+var ids=[];
 function list_dir(path,parent_el){
    var path_url="";
    if(path!==undefined)
@@ -34,12 +35,13 @@ function load_videos(){
         slides=Math.ceil(result.length/movies_per_slide)
         //console.log(movies_per_slide)
         //console.log(slides)
+        id=[];
         let ret_str="";
         result.forEach(function(parent_dir){
             ret_str+=parent_dir["parent_folder_name"]+"<br/>";
             let movies=parent_dir["movies"]
             slides=Math.ceil(movies.length/movies_per_slide)
-        
+            ids.push("demo"+parent_dir["parent_folder_name"]);
             ret_str+="<div id=\"demo"+parent_dir["parent_folder_name"]+"\" class=\"carousel slide\" data-ride=\"carousel\" style=\"background-color: lightblue;\">";
             ret_str+="<ul class=\"carousel-indicators\">";
             ret_str+="<li data-target=\"#demo\" data-slide-to=\"0\" class=\"active\"></li>";
@@ -94,6 +96,12 @@ function load_videos(){
 
         $("#video_files").html(ret_str);
    }});
+   $(document).ready(function(){
+    ids.forEach(function(id){
+    $(id).carousel();
+    $(id).carousel();});
+    });
+
 }
 
 function video_scroll(el){
