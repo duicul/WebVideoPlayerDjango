@@ -23,15 +23,13 @@
     .video-js .vjs-remaining-time{display: none;}
     video, #my_video, .video-js, .vjs-default-skin
 {
-  position: fixed; 
-  right: 0; 
-  bottom: 0;
+  position: absolute; 
+
   min-width: 100%; 
   min-height: 100%;
   width: auto; 
   height: auto; 
-  z-index: -100;
-  object-fit: fill;
+  
 }
 a {
   color: inherit; /* blue colors for links too */
@@ -83,7 +81,6 @@ a {
  </div>
 </nav>
     {% if not play_src == None %} 
-    <div style="width:100%;height:100%;">
  <video-js onscroll="video_scroll(this);"
     id="my-video"
     class="video-js vjs-default-skin vjs-big-play-centered "
@@ -104,7 +101,7 @@ a {
       >
     </p>
   </video-js> 
-  </div>
+  <div> </div>
   {% else %}
   <div id="video_files"></div>
   <div id="modal_desc"></div>
