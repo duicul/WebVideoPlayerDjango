@@ -297,7 +297,7 @@ function video_scroll(el){
 function present_video(relative_path){
     location.replace("/video_player?play="+relative_path);}
 
-function rescanfiles(){
+function rescanfiles(type){
     let url_list_dir="/utils/scan_video_db";
     let wait_str="<div style=\"color:orange;\">";
     wait_str+="<svg width=\"1em\" height=\"1em\" viewBox=\"0 0 16 16\" class=\"bi bi-clock-history\" fill=\"currentColor\" xmlns=\"http://www.w3.org/2000/svg\">";
@@ -321,11 +321,21 @@ function rescanfiles(){
     $("#scan_status").html(wait_str);
     $.ajax({url: url_list_dir, success: function(result){
         $("#scan_status").html(ready_str);
-        load_videos();
+        if(type!=undefined){
+            if(type=="show"){
+                load_shows();}
+            else if(type=="movie"){
+                load_videos();}
+        }
     },
     error:function(result){
         $("#scan_status").html(error_str);
-        load_videos();
+        if(type!=undefined){
+            if(type=="show"){
+                load_shows();}
+            else if(type=="movie"){
+                load_videos();}
+        }
     }
     
     });
