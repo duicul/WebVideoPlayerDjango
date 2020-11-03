@@ -5,7 +5,8 @@ import json
 import sys
 from utils.LoginForm import LoginForm
 from utils.path_walker import parse_media_dir
-from utils.models import User_db,Movie_db, Category_db
+from utils.models import User_db,Movie_db, Category_db, Show_db, Season_db,\
+    Episode_db
 import video_player
 from django.http import HttpResponseRedirect
 import hashlib
@@ -59,20 +60,56 @@ def list_video(request):
     if request.method == 'GET':
         try:
             uuid=request.GET.get("uuid")
+            type=request.GET.get("type")
             #print(uuid)
             if uuid != None:    
                 try:
-                    mv=Movie_db.objects.get(unique_id=uuid)
-                    return HttpResponse(json.dumps([{"name":mv.movie_title,"descript_html":mv.getDescHTML()}]), content_type="application/json")
+                    if type=="movie":
+                        mv=Movie_db.objects.get(unique_id=uuid)
+                        return HttpResponse(json.dumps([{"name":mv.movie_title,"descript_html":mv.getDescHTML()}]), content_type="application/json")
+                    elif type=="episode":
+                        ep_db=Episode_db.objects.get(unique_id=uuid)
+                        return HttpResponse(json.dumps([{"name":ep_db.name,"descript_html":ep_db.getDescHTML()}]), content_type="application/json")
+                    else:
+                        return HttpResponse(json.dumps([{"name":"","descript_html":""}]), content_type="application/json")
+                
                 except Exception as e:
                     logger.error(e)
                     return HttpResponse(json.dumps([]), content_type="application/json")
         except:
             pass  
-    categories=Category_db.objects.all()
-    #print(categories[0].category_path)
-    ret=[{'parent_folder_path':categ.category_path,'parent_folder_name':categ.category_name,'movies':[mv.getDict() for mv in Movie_db.objects.filter(category=categ.pk)]}  for categ in categories]
-    return HttpResponse(json.dumps(ret), content_type="application/json")
+        try:
+            type=request.GET.get("type")
+        except:
+            type="movie"
+
+        if type=="movie":
+            categories=Category_db.objects.all()
+            #print(categories[0].category_path)
+            ret_movie=[{'parent_folder_path':categ.category_path,'parent_folder_name':categ.category_name,'movies':[mv.getDict() for mv in Movie_db.objects.filter(category=categ.pk)]}  for categ in categories]
+            return HttpResponse(json.dumps(ret_movie), content_type="application/json")
+        elif type == "episode":
+            categories=Category_db.objects.all()
+            categs=[]
+            for categ in categories:
+                shows=[]
+                for show in Show_db.objects.filter(category=categ.pk):
+                    seasons=[]
+                    for season in Season_db.objects.filter(show=show.pk):
+                        episodes=[episode.getDict() for episode in Episode_db.objects.filter(season=season.pk)]
+                        season=season.getDict()
+                        season["episodes"]=episodes
+                        seasons.append(season)
+                    show=show.getDict()
+                    show["seasons"]=seasons
+                    shows.append(show)
+                categ=categ.getDict()
+                categ["shows"]=shows
+                if(len(categ["shows"])>0):
+                    categs.append(categ)
+            return HttpResponse(json.dumps(categs), content_type="application/json")
+            
+    return HttpResponse(json.dumps({}), content_type="application/json")
     
 def login(request):
     username=None
@@ -127,6 +164,7 @@ def rescan_db(request):
     except KeyError:
         raise PermissionDenied()
     try:
+        Category_db.objects.all().delete()
         Movie_db.objects.all().delete()
         parse_media_dir()
     except Exception as e:

@@ -8,12 +8,14 @@ import os
 import re
 import uuid
 import webvtt
-from utils.models import Movie_db,Category_db
+from utils.models import Movie_db,Category_db,Show_db,Season_db,Episode_db
 import logging
 import json
 from  django.db.utils import IntegrityError
 import django
 from imdb import IMDb
+
+FORCE_RETRIEVE_IMDB = False
 
 logger = logging.getLogger("django")
 
@@ -30,13 +32,103 @@ def parse_dir(path):
                     out_path=os.path.join(dirpath, name)
                     main_moive_path=Path(out_path).resolve().parent.parent if ext == ".m3u8" else Path(out_path).resolve().parent
                     img_path=os.path.join(main_moive_path,"poster.jpg")
+                    series_check_path=os.path.join(Path(main_moive_path).resolve().parent.parent,".series")
+                    logger.info(series_check_path)
+                    series_check=os.path.isfile(series_check_path)
+                    logger.info(name+" "+str(series_check))
                     if os.path.isfile(img_path):
-                        img_path="/media/"+os.path.relpath(img_path,start=main_path).replace("\\","/")
-                        store_movie(main_path,name,main_moive_path,out_path,img_path)
-                    elif not os.path.isfile(img_path):
-                        img_path="/static/img/not_found.jpg"
+                            img_path="/media/"+os.path.relpath(img_path,start=main_path).replace("\\","/")
+                    else:
+                            img_path="/static/img/not_found.jpg"
+                    if(series_check):
+                        store_series(main_path,name,main_moive_path,out_path,img_path)
+                    else:
                         store_movie(main_path,name,main_moive_path,out_path,img_path)
 
+
+def store_series(main_path,name,main_moive_path,out_path,img_path):
+    main_file_name=name.split(".")
+    main_file_name=''.join(main_file_name[0:len(main_file_name)-1])
+    subs=extract_correct_subs(main_path,main_moive_path)
+    video_url="/media/"+os.path.relpath(out_path,start=main_path).replace("\\","/")
+    season_path=Path(main_moive_path).resolve().parent
+    series_path=Path(season_path).resolve().parent
+    series_name=os.path.basename(series_path)
+    season_name=os.path.basename(season_path)
+    series_img_path=os.path.join(series_path,"poster.jpg")
+    series_img_path="/media/"+os.path.relpath(series_img_path,start=main_path).replace("\\","/")
+    
+    season_img_path=os.path.join(season_path,"poster.jpg")
+    season_img_path="/media/"+os.path.relpath(season_img_path,start=main_path).replace("\\","/")
+    
+    categ_path=Path(series_path).resolve().parent
+    if categ_path != main_path:
+        try:
+            category_db = Category_db(category_path=categ_path,category_name=os.path.basename(categ_path))
+            logger.info(category_db.getDict())
+            category_db.save()
+        except django.db.utils.IntegrityError as e:
+            logger.error(e) 
+            
+    if os.path.isfile(series_img_path):
+        series_img_path="/media/"+os.path.relpath(series_img_path,start=main_path).replace("\\","/")
+    else:
+         series_img_path="/static/img/not_found.jpg"
+    
+    if os.path.isfile(season_img_path):
+        series_img_path="/media/"+os.path.relpath(season_img_path,start=main_path).replace("\\","/")
+    else:
+         series_img_path="/static/img/not_found.jpg"
+    
+    category_db=Category_db.objects.get(category_path=categ_path)
+    try:
+        show_db=Show_db(name=series_name,abs_path=series_path,img_url=series_img_path,category=category_db,unique_id=uuid.uuid4().hex)
+        logger.info(show_db.getDict())
+        show_db.save()
+    except django.db.utils.IntegrityError as e:
+            logger.error(e)      
+    
+    show_db=Show_db.objects.get(abs_path=series_path)
+    
+    season_descr_path=os.path.join(season_path,"descr.json")
+    if  not os.path.isfile(season_descr_path) or FORCE_RETRIEVE_IMDB:
+        season_descr=create_description_movie(season_descr_path,season_name)
+    else:
+        desc_file=open(season_descr_path,"r")
+        try:
+            season_descr=json.load(desc_file)["descr_html"]
+        except:
+            pass 
+    try:
+        season_db=Season_db(name=season_name,abs_path=season_path,img_url=season_img_path,show=show_db,descr=season_descr,unique_id=uuid.uuid4().hex)
+        logger.info(season_db.getDict())
+        season_db.save()
+    except django.db.utils.IntegrityError as e:
+            logger.error(e)
+    
+    season_db=Season_db.objects.get(abs_path=season_path)
+
+    episode_desr_path=os.path.join(main_moive_path,"descr.json")
+    if  not os.path.isfile(episode_desr_path) or FORCE_RETRIEVE_IMDB:
+        episode_descr=create_description_movie(episode_desr_path,re.sub("S[0-9][0-9]E[0-9][0-9]","",main_file_name))   
+    else:
+        desc_file=open(episode_desr_path,"r")
+        try:
+            episode_descr=json.load(desc_file)["descr_html"]
+        except:
+            episode_descr=""
+            
+    subs=extract_correct_subs(main_path,main_moive_path)    
+    
+    try:
+        episode_db=Episode_db(movie_url=video_url,name=main_file_name,descr=episode_descr,abs_path=main_moive_path,sub_json=subs,season=season_db,unique_id=uuid.uuid4().hex)
+        logger.info(episode_db.getDict())
+        episode_db.save()
+    except django.db.utils.IntegrityError as e:
+            logger.error(e)
+    
+    
+    
 def store_movie(main_path,name,main_moive_path,out_path,img_path):
     main_file_name=name.split(".")
     main_file_name=''.join(main_file_name[0:len(main_file_name)-1])
@@ -51,10 +143,8 @@ def store_movie(main_path,name,main_moive_path,out_path,img_path):
     category_db=Category_db.objects.get(category_path=parent_folder_path)
     uuid_u= uuid.uuid4()
     logger.info("path_walker : "+str(main_file_name))
-    descr_html=""
-    movie_title=""
     desc_path=os.path.join(main_moive_path,"descr.json")
-    if not os.path.isfile(desc_path):
+    if not os.path.isfile(desc_path) or FORCE_RETRIEVE_IMDB:
         desc_data=create_description_movie(desc_path,main_file_name)   
     else:
         desc_file=open(desc_path,"r") 
@@ -116,7 +206,7 @@ def create_description_movie(desc_path,main_file_name):
     for line in descr:
         descr_html+=line+"<br/>"
     
-    descr_data={"descr_html":descr_html,"movie_title":movie_title}
+    descr_data={"descr_html":descr_html,"movie_title":movie_title,"search":main_file_name}
     
     desc_file=open(desc_path,"w")
     

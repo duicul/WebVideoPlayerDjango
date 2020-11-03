@@ -25,8 +25,159 @@ function list_dir(path,parent_el){
    }
    });
 }
+
+function load_modal(){
+        var  modal="<div class=\"modal fade\" id=\"descriptionModal\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"exampleModalLabel\" aria-hidden=\"true\">";
+         modal+="<div style=\"width:70%;\"  class=\"modal-dialog\" role=\"document\">";
+        modal+="<div  class=\"modal-content\">";
+        modal+=" <div class=\"modal-header\">";
+        modal+="<div id=\"description_title\"></div>";
+        modal+="<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">";
+        modal+="  <span aria-hidden=\"true\">&times;</span>";
+        modal+="</button>";
+        modal+="</div>";
+        modal+="<div class=\"modal-body\" id=\"description_body\">";
+        modal+="</div>";
+        //modal+="<div class=\"modal-footer\">";
+        //modal+="<button type=\"button\" class=\"btn btn-secondary\" data-dismiss=\"modal\">Close</button>";
+       // modal+="<button type=\"button\" class=\"btn btn-primary\">Save changes</button>";
+        //modal+="</div>";
+        modal+="</div>";
+        modal+="</div>";
+        modal+="</div>";
+        
+        
+        $("#modal_desc").html(modal);
+    
+}
+
+function load_shows(){
+var url_list_dir="/utils/list_video?type=episode";
+   //console.log(url_list_dir);
+   $.ajax({url: url_list_dir, success: function(result){
+        let img_w=250;
+        let img_h=250;
+        movies_per_slide=Math.floor(window.innerWidth*0.7/img_w);
+        slides=Math.ceil(result.length/movies_per_slide)
+        //console.log(movies_per_slide)
+        //console.log(slides)
+        id=[];
+        let ret_str="";
+        result.forEach(function(category){
+            ret_str+=category["category_name"]+"<br/>";
+            
+            category["shows"].forEach(function(show){
+                ret_str+="<br/>";
+                ret_str+=show["name"]+"<br/>";
+                
+                show["seasons"].forEach(function(season){
+                    ret_str+="<br/>";
+                    ret_str+=season["name"]+"<br/>";
+                    let season_img=season["img_url"];
+                    
+                    target_id=("demo"+season["name"]).replaceAll(" ","_");
+                    
+                    slides=Math.ceil(season["episodes"].length/movies_per_slide)
+            
+                    ids.push(target_id);
+                
+                    ret_str+="<div id=\""+target_id+"\" class=\"carousel slide\" data-ride=\"carousel\" style=\"background-color: lightblue;\">";
+                    ret_str+="<ul class=\"carousel-indicators\">";
+                    ret_str+="<li data-target=\"#"+target_id+"\" data-slide-to=\"0\" class=\"active\"></li>";
+            
+                    let i;
+                    for (i = 1; i < slides; i++) {
+                            ret_str+="<li data-target=\"#"+target_id+"\" data-slide-to=\""+i+"\"></li>";}
+                 
+                    ret_str+="</ul>";
+                    ret_str+="<div class=\"carousel-inner\">";
+                    
+                    ret_str+="<div class=\"carousel-item active\" style=\"text-align: center\">";
+                    
+                    for (i = 0; i < movies_per_slide; i++) {
+                        //console.log(season["episodes"][i])
+                        if(i>=season["episodes"].length)
+                             break;
+                   
+                        ret_str+="<span onclick=\"load_description('"+season["episodes"][i]["unique_id"]+"','episode');\" style=\"cursor: pointer;\" title=\"Info\" data-toggle=\"modal\" data-target=\"#descriptionModal\">";
+                        ret_str+="<svg width=\"1em\" height=\"1em\" viewBox=\"0 0 16 16\" class=\"bi bi-info-square\" fill=\"currentColor\" xmlns=\"http://www.w3.org/2000/svg\">";
+                        ret_str+="<path fill-rule=\"evenodd\" d=\"M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z\"/>";
+                        ret_str+="<path fill-rule=\"evenodd\" d=\"M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z\"/>";
+                        ret_str+="<path d=\"M8.93 6.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588z\"/>";
+                        ret_str+="<circle cx=\"8\" cy=\"4.5\" r=\"1\"/></svg>";
+                        ret_str+="</span>";
+                
+                        ret_str+="<a data-toggle=\"tooltip\" title=\""+season["episodes"][i]["name"]+"\" href=\"/video_player/?play="+season["episodes"][i]["unique_id"]+"&type=episode\">";
+                        ret_str+="<img style=\"border-radius: 8%;cursor: pointer;\" src=\""+season_img;
+                        ret_str+="\" alt=\""+season["episodes"][i]["name"]+"\" width=\""+img_w+"\" height=\""+img_h+"\">";
+                        ret_str+="</a>";
+                
+                        //ret_str+="</div>";
+                
+                        ret_str+="<span> </span>";}
+                 
+                    ret_str+="</div>";
+            
+                    var slide_i;
+                    for (slide_i = 1; slide_i < slides;slide_i++) {
+                    
+                        ret_str+="<div class=\"carousel-item\" style=\"text-align: center\">";
+                        
+                        for (i = 0; i < movies_per_slide; i++) {
+                            current_index=slide_i*movies_per_slide+i;
+                            //console.log(current_index)
+                            //console.log(season["episodes"][current_index])
+                            if(current_index>=season["episodes"].length)
+                                break;
+                        
+                            //ret_str+="<div>";
+                            ret_str+="<span> ";
+                    
+                            ret_str+="<span onclick=\"load_description('"+season["episodes"][current_index]["unique_id"]+"','episode');\" style=\"cursor: pointer;\" title=\"Info\" data-toggle=\"modal\" data-target=\"#descriptionModal\">";
+                            ret_str+="<svg width=\"1em\" height=\"1em\" viewBox=\"0 0 16 16\" class=\"bi bi-info-square\" fill=\"currentColor\" xmlns=\"http://www.w3.org/2000/svg\">";
+                            ret_str+="<path fill-rule=\"evenodd\" d=\"M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z\"/>";
+                            ret_str+="<path fill-rule=\"evenodd\" d=\"M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z\"/>";
+                            ret_str+="<path d=\"M8.93 6.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588z\"/>";
+                            ret_str+="<circle cx=\"8\" cy=\"4.5\" r=\"1\"/></svg>";
+                            ret_str+="</span>";
+                    
+                            ret_str+="<a data-toggle=\"tooltip\" title=\""+season["episodes"][current_index]["name"]+"\" href=\"/video_player/?play="+season["episodes"][current_index]["unique_id"]+"&type=episode\">";
+                            ret_str+="<img style=\"border-radius: 8%;cursor: pointer;\" src=\""+season_img;
+                            ret_str+="\" alt=\""+season["episodes"][current_index]["name"]+"\" onclick=\"present_video('"+season["episodes"][current_index]["movie_url"]+"');\" width=\""+img_w+"\" height=\""+img_h+"\">";
+                            ret_str+="</a>";
+                    
+                            ret_str+="</span>";
+                     
+                            //ret_str+="</div>";
+                     
+                            ret_str+="<span>  </span>";}
+                         
+                        ret_str+="</div>";}
+            
+                    ret_str+="</div>";
+                    
+                    ret_str+="<a class=\"carousel-control-prev\" href=\"#"+target_id+"\" data-slide=\"prev\">";
+                    ret_str+="<span class=\"carousel-control-prev-icon\"></span></a>";
+                    ret_str+="<a class=\"carousel-control-next\" href=\"#"+target_id+"\" data-slide=\"next\">";
+                    ret_str+="<span class=\"carousel-control-next-icon\"></span></a>";
+                    ret_str+="</div>";
+                    
+                    ret_str+="</div>";
+                });    
+                
+                ret_str+="<br/>";
+            });
+            
+            ret_str+="<br/><br/>";
+        });
+    
+    $("#shows_files").html(ret_str);
+    
+    }});        
+}
+
 function load_videos(){
-   var url_list_dir="/utils/list_video";
+   var url_list_dir="/utils/list_video?type=movie";
    //console.log(url_list_dir);
    $.ajax({url: url_list_dir, success: function(result){
         let img_w=250;
@@ -62,7 +213,7 @@ function load_videos(){
                 
                 //ret_str+="<div>";
                 
-                ret_str+="<span onclick=\"load_description('"+movies[i]["unique_id"]+"');\" style=\"cursor: pointer;\" title=\"Info\" data-toggle=\"modal\" data-target=\"#descriptionModal\">";
+                ret_str+="<span onclick=\"load_description('"+movies[i]["unique_id"]+"','movie');\" style=\"cursor: pointer;\" title=\"Info\" data-toggle=\"modal\" data-target=\"#descriptionModal\">";
                 ret_str+="<svg width=\"1em\" height=\"1em\" viewBox=\"0 0 16 16\" class=\"bi bi-info-square\" fill=\"currentColor\" xmlns=\"http://www.w3.org/2000/svg\">";
                 ret_str+="<path fill-rule=\"evenodd\" d=\"M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z\"/>";
                 ret_str+="<path fill-rule=\"evenodd\" d=\"M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z\"/>";
@@ -70,7 +221,7 @@ function load_videos(){
                 ret_str+="<circle cx=\"8\" cy=\"4.5\" r=\"1\"/></svg>";
                 ret_str+="</span>";
                 
-                ret_str+="<a data-toggle=\"tooltip\" title=\""+movies[i]["name"]+"\" href=\"/video_player/?play="+movies[i]["unique_id"]+"\">";
+                ret_str+="<a data-toggle=\"tooltip\" title=\""+movies[i]["name"]+"\" href=\"/video_player/?play="+movies[i]["unique_id"]+"&type=movie\">";
                 ret_str+="<img style=\"border-radius: 8%;cursor: pointer;\" src=\""+movies[i]["img_url"];
                 ret_str+="\" alt=\""+movies[i]["name"]+"\" width=\""+img_w+"\" height=\""+img_h+"\">";
                 ret_str+="</a>";
@@ -96,7 +247,7 @@ function load_videos(){
                     //ret_str+="<div>";
                     ret_str+="<span> ";
                     
-                    ret_str+="<span onclick=\"load_description('"+movies[current_index]["unique_id"]+"');\" style=\"cursor: pointer;\" title=\"Info\" data-toggle=\"modal\" data-target=\"#descriptionModal\">";
+                    ret_str+="<span onclick=\"load_description('"+movies[current_index]["unique_id"]+"','movie');\" style=\"cursor: pointer;\" title=\"Info\" data-toggle=\"modal\" data-target=\"#descriptionModal\">";
                     ret_str+="<svg width=\"1em\" height=\"1em\" viewBox=\"0 0 16 16\" class=\"bi bi-info-square\" fill=\"currentColor\" xmlns=\"http://www.w3.org/2000/svg\">";
                     ret_str+="<path fill-rule=\"evenodd\" d=\"M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z\"/>";
                     ret_str+="<path fill-rule=\"evenodd\" d=\"M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z\"/>";
@@ -104,7 +255,7 @@ function load_videos(){
                     ret_str+="<circle cx=\"8\" cy=\"4.5\" r=\"1\"/></svg>";
                     ret_str+="</span>";
                     
-                    ret_str+="<a data-toggle=\"tooltip\" title=\""+movies[current_index]["name"]+"\" href=\"/video_player/?play="+movies[current_index]["unique_id"]+"\">";
+                    ret_str+="<a data-toggle=\"tooltip\" title=\""+movies[current_index]["name"]+"\" href=\"/video_player/?play="+movies[current_index]["unique_id"]+"&type=movie\">";
                     ret_str+="<img style=\"border-radius: 8%;cursor: pointer;\" src=\""+movies[current_index]["img_url"];
                     ret_str+="\" alt=\""+movies[current_index]["name"]+"\" onclick=\"present_video('"+movies[current_index]["movie_url"]+"');\" width=\""+img_w+"\" height=\""+img_h+"\">";
                     ret_str+="</a>";
@@ -128,28 +279,6 @@ function load_videos(){
             ret_str+="<br/>";
         }
     );
-        
-      var  modal="<div class=\"modal fade\" id=\"descriptionModal\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"exampleModalLabel\" aria-hidden=\"true\">";
-         modal+="<div style=\"width:70%;\"  class=\"modal-dialog\" role=\"document\">";
-        modal+="<div  class=\"modal-content\">";
-        modal+=" <div class=\"modal-header\">";
-        modal+="<div id=\"description_title\"></div>";
-        modal+="<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">";
-        modal+="  <span aria-hidden=\"true\">&times;</span>";
-        modal+="</button>";
-        modal+="</div>";
-        modal+="<div class=\"modal-body\" id=\"description_body\">";
-        modal+="</div>";
-        //modal+="<div class=\"modal-footer\">";
-        //modal+="<button type=\"button\" class=\"btn btn-secondary\" data-dismiss=\"modal\">Close</button>";
-       // modal+="<button type=\"button\" class=\"btn btn-primary\">Save changes</button>";
-        //modal+="</div>";
-        modal+="</div>";
-        modal+="</div>";
-        modal+="</div>";
-        
-        
-        $("#modal_desc").html(modal);
         
         $("#video_files").html(ret_str);
    }});
@@ -202,8 +331,8 @@ function rescanfiles(){
     });
 }
 
-function load_description(uuid){
-    var url_list_dir="/utils/list_video?uuid="+uuid;
+function load_description(uuid,type){
+    var url_list_dir="/utils/list_video?uuid="+uuid+"&type="+type;
    //console.log(url_list_dir);
    $.ajax({url: url_list_dir, success: function(result){
    //console.log(result);

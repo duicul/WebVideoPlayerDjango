@@ -8,7 +8,7 @@ import json
 import os
 from django.views.generic import TemplateView
 from django.http import HttpResponseRedirect
-from utils.models import Movie_db
+from utils.models import Movie_db,Episode_db
 from django.core.exceptions import ObjectDoesNotExist
 # Get an instance of a logger
 logger = logging.getLogger("django")
@@ -25,14 +25,24 @@ def video(request):
         return HttpResponseRedirect("/entry_point")
     else:
         uuid=request.GET.get("play")
+        type=request.GET.get("type")
         logger.info("uuid "+str(uuid))
         play_src=""
         subs=[]
         try:
-            mv_db=Movie_db.objects.get(unique_id=uuid)
-            play_src=mv_db.movie_url
-            subs=json.loads(mv_db.sub_json)
-            subs=[(sub,os.path.basename(sub)) for sub in subs]
+            if type=="movie":
+                mv_db=Movie_db.objects.get(unique_id=uuid)
+                play_src=mv_db.movie_url
+                subs=json.loads(mv_db.sub_json)
+                subs=[(sub,os.path.basename(sub)) for sub in subs]
+            elif type=="episode":
+                ep_db=Episode_db.objects.get(unique_id=uuid)
+                play_src=ep_db.movie_url
+                subs=json.loads(ep_db.sub_json)
+                subs=[(sub,os.path.basename(sub)) for sub in subs]
+            else:
+                play_src=""
+                subs=[]
         except ObjectDoesNotExist:
             pass
         return render(request,"main.html",{"play_src":play_src,"username":username,"subs":subs})
@@ -53,8 +63,17 @@ def index(request):
     if(username==None):
         return render(request,"index.html",{"login":login})
     else:
-        return render(request,"main.html",{"play_src":request.GET.get("play"),"username":username})
-    
+        type=None
+        try:
+            type=request.GET.get("type")
+        except KeyError:
+            return HttpResponseRedirect("/entry_point?type=movie")
+        
+        if type=="movie" or type=="show" or type=="all":
+            return render(request,"main.html",{"play_src":request.GET.get("play"),"username":username,"type":type})
+        
+        else : return HttpResponseRedirect("/entry_point?type=movie")
+
 def bday(request):
     return HttpResponse("Happy B-Day !!")
 
