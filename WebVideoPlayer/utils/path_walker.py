@@ -30,46 +30,43 @@ def parse_dir(path):
                     out_path=os.path.join(dirpath, name)
                     main_moive_path=Path(out_path).resolve().parent.parent if ext == ".m3u8" else Path(out_path).resolve().parent
                     img_path=os.path.join(main_moive_path,"poster.jpg")
-                    if not os.path.isfile(img_path):
-                        img_path="/static/img/not_found.jpg"
-                    else:
+                    if os.path.isfile(img_path):
                         img_path="/media/"+os.path.relpath(img_path,start=main_path).replace("\\","/")
-                    main_file_name=name.split(".")
-                    main_file_name=''.join(main_file_name[0:len(main_file_name)-1])
-                    subs=extract_correct_subs(main_path,main_moive_path)
-                    video_url="/media/"+os.path.relpath(out_path,start=main_path).replace("\\","/")
-                    parent_folder_path=Path(main_moive_path).resolve().parent
-                    try:
-                        category_db = Category_db(category_path=parent_folder_path,category_name=os.path.basename(parent_folder_path))
-                        category_db.save()
-                    except django.db.utils.IntegrityError as e:
-                        logger.error(e)
-                    category_db=Category_db.objects.get(category_path=parent_folder_path)
-                    uuid_u= uuid.uuid4()
-                    ia = IMDb()
-                    movie_imdb = ia.search_movie(main_file_name)
-                    logger.info("path_walker : "+str(main_file_name))
-                    descr=[]
-                    movie_title=""
-                    if(len(movie_imdb)>0):
-                        mv=ia.get_movie(movie_imdb[0].movieID)
-                        movie_title=movie_imdb[0]["title"]
-                        try:
-                            descr=mv["plot"]
-                        except Exception as e:
-                            logger.error(e)
-                            try:
-                                descr=mv["synopsis"]
-                            except Exception as e1:
-                                logger.error(e1)
-                    try:
-                        descr_html=""
-                        for line in descr:
-                            descr_html+=line+"<br/>"
-                        movie_db=Movie_db(movie_title=movie_title,name=main_file_name,abs_path=out_path,img_url=img_path,movie_url=video_url,sub_json=json.dumps(subs),unique_id=uuid_u.hex,descr=descr_html,category=category_db)
-                        movie_db.save()
-                    except Exception as e:
-                        logger.error(str(e))
+                        store_movie(main_path,name,main_moive_path,out_path,img_path)
+                    elif not os.path.isfile(img_path):
+                        img_path="/static/img/not_found.jpg"
+                        store_movie(main_path,name,main_moive_path,out_path,img_path)
+
+def store_movie(main_path,name,main_moive_path,out_path,img_path):
+    main_file_name=name.split(".")
+    main_file_name=''.join(main_file_name[0:len(main_file_name)-1])
+    subs=extract_correct_subs(main_path,main_moive_path)
+    video_url="/media/"+os.path.relpath(out_path,start=main_path).replace("\\","/")
+    parent_folder_path=Path(main_moive_path).resolve().parent
+    try:
+        category_db = Category_db(category_path=parent_folder_path,category_name=os.path.basename(parent_folder_path))
+        category_db.save()
+    except django.db.utils.IntegrityError as e:
+        logger.error(e)
+    category_db=Category_db.objects.get(category_path=parent_folder_path)
+    uuid_u= uuid.uuid4()
+    logger.info("path_walker : "+str(main_file_name))
+    descr_html=""
+    movie_title=""
+    desc_path=os.path.join(main_moive_path,"descr.json")
+    if not os.path.isfile(desc_path):
+        desc_data=create_description_movie(desc_path,main_file_name)   
+    else:
+        desc_file=open(desc_path,"r") 
+        desc_data=json.load(desc_file)
+    descr_html=desc_data["descr_html"]
+    movie_title=desc_data["movie_title"]         
+    try:
+        movie_db=Movie_db(movie_title=movie_title,name=main_file_name,abs_path=out_path,img_url=img_path,movie_url=video_url,sub_json=json.dumps(subs),unique_id=uuid_u.hex,descr=descr_html,category=category_db)
+        movie_db.save()
+        logger.info("movie_db : "+str(main_file_name))
+    except Exception as e:
+            logger.error(str(e))
 
 def extract_correct_subs(main_path,main_moive_path):
     subs_path=os.path.join(main_moive_path,"Subs")
@@ -99,6 +96,34 @@ def extract_correct_subs(main_path,main_moive_path):
     subs=list(map(lambda sub_url:"/media/"+str(sub_url),filter(lambda sub:sub.endswith(".vtt"),subs)))
     return subs
 
+def create_description_movie(desc_path,main_file_name):
+    ia = IMDb()
+    movie_imdb = ia.search_movie(main_file_name)
+    descr=[]
+    movie_title=""
+    if(len(movie_imdb)>0):
+        mv=ia.get_movie(movie_imdb[0].movieID)
+        movie_title=movie_imdb[0]["title"]
+        try:
+            descr=mv["plot"]
+        except Exception as e:
+            logger.error(e)
+            try:
+                descr=mv["synopsis"]
+            except Exception as e1:
+                logger.error(e1)
+    descr_html=""
+    for line in descr:
+        descr_html+=line+"<br/>"
+    
+    descr_data={"descr_html":descr_html,"movie_title":movie_title}
+    
+    desc_file=open(desc_path,"w")
+    
+    json.dump(descr_data,desc_file)
+    
+    return descr_data
+    
 def parse_media_dir():
     return parse_dir(os.path.join(BASE_DIR,'media'))
 if __name__ == "__main__":
