@@ -45,6 +45,11 @@ load_videos();
 {% ifequal  type  "show" %}
 load_shows();
 {% endifequal %}
+{% ifequal  type  "season" %}
+load_season('{{uuid}}');
+{% endifequal %}
+
+
 " onresize="load_videos();" {% endif %}>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
  {% if play_src == None %}
@@ -132,6 +137,9 @@ load_shows();
   {% endifequal %}
   {% ifequal  type  "show" %}
   <div id="shows_files"></div>
+   {% endifequal %}
+   {% ifequal  type  "season" %}
+  <div id="season_files"></div>
    {% endifequal %}
   <div id="modal_desc"></div>
   {% endif %}

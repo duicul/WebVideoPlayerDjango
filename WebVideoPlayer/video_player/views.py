@@ -68,11 +68,17 @@ def index(request):
             type=request.GET.get("type")
         except KeyError:
             return HttpResponseRedirect("/entry_point?type=movie")
-        
-        if type=="movie" or type=="show" or type=="all":
+        uuid=None
+        try:
+            uuid=request.GET.get("uuid")
+        except KeyError:
+            pass
+        if type=="movie" or type=="show":
             return render(request,"main.html",{"play_src":request.GET.get("play"),"username":username,"type":type})
-        
-        else : return HttpResponseRedirect("/entry_point?type=movie")
+        elif type=="season" and uuid != None:
+            return render(request,"main.html",{"username":username,"type":type,"uuid":uuid})
+        else : 
+            return HttpResponseRedirect("/entry_point?type=movie")
 
 def bday(request):
     return HttpResponse("Happy B-Day !!")

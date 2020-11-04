@@ -51,7 +51,8 @@ def list_dir(request):
         t=list(map(lambda x:x.replace("\n",""),os.listdir(path)))
     return HttpResponse(json.dumps(t), content_type="application/json")
 
-def list_video(request):
+
+def description(request):
     username=None
     try:
         username=request.session['username']
@@ -77,18 +78,32 @@ def list_video(request):
                     logger.error(e)
                     return HttpResponse(json.dumps([]), content_type="application/json")
         except:
-            pass  
+            return HttpResponse(json.dumps([]), content_type="application/json")
+
+
+def list_items(request):
+    username=None
+    try:
+        username=request.session['username']
+    except KeyError:
+        raise PermissionDenied()
+    if request.method == 'GET':  
+        try:
+            uuid=request.GET.get("uuid")
+        except:
+            uuid=None
+            
         try:
             type=request.GET.get("type")
         except:
-            type="movie"
-
+            type=None
+            
         if type=="movie":
             categories=Category_db.objects.all()
             #print(categories[0].category_path)
             ret_movie=[{'parent_folder_path':categ.category_path,'parent_folder_name':categ.category_name,'movies':[mv.getDict() for mv in Movie_db.objects.filter(category=categ.pk)]}  for categ in categories]
             return HttpResponse(json.dumps(ret_movie), content_type="application/json")
-        elif type == "episode":
+        elif type == "show":
             categories=Category_db.objects.all()
             categs=[]
             for categ in categories:
@@ -96,9 +111,9 @@ def list_video(request):
                 for show in Show_db.objects.filter(category=categ.pk):
                     seasons=[]
                     for season in Season_db.objects.filter(show=show.pk):
-                        episodes=[episode.getDict() for episode in Episode_db.objects.filter(season=season.pk)]
+                        #episodes=[episode.getDict() for episode in Episode_db.objects.filter(season=season.pk)]
                         season=season.getDict()
-                        season["episodes"]=episodes
+                        #season["episodes"]=episodes
                         seasons.append(season)
                     show=show.getDict()
                     show["seasons"]=seasons
@@ -108,7 +123,18 @@ def list_video(request):
                 if(len(categ["shows"])>0):
                     categs.append(categ)
             return HttpResponse(json.dumps(categs), content_type="application/json")
-            
+        elif type == "season":
+            if uuid == None:
+                return HttpResponse(json.dumps({}), content_type="application/json")
+            seasons=[]
+            for season in Season_db.objects.filter(unique_id=uuid):
+                episodes=[episode.getDict() for episode in Episode_db.objects.filter(season=season.pk)]
+                season=season.getDict()
+                season["episodes"]=episodes
+                seasons.append(season)
+
+            return HttpResponse(json.dumps(seasons), content_type="application/json")
+        
     return HttpResponse(json.dumps({}), content_type="application/json")
     
 def login(request):
