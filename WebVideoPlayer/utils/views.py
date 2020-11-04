@@ -15,6 +15,7 @@ from django.core.exceptions import PermissionDenied
 from utils.FileUploadForm import FileUploadForm
 from utils.FileUploadHandling import handle_uploaded_file
 from video_player.views import index
+import traceback 
 logger = logging.getLogger("django")
 
 # Create your views here.
@@ -194,7 +195,7 @@ def rescan_db(request):
         Movie_db.objects.all().delete()
         parse_media_dir()
     except Exception as e:
-        logger.error(e)
+        logger.error(str(traceback.format_exc()))
         return HttpResponse(status=500)
     logger.info("scan_db")
     return HttpResponse()

@@ -110,10 +110,11 @@ def store_series(main_path,name,main_moive_path,out_path,img_path):
 
     episode_desr_path=os.path.join(main_moive_path,"descr.json")
     if  not os.path.isfile(episode_desr_path) or FORCE_RETRIEVE_IMDB:
-        search_str=re.sub("\.","  ",main_file_name)
-        #print(search_str)
-        search_str=re.sub("([Ss][0-9][0-9])?([Ee][0-9][0-9])"," ",search_str)
-        episode_descr=create_description_movie(episode_desr_path,search_str)   
+        episodes=re.findall(r"[Ee](\d+)",main_file_name)
+        seasons=re.findall(r"[Ss](\d+)",main_file_name)
+        logger.info(main_file_name+" "+str(series_name)+" "+str(seasons)+" "+str(episodes))
+        episode_descr=create_description_episode(episode_desr_path,series_name,seasons,episodes) 
+        #print(episode_descr)  
     else:
         desc_file=open(episode_desr_path,"r")
         try:
@@ -216,6 +217,30 @@ def create_description_movie(desc_path,main_file_name):
     json.dump(descr_data,desc_file)
     
     return descr_data
+ 
+def create_description_episode(desc_path,show,seasons,episodes):
+    ia = IMDb()
+    movie_imdb = ia.search_movie(show)
+    movie_title=""
+    descr_html=""
+    if(len(movie_imdb)>0):
+        mv=ia.get_movie(movie_imdb[0].movieID)
+        ia.update(mv, 'episodes')
+        for season in seasons:
+            for episode in episodes:
+                try:
+                    ep=mv['episodes'][int(season)][int(episode)]
+                    movie_title+=str(ep["title"])+" <br/>"
+                    descr_html+=str(ep["plot"])+" <br/>"
+                except:
+                    pass
+    descr_data={"descr_html":descr_html,"movie_title":movie_title,"search":show+" "+str(seasons)+" "+str(episodes)}
+    
+    desc_file=open(desc_path,"w")
+    
+    json.dump(descr_data,desc_file)
+    
+    return descr_data 
     
 def parse_media_dir():
     return parse_dir(os.path.join(BASE_DIR,'media'))
