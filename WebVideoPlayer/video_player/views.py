@@ -35,6 +35,8 @@ def video(request):
                 play_src=mv_db.movie_url
                 subs=json.loads(mv_db.sub_json)
                 subs=[(sub,os.path.basename(sub)) for sub in subs]
+                movie_name=mv_db.name
+                return render(request,"main.html",{"movie_name":movie_name,"type":type,"play_src":play_src,"username":username,"subs":subs})
             elif type=="episode":
                 ep_db=Episode_db.objects.get(unique_id=uuid)
                 play_src=ep_db.movie_url
