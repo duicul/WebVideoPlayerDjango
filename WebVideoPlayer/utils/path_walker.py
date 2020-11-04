@@ -113,13 +113,14 @@ def store_series(main_path,name,main_moive_path,out_path,img_path):
         episodes=re.findall(r"[Ee](\d+)",main_file_name)
         seasons=re.findall(r"[Ss](\d+)",main_file_name)
         logger.info(main_file_name+" "+str(series_name)+" "+str(seasons)+" "+str(episodes))
-        episode_descr=create_description_episode(episode_desr_path,series_name,seasons,episodes) 
+        episode_descr=create_description_episode(episode_desr_path,series_name,seasons,episodes)["descr_html"]
         #print(episode_descr)  
     else:
         desc_file=open(episode_desr_path,"r")
         try:
             episode_descr=json.load(desc_file)["descr_html"]
-        except:
+        except Exception as e:
+            logger.error(e)
             episode_descr=""
             
     subs=extract_correct_subs(main_path,main_moive_path)    
