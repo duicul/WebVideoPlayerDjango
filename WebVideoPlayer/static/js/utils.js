@@ -181,8 +181,8 @@ var url_list_dir="/utils/list_items?type=show";
                         ret_str+="<circle cx=\"8\" cy=\"4.5\" r=\"1\"/></svg>";
                         ret_str+="</span>";
                     
-                        ret_str+="<a data-toggle=\"tooltip\" title=\""+show["seasons"][current_index]["name"]+"\" href=\"/entry_point?type=season&uuid="+show["seasons"][i]["unique_id"]+"\">";
-                        ret_str+="<img style=\"border-radius: 8%;cursor: pointer;\" src=\""+show["seasons"][i]["img_url"];
+                        ret_str+="<a data-toggle=\"tooltip\" title=\""+show["seasons"][current_index]["name"]+"\" href=\"/entry_point?type=season&uuid="+show["seasons"][current_index]["unique_id"]+"\">";
+                        ret_str+="<img style=\"border-radius: 8%;cursor: pointer;\" src=\""+show["seasons"][current_index]["img_url"];
                         ret_str+="\" alt=\""+show["seasons"][current_index]["name"]+"\"  width=\""+img_w+"\" height=\""+img_h+"\">";
                         ret_str+="</a>";
                     
