@@ -8,7 +8,7 @@ import json
 import os
 from django.views.generic import TemplateView
 from django.http import HttpResponseRedirect
-from utils.models import Movie_db,Episode_db
+from utils.models import Movie_db,Episode_db, Season_db
 from django.core.exceptions import ObjectDoesNotExist
 # Get an instance of a logger
 logger = logging.getLogger("django")
@@ -40,12 +40,17 @@ def video(request):
                 play_src=ep_db.movie_url
                 subs=json.loads(ep_db.sub_json)
                 subs=[(sub,os.path.basename(sub)) for sub in subs]
+                season_name=str(ep_db.season.name)
+                season_url="/entry_point?type=season&uuid="+str(ep_db.season.unique_id)
+                episode_name=ep_db.name
+                show_name=ep_db.season.show.name
+                return render(request,"main.html",{"type":type,"play_src":play_src,"username":username,"subs":subs,"show_name":show_name,"episode_name":episode_name,"season_name":season_name,"season_url":season_url})
             else:
                 play_src=""
                 subs=[]
         except ObjectDoesNotExist:
             pass
-        return render(request,"main.html",{"play_src":play_src,"username":username,"subs":subs})
+        return render(request,"main.html",{"type":type,"play_src":play_src,"username":username,"subs":subs})
     #return HttpResponse("Hello, world. You're at the polls index.")
 
 def index(request):

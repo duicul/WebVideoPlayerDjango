@@ -48,7 +48,7 @@ def parse_dir(path):
 
 def store_series(main_path,name,main_moive_path,out_path,img_path):
     main_file_name=name.split(".")
-    main_file_name=''.join(main_file_name[0:len(main_file_name)-1])
+    main_file_name=' '.join(main_file_name[0:len(main_file_name)-1])
     subs=extract_correct_subs(main_path,main_moive_path)
     video_url="/media/"+os.path.relpath(out_path,start=main_path).replace("\\","/")
     season_path=Path(main_moive_path).resolve().parent
@@ -110,7 +110,10 @@ def store_series(main_path,name,main_moive_path,out_path,img_path):
 
     episode_desr_path=os.path.join(main_moive_path,"descr.json")
     if  not os.path.isfile(episode_desr_path) or FORCE_RETRIEVE_IMDB:
-        episode_descr=create_description_movie(episode_desr_path,re.sub("S[0-9][0-9]E[0-9][0-9]","",main_file_name))   
+        search_str=re.sub("\.","  ",main_file_name)
+        #print(search_str)
+        search_str=re.sub("([Ss][0-9][0-9])?([Ee][0-9][0-9])"," ",search_str)
+        episode_descr=create_description_movie(episode_desr_path,search_str)   
     else:
         desc_file=open(episode_desr_path,"r")
         try:
