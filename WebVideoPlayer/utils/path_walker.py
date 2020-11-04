@@ -239,7 +239,7 @@ def create_description_episode(desc_path,show,seasons,episodes):
     desc_file=open(desc_path,"w")
     
     json.dump(descr_data,desc_file)
-    
+    logger.info(str(descr_data))
     return descr_data 
     
 def parse_media_dir():
