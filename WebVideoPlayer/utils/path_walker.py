@@ -220,23 +220,26 @@ def create_description_movie(desc_path,main_file_name):
  
 def create_description_episode(desc_path,show,seasons,episodes):
     ia = IMDb()
-    movie_imdb = ia.search_movie(show)
     movie_title=""
     descr_html=""
-    if(len(movie_imdb)>0):
-        try:
-            mv=ia.get_movie(movie_imdb[0].movieID)
-            ia.update(mv, 'episodes')
-            for season in seasons:
-                for episode in episodes:
-                    try:
-                        ep=mv['episodes'][int(season)][int(episode)]
-                        movie_title+=str(ep["title"])+" <br/>"
-                        descr_html+=str(ep["plot"])+" <br/>"
-                    except:
-                        pass
-        except Exception as e:
-            logger.error(str(e))
+    movie_imdb = ia.search_movie(show)
+    try:
+        if(len(movie_imdb)>0):
+            try:
+                mv=ia.get_movie(movie_imdb[0].movieID)
+                ia.update(mv, 'episodes')
+                for season in seasons:
+                    for episode in episodes:
+                        try:
+                            ep=mv['episodes'][int(season)][int(episode)]
+                            movie_title+=str(ep["title"])+" <br/>"
+                            descr_html+=str(ep["plot"])+" <br/>"
+                        except:
+                            pass
+            except Exception as e:
+                logger.error(str(e))
+    except Exception as e:
+        logger.error(str(e))
     descr_data={"descr_html":descr_html,"movie_title":movie_title,"search":show+" "+str(seasons)+" "+str(episodes)}
     
     desc_file=open(desc_path,"w")
