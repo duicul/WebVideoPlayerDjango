@@ -60,7 +60,7 @@ load_season('{{uuid}}');
     {% ifequal  type  "episode" %}
         <a href="{{season_url}}">
         {{show_name}} >> {{season_name}}
-        </a>
+        </a>        
     {% else %}
         Hi {{username}}
     {% endifequal %}
@@ -115,11 +115,29 @@ load_season('{{uuid}}');
 
     {% if not play_src == None %} 
         {% ifequal  type  "episode" %}
-        {{episode_name}}
+        <div class="row">
+            {% if not prv_ep_name == None %}
+                <div class="col" style="text-align:center;">
+                 <a href="/video_player/?play={{prv_ep_uuid}}&type=episode" >
+                {{prv_ep_name}}
+                </a>
+                </div>
+            {% endif %}
+            <div class="col" style="text-align:center;">
+                {{episode_name}}
+            </div>
+            {% if not nxt_ep_name == None %}
+                <div class="col" style="text-align:center;">
+                <a href="/video_player/?play={{nxt_ep_uuid}}&type=episode">
+                {{nxt_ep_name}}
+                </a>
+                </div>
+            {% endif %}
+        </div>
         {% endifequal %}
         {% ifequal  type  "movie" %}
         {{movie_name}}
-        {% endifequal %}
+    {% endifequal %}
     
  <video-js onscroll="video_scroll(this);"
     id="my-video"
