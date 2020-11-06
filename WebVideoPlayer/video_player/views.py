@@ -165,11 +165,9 @@ def previous_ep(ep):
         return None
     
     season_eps=Episode_db.objects.all().filter(season=curr_season_ind.pk)
-    for episode in season_eps:
-        if episode.abs_path==ep.abs_path:
-            return curr_episode_ind
-    
-    return None
+    if len(season_eps)==0:
+        return None
+    return season_eps[len(season_eps)-1]
     
 def next_ep(ep):
     curr_season=ep.season
@@ -203,8 +201,6 @@ def next_ep(ep):
         return None
     
     season_eps=Episode_db.objects.all().filter(season=curr_season_ind.pk).order_by("-abs_path")
-    for episode in season_eps:
-        if episode.abs_path==ep.abs_path:
-            return curr_episode_ind
-    
-    return None
+    if len(season_eps)==0:
+        return None
+    return season_eps[len(season_eps)-1]
