@@ -169,15 +169,15 @@ LOGGING = {
             'level': 'INFO',
             'class': 'logging.handlers.RotatingFileHandler',
             'filename': './logs/log_file.log',
-            'maxBytes' :1024 * 1024,
-            'backupCount' : 10,
+            'maxBytes' :4*1024 * 1024,
+            'backupCount' : 20,
             'formatter':'Simple_Format'
         },
         'file_request': {
             'level': 'INFO',
             'class': 'logging.handlers.RotatingFileHandler',
             'filename': './logs/log_file_request.log',
-            'maxBytes' :1024 * 1024,
+            'maxBytes' :4*1024 * 1024,
             'backupCount' : 20,
             'formatter':'Simple_Format'
         },
