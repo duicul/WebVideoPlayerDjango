@@ -4,7 +4,7 @@ import os
 import json
 import sys
 from utils.LoginForm import LoginForm
-from utils.path_walker import parse_media_dir
+from utils.path_walker import parse_media_dir,clean_db_tables
 from utils.models import User_db,Movie_db, Category_db, Show_db, Season_db,\
     Episode_db
 import video_player
@@ -103,6 +103,7 @@ def list_items(request):
             categories=Category_db.objects.all()
             #print(categories[0].category_path)
             ret_movie=[{'parent_folder_path':categ.category_path,'parent_folder_name':categ.category_name,'movies':[mv.getDict() for mv in Movie_db.objects.filter(category=categ.pk)]}  for categ in categories]
+            ret_movie=list(filter(lambda cat:len(cat["movies"])>0,ret_movie))
             return HttpResponse(json.dumps(ret_movie), content_type="application/json")
         elif type == "show":
             categories=Category_db.objects.all()
@@ -191,8 +192,7 @@ def rescan_db(request):
     except KeyError:
         raise PermissionDenied()
     try:
-        Category_db.objects.all().delete()
-        Movie_db.objects.all().delete()
+        clean_db_tables()
         parse_media_dir()
     except Exception as e:
         logger.error(str(traceback.format_exc()))

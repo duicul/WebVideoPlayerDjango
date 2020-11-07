@@ -21,6 +21,32 @@ logger = logging.getLogger("django")
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+def clean_db_tables():
+    categs=Category_db.objects.all()
+    for cat in categs:
+        if not os.path.isdir(cat.category_path):
+            cat.delete()
+            
+    mvs=Movie_db.objects.all()
+    for mv in mvs:
+        if not os.path.isfile(mv.abs_path):
+            mv.delete()
+            
+    shs=Show_db.objects.all()
+    for sh in shs:
+        if not os.path.isfile(sh.abs_path):
+            sh.delete()
+    
+    seasons=Season_db.objects.all()
+    for seas in seasons:
+        if not os.path.isfile(seas.abs_path):
+            seas.delete()
+    
+    eps=Episode_db.objects.all()
+    for ep in eps:
+        if not os.path.isfile(ep.abs_path):
+            ep.delete()
+
 def parse_dir(path):
     logger.info("parsing dir : "+str(path))
     main_path=path
@@ -63,11 +89,16 @@ def store_series(main_path,name,main_moive_path,out_path,img_path):
     categ_path=Path(series_path).resolve().parent
     if categ_path != main_path:
         try:
-            category_db = Category_db(category_path=categ_path,category_name=os.path.basename(categ_path))
-            logger.info(category_db.getDict())
+            category_db=Category_db.objects.get(category_path=categ_path)
+            category_db.category_name=os.path.basename(categ_path)
             category_db.save()
-        except django.db.utils.IntegrityError as e:
-            logger.error(e) 
+        except Category_db.DoesNotExist:
+            try:
+                category_db = Category_db(category_path=categ_path,category_name=os.path.basename(categ_path))
+                logger.info(category_db.getDict())
+                category_db.save()
+            except django.db.utils.IntegrityError as e:
+                logger.error(e) 
             
     if os.path.isfile(series_img_path):
         series_img_path="/media/"+os.path.relpath(series_img_path,start=main_path).replace("\\","/")
@@ -79,12 +110,19 @@ def store_series(main_path,name,main_moive_path,out_path,img_path):
     else:
          series_img_path="/static/img/not_found.jpg"
     
-    category_db=Category_db.objects.get(category_path=categ_path)
     try:
-        show_db=Show_db(name=series_name,abs_path=series_path,img_url=series_img_path,category=category_db,unique_id=uuid.uuid4().hex)
-        logger.info(show_db.getDict())
-        show_db.save()
-    except django.db.utils.IntegrityError as e:
+            show_db=Show_db.objects.get(abs_path=series_path)
+            show_db.name=series_name
+            show_db.abs_path=series_path
+            show_db.img_url=series_img_path
+            show_db.category=category_db
+            show_db.save()
+    except Show_db.DoesNotExist:
+        try:
+            show_db=Show_db(name=series_name,abs_path=series_path,img_url=series_img_path,category=category_db,unique_id=uuid.uuid4().hex)
+            logger.info(show_db.getDict())
+            show_db.save()
+        except django.db.utils.IntegrityError as e:
             logger.error(e)      
     
     show_db=Show_db.objects.get(abs_path=series_path)
@@ -99,13 +137,20 @@ def store_series(main_path,name,main_moive_path,out_path,img_path):
         except:
             pass 
     try:
-        season_db=Season_db(name=season_name,abs_path=season_path,img_url=season_img_path,show=show_db,descr=season_descr,unique_id=uuid.uuid4().hex)
-        logger.info(season_db.getDict())
+        season_db=Season_db.objects.get(abs_path=season_path)
+        season_db.name=season_name
+        season_db.abs_path=season_path
+        season_db.img_url=season_img_path
+        season_db.show=show_db
+        season_db.descr=season_descr
         season_db.save()
-    except django.db.utils.IntegrityError as e:
+    except Season_db.DoesNotExist:
+        try:
+            season_db=Season_db(name=season_name,abs_path=season_path,img_url=season_img_path,show=show_db,descr=season_descr,unique_id=uuid.uuid4().hex)
+            logger.info(season_db.getDict())
+            season_db.save()
+        except django.db.utils.IntegrityError as e:
             logger.error(e)
-    
-    season_db=Season_db.objects.get(abs_path=season_path)
 
     episode_desr_path=os.path.join(main_moive_path,"descr.json")
     if  not os.path.isfile(episode_desr_path) or FORCE_RETRIEVE_IMDB:
@@ -125,10 +170,20 @@ def store_series(main_path,name,main_moive_path,out_path,img_path):
     subs=json.dumps(extract_correct_subs(main_path,main_moive_path))    
     
     try:
-        episode_db=Episode_db(movie_url=video_url,name=main_file_name,descr=episode_descr,abs_path=main_moive_path,sub_json=subs,season=season_db,unique_id=uuid.uuid4().hex)
-        logger.info(episode_db.getDict())
+        episode_db=Episode_db.objects.get(abs_path=main_moive_path)
+        episode_db.movie_url=video_url
+        episode_db.name=main_file_name
+        episode_db.descr=episode_descr
+        episode_db.abs_path=main_moive_path
+        episode_db.sub_json=subs
+        episode_db.season=season_db
         episode_db.save()
-    except django.db.utils.IntegrityError as e:
+    except Episode_db.DoesNotExist:
+        try:
+            episode_db=Episode_db(movie_url=video_url,name=main_file_name,descr=episode_descr,abs_path=main_moive_path,sub_json=subs,season=season_db,unique_id=uuid.uuid4().hex)
+            logger.info(episode_db.getDict())
+            episode_db.save()
+        except django.db.utils.IntegrityError as e:
             logger.error(e)
     
     
@@ -140,12 +195,16 @@ def store_movie(main_path,name,main_moive_path,out_path,img_path):
     video_url="/media/"+os.path.relpath(out_path,start=main_path).replace("\\","/")
     parent_folder_path=Path(main_moive_path).resolve().parent
     try:
-        category_db = Category_db(category_path=parent_folder_path,category_name=os.path.basename(parent_folder_path))
+        category_db=Category_db.objects.get(category_path=parent_folder_path)
+        category_db.category_name=os.path.basename(parent_folder_path)
         category_db.save()
-    except django.db.utils.IntegrityError as e:
-        logger.error(e)
-    category_db=Category_db.objects.get(category_path=parent_folder_path)
-    uuid_u= uuid.uuid4()
+    except Category_db.DoesNotExist:
+        try:
+            category_db = Category_db(category_path=parent_folder_path,category_name=os.path.basename(parent_folder_path))
+            category_db.save()
+        except django.db.utils.IntegrityError as e:
+            logger.error(e)
+            
     logger.info("path_walker : "+str(main_file_name))
     desc_path=os.path.join(main_moive_path,"descr.json")
     if not os.path.isfile(desc_path) or FORCE_RETRIEVE_IMDB:
@@ -154,12 +213,23 @@ def store_movie(main_path,name,main_moive_path,out_path,img_path):
         desc_file=open(desc_path,"r") 
         desc_data=json.load(desc_file)
     descr_html=desc_data["descr_html"]
-    movie_title=desc_data["movie_title"]         
+    movie_title=desc_data["movie_title"]
     try:
-        movie_db=Movie_db(movie_title=movie_title,name=main_file_name,abs_path=out_path,img_url=img_path,movie_url=video_url,sub_json=json.dumps(subs),unique_id=uuid_u.hex,descr=descr_html,category=category_db)
+        movie_db=Movie_db.objects.get(abs_path=out_path)
+        movie_db.movie_title=movie_title
+        movie_db.name=main_file_name
+        movie_db.img_url=img_path
+        movie_db.movie_url=video_url
+        movie_db.sub_json=json.dumps(subs)
+        movie_db.descr=descr_html
+        movie_db.category=category_db
         movie_db.save()
-        logger.info("movie_db : "+str(main_file_name))
-    except Exception as e:
+    except Movie_db.DoesNotExist:
+        try:
+            movie_db=Movie_db(movie_title=movie_title,name=main_file_name,abs_path=out_path,img_url=img_path,movie_url=video_url,sub_json=json.dumps(subs),unique_id=uuid.uuid4().hex,descr=descr_html,category=category_db)
+            movie_db.save()
+            logger.info("movie_db : "+str(main_file_name))
+        except Exception as e:
             logger.error(str(e))
 
 def extract_correct_subs(main_path,main_moive_path):
