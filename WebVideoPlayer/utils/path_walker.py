@@ -36,13 +36,13 @@ def clean_db_tables():
             
     shs=Show_db.objects.all()
     for sh in shs:
-        if not os.path.isfile(sh.abs_path):
+        if not os.path.isdir(sh.abs_path):
             logger.info("delete show "+str(sh.abs_path))
             sh.delete()
     
     seasons=Season_db.objects.all()
     for seas in seasons:
-        if not os.path.isfile(seas.abs_path):
+        if not os.path.isdir(seas.abs_path):
             logger.info("delete season "+str(seas.abs_path))
             seas.delete()
     
