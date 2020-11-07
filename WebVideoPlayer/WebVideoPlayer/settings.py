@@ -167,19 +167,24 @@ LOGGING = {
     'handlers': {
         'file': {
             'level': 'INFO',
-            'class': 'logging.FileHandler',
+            'class': 'logging.handlers.RotatingFileHandler',
             'filename': './logs/log_file.log',
+            'maxBytes' :1024 * 1024,
+            'backupCount' : 10,
             'formatter':'Simple_Format'
         },
         'file_request': {
             'level': 'INFO',
-            'class': 'logging.FileHandler',
+            'class': 'logging.handlers.RotatingFileHandler',
             'filename': './logs/log_file_request.log',
+            'maxBytes' :1024 * 1024,
+            'backupCount' : 20,
             'formatter':'Simple_Format'
         },
         'console': {
             'level': 'INFO',
             'class': 'logging.StreamHandler',
+            'formatter':'Simple_Format'
         },
     },
  

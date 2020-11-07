@@ -174,7 +174,7 @@ def store_series(main_path,name,main_moive_path,out_path,img_path):
     subs=json.dumps(extract_correct_subs(main_path,main_moive_path))    
     
     try:
-        episode_db=Episode_db.objects.get(abs_path=main_moive_path)
+        episode_db=Episode_db.objects.get(abs_path=out_path)
         episode_db.movie_url=video_url
         episode_db.name=main_file_name
         episode_db.descr=episode_descr
@@ -184,7 +184,7 @@ def store_series(main_path,name,main_moive_path,out_path,img_path):
     except Episode_db.DoesNotExist as e:
         logger.error(e) 
         try:
-            episode_db=Episode_db(movie_url=video_url,name=main_file_name,descr=episode_descr,abs_path=main_moive_path,sub_json=subs,season=season_db,unique_id=uuid.uuid4().hex)
+            episode_db=Episode_db(movie_url=video_url,name=main_file_name,descr=episode_descr,abs_path=out_path,sub_json=subs,season=season_db,unique_id=uuid.uuid4().hex)
             logger.info(episode_db.getDict())
             episode_db.save()
         except django.db.utils.IntegrityError as e:
