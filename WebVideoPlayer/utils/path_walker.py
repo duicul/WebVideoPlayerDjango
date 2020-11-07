@@ -101,10 +101,11 @@ def store_series(main_path,name,main_moive_path,out_path,img_path):
             logger.error(e) 
             try:
                 category_db = Category_db(category_path=categ_path,category_name=os.path.basename(categ_path))
-                logger.info(category_db.getDict())
                 category_db.save()
             except django.db.utils.IntegrityError as e:
                 logger.error(e) 
+                
+    logger.info(category_db.getDict())
             
     if os.path.isfile(series_img_path):
         series_img_path="/media/"+os.path.relpath(series_img_path,start=main_path).replace("\\","/")
@@ -126,10 +127,11 @@ def store_series(main_path,name,main_moive_path,out_path,img_path):
         logger.error(e) 
         try:
             show_db=Show_db(name=series_name,abs_path=series_path,img_url=series_img_path,category=category_db,unique_id=uuid.uuid4().hex)
-            logger.info(show_db.getDict())
             show_db.save()
         except django.db.utils.IntegrityError as e:
             logger.error(e)      
+    
+    logger.info(show_db.getDict())
     
     season_descr_path=os.path.join(season_path,"descr.json")
     if  not os.path.isfile(season_descr_path) or FORCE_RETRIEVE_IMDB:
@@ -151,10 +153,11 @@ def store_series(main_path,name,main_moive_path,out_path,img_path):
         logger.error(e) 
         try:
             season_db=Season_db(name=season_name,abs_path=season_path,img_url=season_img_path,show=show_db,descr=season_descr,unique_id=uuid.uuid4().hex)
-            logger.info(season_db.getDict())
             season_db.save()
         except django.db.utils.IntegrityError as e:
             logger.error(e)
+    
+    logger.info(season_db.getDict())
 
     episode_desr_path=os.path.join(main_moive_path,"descr.json")
     if  not os.path.isfile(episode_desr_path) or FORCE_RETRIEVE_IMDB:
@@ -185,10 +188,11 @@ def store_series(main_path,name,main_moive_path,out_path,img_path):
         logger.error(e) 
         try:
             episode_db=Episode_db(movie_url=video_url,name=main_file_name,descr=episode_descr,abs_path=out_path,sub_json=subs,season=season_db,unique_id=uuid.uuid4().hex)
-            logger.info(episode_db.getDict())
             episode_db.save()
         except django.db.utils.IntegrityError as e:
             logger.error(e)
+            
+    logger.info(episode_db.getDict())
     
     
 def store_movie(main_path,name,main_moive_path,out_path,img_path):
@@ -208,7 +212,9 @@ def store_movie(main_path,name,main_moive_path,out_path,img_path):
             category_db.save()
         except django.db.utils.IntegrityError as e:
             logger.error(e)
-            
+    
+    logger.info(category_db.getDict())
+       
     logger.info("path_walker : "+str(main_file_name))
     desc_path=os.path.join(main_moive_path,"descr.json")
     if not os.path.isfile(desc_path) or FORCE_RETRIEVE_IMDB:
@@ -233,9 +239,10 @@ def store_movie(main_path,name,main_moive_path,out_path,img_path):
         try:
             movie_db=Movie_db(movie_title=movie_title,name=main_file_name,abs_path=out_path,img_url=img_path,movie_url=video_url,sub_json=json.dumps(subs),unique_id=uuid.uuid4().hex,descr=descr_html,category=category_db)
             movie_db.save()
-            logger.info("movie_db : "+str(main_file_name))
         except Exception as e:
             logger.error(str(e))
+    
+    logger.info(movie_db.getDescHTML())
 
 def extract_correct_subs(main_path,main_moive_path):
     subs_path=os.path.join(main_moive_path,"Subs")
