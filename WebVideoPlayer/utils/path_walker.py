@@ -25,31 +25,31 @@ def clean_db_tables():
     categs=Category_db.objects.all()
     for cat in categs:
         if not os.path.isdir(cat.category_path):
-            log.info("delete category "+str(cat.category_path))
+            logger.info("delete category "+str(cat.category_path))
             cat.delete()
             
     mvs=Movie_db.objects.all()
     for mv in mvs:
         if not os.path.isfile(mv.abs_path):
-            log.info("delete movie "+str(mv.abs_path))
+            logger.info("delete movie "+str(mv.abs_path))
             mv.delete()
             
     shs=Show_db.objects.all()
     for sh in shs:
         if not os.path.isfile(sh.abs_path):
-            log.info("delete show "+str(sh.abs_path))
+            logger.info("delete show "+str(sh.abs_path))
             sh.delete()
     
     seasons=Season_db.objects.all()
     for seas in seasons:
         if not os.path.isfile(seas.abs_path):
-            log.info("delete season "+str(seas.abs_path))
+            logger.info("delete season "+str(seas.abs_path))
             seas.delete()
     
     eps=Episode_db.objects.all()
     for ep in eps:
         if not os.path.isfile(ep.abs_path):
-            log.info("delete episode "+str(ep.abs_path))
+            logger.info("delete episode "+str(ep.abs_path))
             ep.delete()
 
 def parse_dir(path):
@@ -123,7 +123,7 @@ def store_series(main_path,name,main_moive_path,out_path,img_path):
             show_db.category=category_db
             show_db.save()
     except Show_db.DoesNotExist as e:
-            logger.error(e) 
+        logger.error(e) 
         try:
             show_db=Show_db(name=series_name,abs_path=series_path,img_url=series_img_path,category=category_db,unique_id=uuid.uuid4().hex)
             logger.info(show_db.getDict())
@@ -148,7 +148,7 @@ def store_series(main_path,name,main_moive_path,out_path,img_path):
         season_db.descr=season_descr
         season_db.save()
     except Season_db.DoesNotExist as e:
-            logger.error(e) 
+        logger.error(e) 
         try:
             season_db=Season_db(name=season_name,abs_path=season_path,img_url=season_img_path,show=show_db,descr=season_descr,unique_id=uuid.uuid4().hex)
             logger.info(season_db.getDict())
@@ -182,7 +182,7 @@ def store_series(main_path,name,main_moive_path,out_path,img_path):
         episode_db.season=season_db
         episode_db.save()
     except Episode_db.DoesNotExist as e:
-            logger.error(e) 
+        logger.error(e) 
         try:
             episode_db=Episode_db(movie_url=video_url,name=main_file_name,descr=episode_descr,abs_path=main_moive_path,sub_json=subs,season=season_db,unique_id=uuid.uuid4().hex)
             logger.info(episode_db.getDict())
@@ -202,7 +202,7 @@ def store_movie(main_path,name,main_moive_path,out_path,img_path):
         category_db.category_name=os.path.basename(parent_folder_path)
         category_db.save()
     except Category_db.DoesNotExist as e:
-            logger.error(e) 
+        logger.error(e) 
         try:
             category_db = Category_db(category_path=parent_folder_path,category_name=os.path.basename(parent_folder_path))
             category_db.save()
@@ -229,7 +229,7 @@ def store_movie(main_path,name,main_moive_path,out_path,img_path):
         movie_db.category=category_db
         movie_db.save()
     except Movie_db.DoesNotExist as e:
-            logger.error(e) 
+        logger.error(e) 
         try:
             movie_db=Movie_db(movie_title=movie_title,name=main_file_name,abs_path=out_path,img_url=img_path,movie_url=video_url,sub_json=json.dumps(subs),unique_id=uuid.uuid4().hex,descr=descr_html,category=category_db)
             movie_db.save()
