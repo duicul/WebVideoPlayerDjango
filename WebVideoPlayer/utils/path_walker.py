@@ -49,7 +49,6 @@ def parse_dir(path):
 def store_series(main_path,name,main_moive_path,out_path,img_path):
     main_file_name=name.split(".")
     main_file_name=' '.join(main_file_name[0:len(main_file_name)-1])
-    subs=extract_correct_subs(main_path,main_moive_path)
     video_url="/media/"+os.path.relpath(out_path,start=main_path).replace("\\","/")
     season_path=Path(main_moive_path).resolve().parent
     series_path=Path(season_path).resolve().parent
@@ -123,7 +122,7 @@ def store_series(main_path,name,main_moive_path,out_path,img_path):
             logger.error(e)
             episode_descr=""
             
-    subs=extract_correct_subs(main_path,main_moive_path)    
+    subs=json.dumps(extract_correct_subs(main_path,main_moive_path))    
     
     try:
         episode_db=Episode_db(movie_url=video_url,name=main_file_name,descr=episode_descr,abs_path=main_moive_path,sub_json=subs,season=season_db,unique_id=uuid.uuid4().hex)
@@ -137,7 +136,7 @@ def store_series(main_path,name,main_moive_path,out_path,img_path):
 def store_movie(main_path,name,main_moive_path,out_path,img_path):
     main_file_name=name.split(".")
     main_file_name=''.join(main_file_name[0:len(main_file_name)-1])
-    subs=extract_correct_subs(main_path,main_moive_path)
+    subs=json.dumps(extract_correct_subs(main_path,main_moive_path))
     video_url="/media/"+os.path.relpath(out_path,start=main_path).replace("\\","/")
     parent_folder_path=Path(main_moive_path).resolve().parent
     try:
