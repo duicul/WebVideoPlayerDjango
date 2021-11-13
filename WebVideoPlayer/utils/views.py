@@ -16,6 +16,7 @@ from utils.FileUploadForm import FileUploadForm
 from utils.FileUploadHandling import handle_uploaded_file
 from video_player.views import index
 import traceback 
+import threading
 logger = logging.getLogger("django")
 
 # Create your views here.
@@ -193,7 +194,9 @@ def rescan_db(request):
         raise PermissionDenied()
     try:
         clean_db_tables()
-        parse_media_dir()
+        t = threading.Thread(target=parse_media_dir,args=[])
+        t.daemon(True)
+        t.start()
     except Exception as e:
         logger.error(str(traceback.format_exc()))
         return HttpResponse(status=500)
