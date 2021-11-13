@@ -194,10 +194,12 @@ def rescan_db(request):
     try:
         clean_db_tables()
         global started_scanning
-        if not started_scanning:
+        if started_scanning == False:
+            logger.info("rescan_db started scanning")
             started_scanning = True
             parse_media_dir()
-            started_scanning =False
+            logger.info("rescan_db finished scanning")
+            started_scanning = False
         else:
             return HttpResponse(status=501)
     except Exception as e:
