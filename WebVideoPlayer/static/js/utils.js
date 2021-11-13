@@ -372,8 +372,8 @@ function rescanfiles(type){
                 load_videos();}
         }
     },
-    error:function(result){
-        if(result.status == 501){
+    error:function(result,status,error){
+        if(status == 501){
             $("#scan_status").html(busy_str);
         }
         else{
