@@ -16,6 +16,7 @@ str_out+="env = 'DJANGO_SETTINGS_MODULE=WebVideoPlayer.settings' # customize wit
 str_out+="wsgi-file = "+BASE_DIR+"/WebVideoPlayer/wsgi.py # customize with the relative path to your wsgi.py file \n"
 
 str_out+="workers = 1"
+str_out+="processes = 4"
 f = open("/etc/uwsgi/apps-enabled/django.ini", "w")
 f.write(str_out)
 f.close()
