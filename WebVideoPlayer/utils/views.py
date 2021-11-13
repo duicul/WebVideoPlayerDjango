@@ -196,6 +196,7 @@ def rescan_db(request):
         raise PermissionDenied()
     try:
         clean_db_tables()
+        global parse_dir_thread
         if parse_dir_thread == None or (isinstance(parse_dir_thread,threading.Thread) and not parse_dir_thread.is_alive()):
             parse_dir_thread = threading.Thread(target=parse_media_dir,args=[])
             parse_dir_thread.daemon=True
