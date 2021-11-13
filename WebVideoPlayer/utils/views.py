@@ -193,6 +193,7 @@ def rescan_db(request):
         raise PermissionDenied()
     try:
         clean_db_tables()
+        global started_scanning
         if not started_scanning:
             started_scanning = True
             parse_media_dir()
