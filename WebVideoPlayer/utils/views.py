@@ -195,7 +195,7 @@ def rescan_db(request):
     try:
         clean_db_tables()
         t = threading.Thread(target=parse_media_dir,args=[])
-        t.daemon(True)
+        t.daemon=True
         t.start()
     except Exception as e:
         logger.error(str(traceback.format_exc()))
