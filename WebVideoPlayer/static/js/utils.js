@@ -78,7 +78,7 @@ function load_season(uuid){
                 ret_str+="<img style=\"border-radius: 8%;cursor: pointer;\" src=\""+season_img;
                 ret_str+="\" alt=\""+episode["name"]+"\" width=\""+img_w+"\" height=\""+img_h+"\">";
                 ret_str+="</a>";
-                ret_str+="<span>"+episode["name"]+" </span>";
+                ret_str+="<span>"+episode["name"]+" "+episode["movie_title"]+" </span>";
                 ret_str+="</div>";
                 
                 
@@ -386,7 +386,7 @@ function load_description(uuid,type){
        if(result.length==1){
            movie_data=result[0];
            //console.log(movie_data);
-           $("#description_title").html(movie_data["name"]);
+           $("#description_title").html(movie_data["movie_title"]);
            $("#description_body").html(movie_data["descript_html"]);
        }
        

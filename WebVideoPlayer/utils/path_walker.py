@@ -164,12 +164,12 @@ def store_series(main_path,name,main_moive_path,out_path,img_path):
         episodes=re.findall(r"[Ee](\d+)",main_file_name)
         seasons=re.findall(r"[Ss](\d+)",main_file_name)
         logger.info(main_file_name+" "+str(series_name)+" "+str(seasons)+" "+str(episodes))
-        episode_descr=create_description_episode(episode_desr_path,series_name,seasons,episodes)["descr_html"]
+        episode_descr=create_description_episode(episode_desr_path,series_name,seasons,episodes)
         #print(episode_descr)  
     else:
         desc_file=open(episode_desr_path,"r")
         try:
-            episode_descr=json.load(desc_file)["descr_html"]
+            episode_descr=json.load(desc_file)
         except Exception as e:
             logger.error(e)
             episode_descr=""
@@ -180,14 +180,15 @@ def store_series(main_path,name,main_moive_path,out_path,img_path):
         episode_db=Episode_db.objects.get(abs_path=out_path)
         episode_db.movie_url=video_url
         episode_db.name=main_file_name
-        episode_db.descr=episode_descr
+        episode_db.movie_title = episode_descr["movie_title"]
+        episode_db.descr=episode_descr["descr_html"]
         episode_db.sub_json=subs
         episode_db.season=season_db
         episode_db.save()
     except Episode_db.DoesNotExist as e:
         logger.error(e) 
         try:
-            episode_db=Episode_db(movie_url=video_url,name=main_file_name,descr=episode_descr,abs_path=out_path,sub_json=subs,season=season_db,unique_id=uuid.uuid4().hex)
+            episode_db=Episode_db(movie_title=episode_descr["movie_title"],movie_url=video_url,name=main_file_name,descr=episode_descr["descr_html"],abs_path=out_path,sub_json=subs,season=season_db,unique_id=uuid.uuid4().hex)
             episode_db.save()
         except django.db.utils.IntegrityError as e:
             logger.error(e)
