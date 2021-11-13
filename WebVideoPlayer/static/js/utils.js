@@ -373,9 +373,6 @@ function rescanfiles(type){
         }
     },
     error:function(result,status,error){
-        console.log(result)
-        console.log(status)
-        console.log(error)
         if(result.status == 501){
             $("#scan_status").html(busy_str);
         }
