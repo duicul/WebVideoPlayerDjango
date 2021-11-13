@@ -101,19 +101,19 @@ def list_items(request):
             type=None
             
         if type=="movie":
-            categories=Category_db.objects.all()
+            categories=Category_db.objects.order_by('category_name')
             #print(categories[0].category_path)
             ret_movie=[{'parent_folder_path':categ.category_path,'parent_folder_name':categ.category_name,'movies':[mv.getDict() for mv in Movie_db.objects.filter(category=categ.pk)]}  for categ in categories]
             ret_movie=list(filter(lambda cat:len(cat["movies"])>0,ret_movie))
             return HttpResponse(json.dumps(ret_movie), content_type="application/json")
         elif type == "show":
-            categories=Category_db.objects.all()
+            categories=Category_db.objects.order_by('category_name')
             categs=[]
             for categ in categories:
                 shows=[]
-                for show in Show_db.objects.filter(category=categ.pk):
+                for show in Show_db.objects.filter(category=categ.pk).order_by('name'):
                     seasons=[]
-                    for season in Season_db.objects.filter(show=show.pk):
+                    for season in Season_db.objects.filter(show=show.pk).order_by('name'):
                         #episodes=[episode.getDict() for episode in Episode_db.objects.filter(season=season.pk)]
                         season=season.getDict()
                         #season["episodes"]=episodes
@@ -130,8 +130,8 @@ def list_items(request):
             if uuid == None:
                 return HttpResponse(json.dumps({}), content_type="application/json")
             seasons=[]
-            for season in Season_db.objects.filter(unique_id=uuid):
-                episodes=[episode.getDict() for episode in Episode_db.objects.filter(season=season.pk)]
+            for season in Season_db.objects.filter(unique_id=uuid).order_by('name'):
+                episodes=[episode.getDict() for episode in Episode_db.objects.filter(season=season.pk).order_by('name')]
                 season=season.getDict()
                 season["episodes"]=episodes
                 seasons.append(season)
