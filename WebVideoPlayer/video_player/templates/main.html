@@ -8,6 +8,7 @@
     
     {% load static %} 
     <link href="{% static 'css/video-js.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/videojs-city.css' %}" rel="stylesheet" />
     <script src="{% static 'js/utils.js' %}"></script>
   <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>-->
     <script src="{% static 'js/jquery-3.5.1.min.js' %}"></script>
@@ -142,6 +143,7 @@ onload="addJumpOnVideoEnd('/video_player/?play={{nxt_ep_uuid}}&type=episode');"
     id="my-video"
     class="video-js vjs-default-skin vjs-big-play-centered vjs-fluid"
     controls="true"
+    autoplay="true"
     preload="auto"
     data-setup=''
     type='application/x-mpegURL'
