@@ -3,8 +3,12 @@ var ids=[];
 function videoPlayerInit(){
     vol = sessionStorage.getItem('playerAudioVolume')
     if(vol != 'undefined'){
+    try{
         let player = videojs('my-video');
         player.volume(vol);
+    } catch (error) {
+        console.error(error + ' vol='+vol);
+    }
     }
 }
 
