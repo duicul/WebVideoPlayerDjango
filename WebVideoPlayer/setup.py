@@ -15,6 +15,8 @@ myCmd = 'pip3 install imdbPy'
 os.system(myCmd)
 myCmd = 'pip3 install webvtt-py'
 os.system(myCmd)
+myCmd = 'pip3 install psutil'
+os.system(myCmd)
 myCmd = 'chmod a+w .'
 os.system(myCmd)
 myCmd = 'chmod a+w ..'

@@ -18,6 +18,7 @@ from video_player.views import index
 import traceback 
 from multiprocessing import Process
 from builtins import isinstance
+import psutil
 logger = logging.getLogger("django")
 started_scanning = False
 process = None
@@ -31,13 +32,12 @@ def file_upload_form(request):
         else:
             process = None
     elif 'process' in request.session.keys():
-        proc = request.session["process"]
-        if proc!=None and isinstance(proc,Process):
-            proc.join(timeout=0)
-            if proc.is_alive():
+        proc = request.session["processID"]
+        if proc!=None :
+            if psutil.pid_exists(proc):
                 return render(request,"loading.html")
             else:
-                del request.session["process"]
+                del request.session["processID"]
                 request.session.modified = True
     username=None
     login=None
@@ -220,7 +220,7 @@ def rescan_db(request):
             process = Process(target=parse_media_dir)
             process.daemon = True
             process.start()
-            request.session['process'] = process
+            request.session['processID'] = process.id
             logger.info("rescan_db finished scanning "+str(started_scanning))
             started_scanning = False
         else:
