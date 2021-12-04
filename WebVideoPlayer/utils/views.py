@@ -16,10 +16,29 @@ from utils.FileUploadForm import FileUploadForm
 from utils.FileUploadHandling import handle_uploaded_file
 from video_player.views import index
 import traceback 
+from multiprocessing import Process
+from builtins import isinstance
 logger = logging.getLogger("django")
 started_scanning = False
+process = None
 # Create your views here.
 def file_upload_form(request):
+    global process
+    if process!=None and isinstance(process,Process):
+        process.join(timeout=0)
+        if process.is_alive():
+            return render(request,"loading.html")
+        else:
+            process = None
+    elif 'process' in request.session.keys():
+        proc = request.session["process"]
+        if proc!=None and isinstance(proc,Process):
+            proc.join(timeout=0)
+            if proc.is_alive():
+                return render(request,"loading.html")
+            else:
+                del request.session["process"]
+                request.session.modified = True
     username=None
     login=None
     try:
@@ -197,7 +216,11 @@ def rescan_db(request):
         if started_scanning == False:
             logger.info("rescan_db started scanning "+str(started_scanning))
             started_scanning = True
-            parse_media_dir()
+            global process
+            process = Process(target=parse_media_dir)
+            process.daemon = True
+            process.start()
+            request.session['process'] = process
             logger.info("rescan_db finished scanning "+str(started_scanning))
             started_scanning = False
         else:
