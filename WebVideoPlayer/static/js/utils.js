@@ -1,4 +1,13 @@
 var ids=[];
+
+function videoPlayerInit(){
+    vol = sessionStorage.getItem('playerAudioVolume')
+    if(vol != 'undefined'){
+        let player = videojs('my-video');
+        player.volume(vol);
+    }
+}
+
 function list_dir(path,parent_el){
    var path_url="";
    if(path!==undefined)
@@ -407,7 +416,10 @@ function load_description(uuid,type){
 
 function addJumpOnVideoEnd(url){
 let player = videojs('my-video');
-
+player.on('volumechange', () => {
+    alert('volume changed: '+player.volume()+' previous value: '+sessionStorage.getItem('playerAudioVolume'));
+    sessionStorage.setItem('playerAudioVolume', player.volume());
+})
 player.on('ended', function() {
   setTimeout(function(){
     window.location.href = url;

@@ -38,7 +38,7 @@ a {
 </style>
 </head>
 
-<body {% if play_src == None %} onload="load_modal();
+<body {% if play_src == None %} onload="videoPlayerInit();load_modal();
 {% ifequal  type  "movie" %}
 load_videos();
 {% endifequal %}
@@ -50,7 +50,7 @@ load_season('{{uuid}}');
 {% endifequal %}
 " onresize="load_videos();" {% endif %}
 {% if play_src != None %}
-onload="addJumpOnVideoEnd('/video_player/?play={{nxt_ep_uuid}}&type=episode');"
+onload="videoPlayerInit();addJumpOnVideoEnd('/video_player/?play={{nxt_ep_uuid}}&type=episode');"
 {% endif %}>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
