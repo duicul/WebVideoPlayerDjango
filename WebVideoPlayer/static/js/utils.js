@@ -2,7 +2,7 @@ var ids=[];
 
 function videoPlayerInit(){
     vol = sessionStorage.getItem('playerAudioVolume')
-    if(vol != 'undefined'){
+    if(vol != 'undefined' || vol != 'null'){
     try{
         let player = videojs('my-video');
         player.volume(vol);
@@ -421,14 +421,14 @@ function load_description(uuid,type){
 function addJumpOnVideoEnd(url){
 let player = videojs('my-video');
 player.on('volumechange', () => {
-    alert('volume changed: '+player.volume()+' previous value: '+sessionStorage.getItem('playerAudioVolume'));
+    //alert('volume changed: '+player.volume()+' previous value: '+sessionStorage.getItem('playerAudioVolume'));
     sessionStorage.setItem('playerAudioVolume', player.volume());
 })
 player.on('ended', function() {
   setTimeout(function(){
     window.location.href = url;
 }, 3000);
-    alert('videoended next:'+url);
+    //alert('videoended next:'+url);
   
 });
 }
