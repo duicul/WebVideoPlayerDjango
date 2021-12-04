@@ -220,7 +220,7 @@ def rescan_db(request):
             process = Process(target=parse_media_dir)
             process.daemon = True
             process.start()
-            request.session['processID'] = process.id
+            request.session['processID'] = process.pid
             logger.info("rescan_db finished scanning "+str(started_scanning))
             started_scanning = False
         else:
