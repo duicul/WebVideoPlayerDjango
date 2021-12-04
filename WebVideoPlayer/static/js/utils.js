@@ -114,7 +114,7 @@ var url_list_dir="/utils/list_items?type=show";
    $.ajax({url: url_list_dir, success: function(result){
         let img_w=250;
         let img_h=250;
-        movies_per_slide=Math.floor(window.innerWidth/img_w);
+        movies_per_slide=Math.floor(window.innerWidth*0.8/img_w);
         slides=Math.ceil(result.length/movies_per_slide)
         //console.log(movies_per_slide)
         //console.log(slides)
