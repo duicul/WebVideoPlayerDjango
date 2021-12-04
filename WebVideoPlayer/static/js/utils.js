@@ -409,10 +409,10 @@ function addJumpOnVideoEnd(url){
 let player = videojs('my-video');
 
 player.on('ended', function() {
-  alert('videoended next:'+url);
   setTimeout(function(){
     window.location.href = url;
-}, 5000);
+}, 3000);
+    alert('videoended next:'+url);
   
 });
 }

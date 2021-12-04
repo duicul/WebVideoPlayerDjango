@@ -142,10 +142,10 @@ onload="addJumpOnVideoEnd('/video_player/?play={{nxt_ep_uuid}}&type=episode');"
  <video onscroll="video_scroll(this);"
     id="my-video"
     class="video-js vjs-default-skin vjs-big-play-centered vjs-fluid"
-    controls="true"
-    autoplay="true"
+    controls
+    autoplay
     preload="auto"
-    data-setup=''
+    data-setup='{}'
     type='application/x-mpegURL'
   >
     <source src="{{play_src}}"/>
