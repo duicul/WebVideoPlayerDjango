@@ -404,3 +404,11 @@ function load_description(uuid,type){
        
    }});
 }
+
+function addJumpOnVideoEnd(url){
+let player = videojs('my-video');
+
+player.on('ended', function() {
+  alert('videoended next:'+url);
+});
+}

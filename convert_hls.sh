@@ -1,4 +1,5 @@
 path=$1
+echo "start"
 if [ $# -eq 0 ]
 then echo "no file"
 exit 
@@ -32,7 +33,7 @@ then
 	echo "filename " $file_name
 	#-qscale 5
 	mkdir "$path/$file_main"
-	$(ffmpeg -i "$file_name" -s 840x480 -c:v libx264 -crf 23 -preset veryfast     -c:a aac -b:a 128k -ac 2     -f hls -hls_time 20 -hls_playlist_type event "$path/$file_main/$file_main.m3u8")
+	$(ffmpeg -i "$file_name" -s 840x480 -c:v h264 -crf 22 -tune film -profile:v main -level:v 4.0 -minrate 5000k -maxrate 5000k -bufsize 5000k -r 24 -keyint_min 24 -g 48 -sc_threshold 0 -c:a aac -b:a 128k -ac 2 -ar 44100 "$path/$file_main/$file_main.m3u8")
 	mkdir "$path/old"
 	mv  "$path/$file_name" "$path/old/$file_name"
 	files_no=$(($files_no+1))
