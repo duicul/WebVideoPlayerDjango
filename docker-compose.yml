@@ -1,0 +1,34 @@
+version: '3.5'
+
+services:
+  web_server_django:
+    container_name: nginx-django-webplayer-image
+    image: duicul/web_server_django:latest
+    build:
+      context: .
+      dockerfile: ./nginx/Dockerfile
+    ports:
+      - 7700:7700
+      - 7701:7701
+    depends_on:
+      - django
+    volumes:
+      - ./nginx_logs:/var/log/nginx
+      - ./nginx_logs/logs:/home/logs
+      - ./static:/home/static/
+      - ./media:/home/media/
+    
+  django:
+    container_name: django-webplayer-image
+    image: duicul/django_nginx:latest
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    expose:
+      - 7700
+    volumes:
+      - ./flask_logs:/home/logs
+      - ./flask_logs/uwsgi_logs:/var/log
+      - ./flask_logs/db:/home/db
+      - ./flask_logs/json:/home/json
+      - ./media:/home/media/

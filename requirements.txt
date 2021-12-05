@@ -1,0 +1,5 @@
+django>=2.2
+gunicorn>=19.4
+IMDbPY>=2020.9.25
+webvtt-py>=0.4.6
+uwsgi>=2.0.19.1

@@ -5,7 +5,7 @@ function videoPlayerInit(){
     try{
         player = videojs('my-video');
     }catch(error){return;}
-    //player.fill(true);
+    player.fill(true);
     vol = sessionStorage.getItem('playerAudioVolume');
     val = parseFloat(vol);
     if(! isNaN(val)){
