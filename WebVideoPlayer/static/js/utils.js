@@ -1,7 +1,10 @@
 var ids=[];
 
 function videoPlayerInit(){
-    let player = videojs('my-video');
+    let player = null;
+    try{
+        player = videojs('my-video');
+    }catch(error){return;}
     //player.fill(true);
     vol = sessionStorage.getItem('playerAudioVolume');
     val = parseFloat(vol);
