@@ -5,7 +5,7 @@ function videoPlayerInit(){
     if(vol != 'undefined' || vol != 'null'){
     try{
         let player = videojs('my-video');
-        onsole.error('load vol='+vol);
+        cononsole.log('load vol='+vol);
         player.volume(vol);
     } catch (error) {
         console.error(error + ' vol='+vol);
