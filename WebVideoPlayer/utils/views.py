@@ -204,8 +204,8 @@ def rescan_db(request):
             started_scanning = True
             global process
             process = Process(target=parse_media_dir)
-            request.session['processID'] = process.pid
             process.start()
+            request.session['processID'] = process.pid
             processThread = threading.Thread(target=joinprocess, args=(process,))  # <- note extra ','
             processThread.start()
             
