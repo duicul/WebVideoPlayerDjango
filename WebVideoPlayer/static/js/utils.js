@@ -2,7 +2,7 @@ var ids=[];
 
 function videoPlayerInit(){
     vol = sessionStorage.getItem('playerAudioVolume');
-    vol = parseFloat(vol);
+    val = parseFloat(vol);
     if(! isNaN(val)){
     try{
         let player = videojs('my-video');
