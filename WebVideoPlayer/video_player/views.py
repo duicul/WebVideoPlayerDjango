@@ -46,7 +46,8 @@ def video(request):
                 subs=json.loads(mv_db.sub_json)
                 subs=[(sub,os.path.basename(sub)) for sub in subs]
                 movie_name=mv_db.name
-                return render(request,"main.html",{"movie_name":movie_name,"type":type,"play_src":play_src,"username":username,"subs":subs})
+                descr = mv_db.descr
+                return render(request,"main.html",{"movie_name":movie_name,"type":type,"play_src":play_src,"username":username,"subs":subs,"description":descr})
             elif type=="episode":
                 ep_db=Episode_db.objects.get(unique_id=uuid)
                 prv_ep=previous_ep(ep_db)
@@ -68,13 +69,14 @@ def video(request):
                 season_url="/entry_point?type=season&uuid="+str(ep_db.season.unique_id)
                 episode_name=ep_db.name
                 show_name=ep_db.season.show.name
-                return render(request,"main.html",{"prv_ep_name":prv_ep_name,"prv_ep_uuid":prv_ep_uuid,"nxt_ep_name":nxt_ep_name,"nxt_ep_uuid":nxt_ep_uuid,"type":type,"play_src":play_src,"username":username,"subs":subs,"show_name":show_name,"episode_name":episode_name,"season_name":season_name,"season_url":season_url})
+                descr = ep_db.descr
+                return render(request,"main.html",{"prv_ep_name":prv_ep_name,"prv_ep_uuid":prv_ep_uuid,"nxt_ep_name":nxt_ep_name,"nxt_ep_uuid":nxt_ep_uuid,"type":type,"play_src":play_src,"username":username,"subs":subs,"show_name":show_name,"episode_name":episode_name,"season_name":season_name,"season_url":season_url,"description":descr})
             else:
                 play_src=""
                 subs=[]
         except ObjectDoesNotExist:
             pass
-        return render(request,"main.html",{"type":type,"play_src":play_src,"username":username,"subs":subs})
+        return render(request,"main.html",{"type":type,"play_src":play_src,"username":username,"subs":subs,"description":""})
     #return HttpResponse("Hello, world. You're at the polls index.")
 
 def index(request):
