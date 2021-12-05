@@ -5,6 +5,7 @@ function videoPlayerInit(){
     if(vol != 'undefined' || vol != 'null'){
     try{
         let player = videojs('my-video');
+        onsole.error('load vol='+vol);
         player.volume(vol);
     } catch (error) {
         console.error(error + ' vol='+vol);
@@ -421,7 +422,7 @@ function load_description(uuid,type){
 function addJumpOnVideoEnd(url){
 let player = videojs('my-video');
 player.on('volumechange', () => {
-    //alert('volume changed: '+player.volume()+' previous value: '+sessionStorage.getItem('playerAudioVolume'));
+    console.log('volume changed: '+player.volume()+' previous value: '+sessionStorage.getItem('playerAudioVolume'));
     sessionStorage.setItem('playerAudioVolume', player.volume());
 })
 player.on('ended', function() {
