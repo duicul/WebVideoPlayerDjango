@@ -1,8 +1,9 @@
 var ids=[];
 
 function videoPlayerInit(){
-    vol = sessionStorage.getItem('playerAudioVolume')
-    if(vol != 'undefined' || vol != 'null'){
+    vol = sessionStorage.getItem('playerAudioVolume');
+    vol = parseFloat(vol);
+    if(! isNaN(val)){
     try{
         let player = videojs('my-video');
         console.log('load vol='+vol);
@@ -422,7 +423,7 @@ function load_description(uuid,type){
 function addJumpOnVideoEnd(url){
 let player = videojs('my-video');
 player.on('volumechange', () => {
-    console.log('volume changed: '+player.volume()+' previous value: '+sessionStorage.getItem('playerAudioVolume'));
+    //console.log('volume changed: '+player.volume()+' previous value: '+sessionStorage.getItem('playerAudioVolume'));
     sessionStorage.setItem('playerAudioVolume', player.volume());
 })
 player.on('ended', function() {
