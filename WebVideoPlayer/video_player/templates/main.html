@@ -21,19 +21,16 @@
     .video-js .vjs-time-control{display:block;}
     .video-js .vjs-remaining-time{display: none;}
     video, #my_video, .video-js, .vjs-default-skin
-{
-  position: absolute; 
-
-  min-width: 100%; 
-  min-height: 100%;
-  width: auto; 
-  height: auto; 
+    {
+        position: absolute; 
+        width: auto; 
+        height: auto; 
   
-}
-a {
-  color: inherit; /* blue colors for links too */
-  text-decoration: inherit; /* no underline */
-}
+    }
+    a {
+        color: inherit; /* blue colors for links too */
+        text-decoration: inherit; /* no underline */
+    }
 </style>
 </head>
 
@@ -140,9 +137,11 @@ onload="videoPlayerInit();addJumpOnVideoEnd('/video_player/?play={{nxt_ep_uuid}}
 <div>    
  <video onscroll="video_scroll(this);"
     id="my-video"
-    class="video-js vjs-default-skin vjs-big-play-centered vjs-fluid"
+    class="video-js"
     controls
     autoplay
+    width="640"
+    height="264"
     preload="auto"
     data-setup='{}'
     type='application/x-mpegURL'
