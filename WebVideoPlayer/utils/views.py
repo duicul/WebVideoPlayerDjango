@@ -19,6 +19,7 @@ import traceback
 from multiprocessing import Process
 from builtins import isinstance
 import psutil
+import threading
 logger = logging.getLogger("django")
 started_scanning = False
 process = None
@@ -203,9 +204,12 @@ def rescan_db(request):
             started_scanning = True
             global process
             process = Process(target=parse_media_dir)
-            process.start()
             request.session['processID'] = process.pid
-            logger.info("rescan_db finished scanning "+str(started_scanning))
+            process.start()
+            processThread = threading.Thread(target=joinprocess, args=(process,))  # <- note extra ','
+            processThread.start()
+            
+            logger.info("rescan_db started scanning "+str(started_scanning))
             started_scanning = False
         else:
             return HttpResponse(status=501)
@@ -230,6 +234,10 @@ def list_users(request):
         raise PermissionDenied() 
     return HttpResponse(json.dumps([user.getDict() for user in User_db.objects.all()]), content_type="application/json")
 
+def joinprocess(process):
+    if isinstance(process,Process):
+        logger.info(" Joinning process: " + str(process.pid))
+        process.join()
 
 def upload_file(request):
     logger.info(" file upload ")
