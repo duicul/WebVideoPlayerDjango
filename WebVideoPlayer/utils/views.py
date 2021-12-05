@@ -24,21 +24,6 @@ started_scanning = False
 process = None
 # Create your views here.
 def file_upload_form(request):
-    global process
-    if process!=None and isinstance(process,Process):
-        process.join(timeout=0)
-        if process.is_alive():
-            return render(request,"loading.html")
-        else:
-            process = None
-    elif 'process' in request.session.keys():
-        proc = request.session["processID"]
-        if proc!=None :
-            if psutil.pid_exists(proc):
-                return render(request,"loading.html")
-            else:
-                del request.session["processID"]
-                request.session.modified = True
     username=None
     login=None
     try:

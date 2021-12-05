@@ -12,9 +12,19 @@ from utils.models import Movie_db,Episode_db, Season_db
 from django.core.exceptions import ObjectDoesNotExist
 # Get an instance of a logger
 logger = logging.getLogger("django")
+import psutil
 #import video_player_utils
 # Create your views here.
 def video(request):
+    if 'processID' in request.session.keys():
+        proc = request.session["processID"]
+        logger.info('Process ID : '+str(proc))
+        if proc!=None :
+            if psutil.pid_exists(proc):
+                return render(request,"loading.html")
+            else:
+                del request.session["processID"]
+                request.session.modified = True
     username=None
     try:
         username=request.session['username']
@@ -68,6 +78,16 @@ def video(request):
     #return HttpResponse("Hello, world. You're at the polls index.")
 
 def index(request):
+    global process
+    if 'processID' in request.session.keys():
+        proc = request.session["processID"]
+        logger.info('Process ID : '+str(proc))
+        if proc!=None :
+            if psutil.pid_exists(proc):
+                return render(request,"loading.html")
+            else:
+                del request.session["processID"]
+                request.session.modified = True
     username=None
     login=None
     try:

@@ -137,7 +137,7 @@ onload="videoPlayerInit();addJumpOnVideoEnd('/video_player/?play={{nxt_ep_uuid}}
         {% ifequal  type  "movie" %}
         {{movie_name}}
     {% endifequal %}
-    
+<div>    
  <video onscroll="video_scroll(this);"
     id="my-video"
     class="video-js vjs-default-skin vjs-big-play-centered vjs-fluid"
@@ -159,7 +159,7 @@ onload="videoPlayerInit();addJumpOnVideoEnd('/video_player/?play={{nxt_ep_uuid}}
       >
     </p>
   </video> 
-  <div> </div>
+ </div>
   {% else %}
   {% ifequal  type  "movie" %}
   <div id="video_files"></div>
