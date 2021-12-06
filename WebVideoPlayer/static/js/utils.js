@@ -22,6 +22,7 @@ function videoPlayerInit(){
 function scrollVolumeChange(event){
     event.preventDefault();
     scale = event.deltaY * -0.01;
+    console.log("scroll volume chnage "+scale)
     try{
         player = videojs('my-video');
         player.volume(player.volume() + scale);
@@ -354,10 +355,6 @@ function load_videos(){
     $(id).carousel();});
     });*/
 
-}
-
-function video_scroll(el){
-    console.log(el.scrollTop )
 }
 
 function present_video(relative_path){
