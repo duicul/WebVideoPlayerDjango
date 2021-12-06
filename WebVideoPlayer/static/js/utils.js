@@ -6,7 +6,7 @@ function videoPlayerInit(){
         player = videojs('my-video');
     }catch(error){return;}
     player.fill(true);
-    vol = sessionStorage.getItem('playerAudioVolume');
+    vol = window.localStorage.getItem('playerAudioVolume');
     val = parseFloat(vol);
     if(! isNaN(val)){
     try{
@@ -427,8 +427,8 @@ function load_description(uuid,type){
 function addJumpOnVideoEnd(url){
 let player = videojs('my-video');
 player.on('volumechange', () => {
-    //console.log('volume changed: '+player.volume()+' previous value: '+sessionStorage.getItem('playerAudioVolume'));
-    sessionStorage.setItem('playerAudioVolume', player.volume());
+    //console.log('volume changed: '+player.volume()+' previous value: '+window.localStorage.getItem('playerAudioVolume'));
+    window.localStorage.setItem('playerAudioVolume', player.volume());
 })
 player.on('ended', function() {
   setTimeout(function(){
