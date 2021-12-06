@@ -156,7 +156,9 @@ onload="videoPlayerInit();addJumpOnVideoEnd('/video_player/?play={{nxt_ep_uuid}}
   </video> 
  </div>
  <div class="col-4"> 
+ {% autoescape off %}
  {{description}}
+{% endautoescape %}
  </div>
  </div>
   {% else %}
