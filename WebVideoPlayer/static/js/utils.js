@@ -4,7 +4,7 @@ function videoPlayerInit(){
     let player = null;
     try{
         player = videojs('my-video');
-        $("#my-video").addEventListener("wheel", scrollVolumeChange);
+        document.getElementById("my-video").addEventListener("wheel", scrollVolumeChange);
     }catch(error){return;}
     player.fill(true);
     vol = window.localStorage.getItem('playerAudioVolume');
