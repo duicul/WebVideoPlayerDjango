@@ -22,7 +22,7 @@ function videoPlayerInit(){
 function scrollVolumeChange(event){
     event.preventDefault();
     scale = event.deltaY * -0.001;
-    console.log("scroll volume chnage "+scale)
+    //console.log("scroll volume chnage "+scale)
     try{
         player = videojs('my-video');
         player.volume(player.volume() + scale);
