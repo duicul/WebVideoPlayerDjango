@@ -29,6 +29,8 @@
         margin: 0px;
     }
 </style>
+    
+
 </head>
 
 <body {% if play_src == None %} onload="videoPlayerInit();load_modal();
@@ -133,7 +135,7 @@ onload="videoPlayerInit();addJumpOnVideoEnd('/video_player/?play={{nxt_ep_uuid}}
     {% endifequal %} 
  <div class="row" style="height:85%;">
  <div class="col-8"> 
- <video onscroll="video_scroll(this);"
+ <video 
     id="my-video"
     class="video-js vjs-theme-city"
     controls

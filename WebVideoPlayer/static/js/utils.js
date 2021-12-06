@@ -4,6 +4,7 @@ function videoPlayerInit(){
     let player = null;
     try{
         player = videojs('my-video');
+        $("#my-video").addEventListener("wheel", scrollVolumeChange);
     }catch(error){return;}
     player.fill(true);
     vol = window.localStorage.getItem('playerAudioVolume');
@@ -16,6 +17,15 @@ function videoPlayerInit(){
         console.error(error + ' vol='+vol);
     }
     }
+}
+
+function scrollVolumeChange(event){
+    event.preventDefault();
+    scale = event.deltaY * -0.01;
+    try{
+        player = videojs('my-video');
+        player.volume(player.volume() + scale);
+    }catch(error){return;}
 }
 
 function list_dir(path,parent_el){
