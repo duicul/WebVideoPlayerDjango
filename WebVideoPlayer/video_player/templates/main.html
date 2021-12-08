@@ -49,7 +49,8 @@ load_season('{{uuid}}');
 {% if play_src != None %}
 onload="videoPlayerInit();addJumpOnVideoEnd('/video_player/?play={{nxt_ep_uuid}}&type=episode');
 {% if type == "episode" %}
-loadEpisodeList('{{season_id}}')
+loadEpisodeList('{{season_id}}');
+load_modal();
 {% endif %}
 
 "

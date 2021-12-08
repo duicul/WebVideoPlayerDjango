@@ -261,9 +261,8 @@ function loadEpisodeList(season_id){
                 ret_str+="</span>";
                 
                 ret_str+="<a data-toggle=\"tooltip\" title=\""+episode["name"]+"\" href=\"/video_player/?play="+episode["unique_id"]+"&type=episode\">";
-                ret_str+=episode["name"];
+                ret_str+=episode["name"]+" "+episode["movie_title"].replace(/(<br\/?>)/g,'')+' ';
                 ret_str+="</a>";
-                ret_str+="<span>"+episode["name"]+" "+episode["movie_title"]+" </span>";
                 ret_str+="</div>";
                 
                 
