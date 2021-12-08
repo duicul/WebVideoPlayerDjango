@@ -455,7 +455,7 @@ function load_description(uuid,type){
        if(result.length==1){
            movie_data=result[0];
            //console.log(movie_data);
-           $("#description_title").html(movie_data["movie_title"]);
+           $("#description_title").html(movie_data["name"]);
            $("#description_body").html(movie_data["descript_html"]);
        }
        
