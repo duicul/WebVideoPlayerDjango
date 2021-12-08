@@ -20,6 +20,7 @@ from multiprocessing import Process
 from builtins import isinstance
 import psutil
 import threading
+import re
 logger = logging.getLogger("django")
 started_scanning = False
 process = None
@@ -76,7 +77,8 @@ def description(request):
                         return HttpResponse(json.dumps([{"name":mv.movie_title,"descript_html":mv.getDescHTML()}]), content_type="application/json")
                     elif type=="episode":
                         ep_db=Episode_db.objects.get(unique_id=uuid)
-                        return HttpResponse(json.dumps([{"name":ep_db.name,"descript_html":ep_db.getDescHTML()}]), content_type="application/json")
+                        ep_name = str(ep_db.name) + ' ' + str(re.sub(r'<br/?>', '' , ep_db.movie_title))
+                        return HttpResponse(json.dumps([{"name":ep_name,"descript_html":ep_db.getDescHTML()}]), content_type="application/json")
                     else:
                         return HttpResponse(json.dumps([{"name":"","descript_html":""}]), content_type="application/json")
                 
