@@ -243,6 +243,38 @@ var url_list_dir="/utils/list_items?type=show";
     }});        
 }
 
+function loadEpisodeList(season_id){
+     var url_list_dir="/utils/list_items?type=season&uuid="+season_id;
+
+    $.ajax({url: url_list_dir, success: function(result){
+        let ret_str="";         
+        result.forEach(function(season){
+            let season_img=season["img_url"];
+            season["episodes"].forEach(function(episode){
+                ret_str+="<div>";
+                ret_str+="<span onclick=\"load_description('"+episode["unique_id"]+"','episode');\" style=\"cursor: pointer;\" title=\"Info\" data-toggle=\"modal\" data-target=\"#descriptionModal\">";
+                ret_str+="<svg width=\"1em\" height=\"1em\" viewBox=\"0 0 16 16\" class=\"bi bi-info-square\" fill=\"currentColor\" xmlns=\"http://www.w3.org/2000/svg\">";
+                ret_str+="<path fill-rule=\"evenodd\" d=\"M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z\"/>";
+                ret_str+="<path fill-rule=\"evenodd\" d=\"M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z\"/>";
+                ret_str+="<path d=\"M8.93 6.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588z\"/>";
+                ret_str+="<circle cx=\"8\" cy=\"4.5\" r=\"1\"/></svg>";
+                ret_str+="</span>";
+                
+                ret_str+="<a data-toggle=\"tooltip\" title=\""+episode["name"]+"\" href=\"/video_player/?play="+episode["unique_id"]+"&type=episode\">";
+                ret_str+=episode["name"];
+                ret_str+="</a>";
+                ret_str+="<span>"+episode["name"]+" "+episode["movie_title"]+" </span>";
+                ret_str+="</div>";
+                
+                
+            });
+        
+        });        
+        $("#episodeListPlayer").html(ret_str);
+    }
+    });
+}
+
 function load_videos(){
    var url_list_dir="/utils/list_items?type=movie";
    //console.log(url_list_dir);

@@ -45,7 +45,12 @@ load_season('{{uuid}}');
 {% endifequal %}
 " onresize="load_videos();" {% endif %}
 {% if play_src != None %}
-onload="videoPlayerInit();addJumpOnVideoEnd('/video_player/?play={{nxt_ep_uuid}}&type=episode');"
+onload="videoPlayerInit();addJumpOnVideoEnd('/video_player/?play={{nxt_ep_uuid}}&type=episode');
+{% if type == "episode" %}
+loadEpisodeList('{{season_id}}')
+{% endif %}
+
+"
 {% endif %}>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -161,9 +166,8 @@ onload="videoPlayerInit();addJumpOnVideoEnd('/video_player/?play={{nxt_ep_uuid}}
     {% ifequal  type  "episode" %}
         <div class="row">
             <div class ="col">
-                {% for ep in episodes %}
-                    {{ep}} <br>
-                {% endfor %}
+                <div id="episodeListPlayer">
+                </div>
             </div>
         </div>
     {% endifequal %}
