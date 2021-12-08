@@ -7,6 +7,8 @@
     
     
     {% load static %} 
+    <script src="{% static 'js/video.min.js'%}"></script>
+    <script src="{% static 'js/utils.js' %}"></script>
     <link href="{% static 'css/video-js.css' %}" rel="stylesheet" />
     <link href="{% static 'css/videojs-city.css' %}" rel="stylesheet" />
   <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>-->
@@ -188,7 +190,6 @@ loadEpisodeList('{{season_id}}')
    
    <!--<div id="video_window">{{play_src}}</div>-->
    
-<script src="{% static 'js/video.min.js'%}"></script>
-<script src="{% static 'js/utils.js' %}"></script>
+
 </body>
 </html>
