@@ -70,7 +70,8 @@ def video(request):
                 episode_name=ep_db.name
                 show_name=ep_db.season.show.name
                 descr = ep_db.descr
-                return render(request,"main.html",{"prv_ep_name":prv_ep_name,"prv_ep_uuid":prv_ep_uuid,"nxt_ep_name":nxt_ep_name,"nxt_ep_uuid":nxt_ep_uuid,"type":type,"play_src":play_src,"username":username,"subs":subs,"show_name":show_name,"episode_name":episode_name,"season_name":season_name,"season_url":season_url,"description":descr})
+                episodes=[episode.getDict() for episode in Episode_db.objects.filter(season=ep_db.season.pk).order_by('name')]
+                return render(request,"main.html",{"prv_ep_name":prv_ep_name,"prv_ep_uuid":prv_ep_uuid,"nxt_ep_name":nxt_ep_name,"nxt_ep_uuid":nxt_ep_uuid,"type":type,"play_src":play_src,"username":username,"subs":subs,"show_name":show_name,"episode_name":episode_name,"season_name":season_name,"season_url":season_url,"description":descr,"episodes":episodes})
             else:
                 play_src=""
                 subs=[]

@@ -108,73 +108,79 @@ onload="videoPlayerInit();addJumpOnVideoEnd('/video_player/?play={{nxt_ep_uuid}}
  </div>
 </nav>
 
-    {% if not play_src == None %} 
-        {% ifequal  type  "episode" %}
+{% if not play_src == None %} 
+    {% ifequal  type  "episode" %}
         <div class="row">
-            {% if not prv_ep_name == None %}
-                <div class="col" style="text-align:center;">
-                 <a href="/video_player/?play={{prv_ep_uuid}}&type=episode" >
-                {{prv_ep_name}}
-                </a>
-                </div>
-            {% endif %}
+        {% if not prv_ep_name == None %}
             <div class="col" style="text-align:center;">
-                {{episode_name}}
+            <a href="/video_player/?play={{prv_ep_uuid}}&type=episode" >
+            {{prv_ep_name}}
+            </a>
             </div>
-            {% if not nxt_ep_name == None %}
-                <div class="col" style="text-align:center;">
-                <a href="/video_player/?play={{nxt_ep_uuid}}&type=episode">
-                {{nxt_ep_name}}
-                </a>
-                </div>
-            {% endif %}
+        {% endif %}
+        <div class="col" style="text-align:center;">
+        {{episode_name}}
         </div>
-        {% endifequal %}
-        {% ifequal  type  "movie" %}
+        {% if not nxt_ep_name == None %}
+            <div class="col" style="text-align:center;">
+            <a href="/video_player/?play={{nxt_ep_uuid}}&type=episode">
+            {{nxt_ep_name}}
+            </a>
+            </div>
+        {% endif %}
+        </div>
+    {% endifequal %}
+    {% ifequal  type  "movie" %}
         {{movie_name}}
     {% endifequal %} 
- <div class="row" style="height:85%;">
- <div class="col-8"> 
- <video 
-    id="my-video"
-    class="video-js vjs-theme-city"
-    controls
-    autoplay
-    preload="auto"
-    data-setup='{}'
-    type='application/x-mpegURL'
-  >
-    <source src="{{play_src}}"/>
-    {% for sub_url,sub_label in subs %}
-        <track kind="subtitles" src='{{sub_url}}' label='{{sub_label}}' />
-    {% endfor %}
-    <p class="vjs-no-js">
-      To view this video please enable JavaScript, and consider upgrading to a
-      web browser that
-      <a href="https://videojs.com/html5-video-support/" target="_blank"
-        >supports HTML5 video</a
-      >
-    </p>
-  </video> 
- </div>
- <div class="col-4"> 
- {% autoescape off %}
- {{description}}
-{% endautoescape %}
- </div>
- </div>
-  {% else %}
-  {% ifequal  type  "movie" %}
-  <div id="video_files"></div>
-  {% endifequal %}
-  {% ifequal  type  "show" %}
-  <div id="shows_files"></div>
-   {% endifequal %}
-   {% ifequal  type  "season" %}
-  <div id="season_files"></div>
-   {% endifequal %}
-  <div id="modal_desc"></div>
-  {% endif %}
+    <div class="row" style="height:85%;">
+        <div class="col-8"> 
+            <video  
+                id="my-video"
+                class="video-js vjs-theme-city"
+                controls autoplay preload="auto" data-setup='{}'
+                type='application/x-mpegURL'>
+                
+                <source src="{{play_src}}"/>
+                {% for sub_url,sub_label in subs %}
+                    <track kind="subtitles" src='{{sub_url}}' label='{{sub_label}}' />
+                {% endfor %}
+                <p class="vjs-no-js">
+                To view this video please enable JavaScript, and consider upgrading to a web browser that
+                <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+                </p>
+            </video> 
+        </div>
+        <div class="col-4"> 
+            {% autoescape off %}
+                {{description}}
+            {% endautoescape %}
+        </div>
+    </div>
+    
+    {% ifequal  type  "episode" %}
+        <div class="row">
+            <div class ="col">
+                {% for ep in episodes %}
+                    {{ep}} <br>
+                {% endfor %}
+            </div>
+        </div>
+    {% endifequal %}
+    
+    
+{% else %}
+    {% ifequal  type  "movie" %}
+        <div id="video_files"></div>
+    {% endifequal %}
+    {% ifequal  type  "show" %}
+        <div id="shows_files"></div>
+    {% endifequal %}
+    {% ifequal  type  "season" %}
+        <div id="season_files"></div>
+    {% endifequal %}
+        <div id="modal_desc"></div>
+{% endif %}
    
    <!--<div id="video_window">{{play_src}}</div>-->
    
