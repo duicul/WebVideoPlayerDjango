@@ -8,7 +8,7 @@ import json
 import os
 from django.views.generic import TemplateView
 from django.http import HttpResponseRedirect
-from utils.models import Movie_db,Episode_db, Season_db
+from utils.models import Movie_db,Episode_db, Season_db, Show_db
 from django.core.exceptions import ObjectDoesNotExist
 import traceback 
 # Get an instance of a logger
@@ -121,10 +121,20 @@ def index(request):
             uuid=request.GET.get("uuid")
         except KeyError:
             pass
+        categ = []
+        if type=="movie":
+            for movie in Movie_db.objects.all():
+                if not movie.category in categ:
+                    categ.append(movie.category)
+        elif type=="show":
+            for show in Show_db.objects.all():
+                if not show.category in categ:
+                    categ.append(show.category)
+        categ = list(map(lambda categ : categ.getDict(),categ))
         if type=="movie" or type=="show":
-            return render(request,"main.html",{"play_src":request.GET.get("play"),"username":username,"type":type})
+            return render(request,"main.html",{"play_src":request.GET.get("play"),"username":username,"type":type,"categ":categ})
         elif type=="season" and uuid != None:
-            return render(request,"main.html",{"username":username,"type":type,"uuid":uuid})
+            return render(request,"main.html",{"username":username,"type":type,"uuid":uuid,"categ":categ})
         else : 
             return HttpResponseRedirect("/entry_point?type=movie")
 

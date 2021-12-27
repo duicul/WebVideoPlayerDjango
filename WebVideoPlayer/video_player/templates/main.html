@@ -115,7 +115,15 @@ load_modal();
  </a>
  </div>
 </nav>
-
+{% if  type=="movie" or type=="show" %}
+    <div class="row">
+    {% for cat in categ %}
+        <div class="chip">
+            {{cat["category_name"]}}
+        </div>
+    {% endfor %}
+    </div>
+{% endif %}
 {% if not play_src == None %} 
     {% ifequal  type  "episode" %}
         <div class="row">
