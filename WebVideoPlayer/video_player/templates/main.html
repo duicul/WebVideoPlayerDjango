@@ -36,15 +36,15 @@
 </head>
 
 <body {% if play_src == None %} onload="videoPlayerInit();load_modal();
-{% ifequal  type  "movie" %}
+{% if type == "movie" %}
 load_videos();
-{% endifequal %}
-{% ifequal  type  "show" %}
+{% endif %}
+{% if type == "show" %}
 load_shows();
-{% endifequal %}
-{% ifequal  type  "season" %}
+{% endif %}
+{% if  type == "season" %}
 load_season('{{uuid}}');
-{% endifequal %}
+{% endif %}
 " onresize="load_videos();" {% endif %}
 {% if play_src != None %}
 onload="videoPlayerInit();addJumpOnVideoEnd('/video_player/?play={{nxt_ep_uuid}}&type=episode');
@@ -60,13 +60,13 @@ load_modal();
  {% if play_src == None %}
     Hi {{username}}
  {% else %}
-    {% ifequal  type  "episode" %}
+    {% if type == "episode" %}
         <a href="{{season_url}}">
         {{show_name}} >> {{season_name}}
         </a>        
     {% else %}
         Hi {{username}}
-    {% endifequal %}
+    {% endif %}
  {% endif %}
  
  <div id="scan_status" style="cursor: pointer;margin-left: auto;">
@@ -115,7 +115,7 @@ load_modal();
  </a>
  </div>
 </nav>
-{% if  type=="movie" or type=="show" %}
+{% if  type == "movie" or type == "show" %}
     <div class="row">
     {% for cat in categ %}
         <div class="chip">
@@ -125,7 +125,7 @@ load_modal();
     </div>
 {% endif %}
 {% if not play_src == None %} 
-    {% ifequal  type  "episode" %}
+    {% if type == "episode" %}
         <div class="row">
         {% if not prv_ep_name == None %}
             <div class="col" style="text-align:center;">
@@ -145,10 +145,10 @@ load_modal();
             </div>
         {% endif %}
         </div>
-    {% endifequal %}
-    {% ifequal  type  "movie" %}
+    {% endif %}
+    {% if type == "movie" %}
         {{movie_name}}
-    {% endifequal %} 
+    {% endif %} 
     <div class="row" style="height:85%;">
         <div class="col-8"> 
             <video  
@@ -174,26 +174,26 @@ load_modal();
         </div>
     </div>
     
-    {% ifequal  type  "episode" %}
+    {% if type == "episode" %}
         <div class="row">
             <div class ="col">
                 <div id="episodeListPlayer">
                 </div>
             </div>
         </div>
-    {% endifequal %}
+    {% endif %}
     
     
 {% else %}
-    {% ifequal  type  "movie" %}
+    {% if type == "movie" %}
         <div id="video_files"></div>
-    {% endifequal %}
-    {% ifequal  type  "show" %}
+    {% endif %}
+    {% if type == "show" %}
         <div id="shows_files"></div>
-    {% endifequal %}
-    {% ifequal  type  "season" %}
+    {% endif %}
+    {% if type == "season" %}
         <div id="season_files"></div>
-    {% endifequal %}
+    {% endif %}
     
 {% endif %}
 <div id="modal_desc"></div>  
