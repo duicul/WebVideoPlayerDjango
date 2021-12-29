@@ -8,7 +8,7 @@ import json
 import os
 from django.views.generic import TemplateView
 from django.http import HttpResponseRedirect
-from utils.models import Movie_db,Episode_db, Season_db, Show_db
+from utils.models import Movie_db,Episode_db, Season_db, Show_db,Category_db
 from django.core.exceptions import ObjectDoesNotExist
 import traceback 
 # Get an instance of a logger
@@ -116,6 +116,11 @@ def index(request):
             type=request.GET.get("type")
         except KeyError:
             return HttpResponseRedirect("/entry_point?type=movie")
+        category=None
+        try:
+            category=request.GET.get("category")
+        except KeyError:
+            category=None
         uuid=None
         try:
             uuid=request.GET.get("uuid")
@@ -131,8 +136,18 @@ def index(request):
                 if not show.category in categ:
                     categ.append(show.category)
         categ = list(map(lambda categ : categ.getDict(),categ))
-        if type=="movie" or type=="show":
-            return render(request,"main.html",{"play_src":request.GET.get("play"),"username":username,"type":type,"categ":categ})
+        if type=="movie":
+            movie_list = []
+            if category != None:
+                c = Category_db.objects.get(category_name=category['category_path'])
+                movie_list = list(map(lambda movie : movie.getDict(),Movie_db().objects.filter(category=c.pk)))
+            return render(request,"main.html",{"play_src":request.GET.get("play"),"username":username,"type":type,"categ":categ,"movie_list":movie_list})
+        elif type=="show":
+            show_list = []
+            if category != None:
+                c = Category_db.objects.get(category_name=category['category_path'])
+                show_list = list(map(lambda show : show.getDict(),Show_db().objects.filter(category=c.pk)))
+            return render(request,"main.html",{"play_src":request.GET.get("play"),"username":username,"type":type,"categ":categ,"show_list":show_list})
         elif type=="season" and uuid != None:
             return render(request,"main.html",{"username":username,"type":type,"uuid":uuid,"categ":categ})
         else : 

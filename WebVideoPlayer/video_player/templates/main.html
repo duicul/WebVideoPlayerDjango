@@ -121,9 +121,16 @@ load_modal();
         justify-content: center;
         align-items: center;">
     {% for cat in categ %}
+        {% if  type == "movie" %}
+            <a href="/entry_point?type=movie&category={{cat}}">
+        {% endif %}
+        {% if  type == "movie" %}
+            <a href="/entry_point?type=movie&category={{cat}}">
+        {% endif %}
         <div class="badge bg-primary" style="cursor: pointer;">
             <h2>{{cat.category_name}}</h2>
         </div>
+        </a>
     {% endfor %}
     </div>
 {% endif %}
@@ -190,9 +197,15 @@ load_modal();
 {% else %}
     {% if type == "movie" %}
         <div id="video_files"></div>
+        {% for movie in movie_list %}
+            {{movie}}
+        {% endfor %} 
     {% endif %}
     {% if type == "show" %}
         <div id="shows_files"></div>
+        {% for show in show_list %}
+            {{show}}
+        {% endfor %}
     {% endif %}
     {% if type == "season" %}
         <div id="season_files"></div>
