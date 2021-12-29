@@ -116,11 +116,11 @@ def index(request):
             type=request.GET.get("type")
         except KeyError:
             return HttpResponseRedirect("/entry_point?type=movie")
-        category_path=None
+        category_name=None
         try:
-            category_path=request.GET.get("category")
+            category_name=request.GET.get("category")
         except KeyError:
-            category_path=None
+            category_name=None
         uuid=None
         try:
             uuid=request.GET.get("uuid")
@@ -139,8 +139,8 @@ def index(request):
         if type=="movie" or type == "show":
             movie_list = []
             c=''
-            if category_path != None:
-                c = Category_db.objects.get(category_path=category_path)
+            if category_name != None:
+                c = Category_db.objects.get(category_name=category_name)
                 c=c.category_name
             return render(request,"main.html",{"play_src":request.GET.get("play"),"username":username,"type":type,"categ":categ,"category":c})
         elif type=="season" and uuid != None:

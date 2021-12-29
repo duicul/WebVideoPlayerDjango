@@ -122,10 +122,10 @@ load_modal();
         align-items: center;">
     {% for cat in categ %}
         {% if  type == "movie" %}
-            <a href="/entry_point?type=movie&category={{cat.category_path}}">
+            <a href="/entry_point?type=movie&category={{cat.category_name}}">
         {% endif %}
         {% if  type == "show" %}
-            <a href="/entry_point?type=show&category={{cat.category_path}}">
+            <a href="/entry_point?type=show&category={{cat.category_name}}">
         {% endif %}
         <div class="badge bg-primary" style="cursor: pointer;">
             <h2>{{cat.category_name}}</h2>
