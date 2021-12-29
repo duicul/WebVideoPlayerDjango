@@ -105,15 +105,20 @@ def list_items(request):
             type=request.GET.get("type")
         except:
             type=None
-            
+        category = ''
+        try:
+            category = request.GET.get("category")
+        except:
+            category = ''    
         if type=="movie":
-            categories=Category_db.objects.order_by('category_name')
+            categories=[Category_db.objects.get(category_name=category)]
+            
             #print(categories[0].category_path)
             ret_movie=[{'parent_folder_path':categ.category_path,'parent_folder_name':categ.category_name,'movies':[mv.getDict() for mv in Movie_db.objects.filter(category=categ.pk)]}  for categ in categories]
             ret_movie=list(filter(lambda cat:len(cat["movies"])>0,ret_movie))
             return HttpResponse(json.dumps(ret_movie), content_type="application/json")
         elif type == "show":
-            categories=Category_db.objects.order_by('category_name')
+            categories=[Category_db.objects.get(category_name=category)]
             categs=[]
             for categ in categories:
                 shows=[]

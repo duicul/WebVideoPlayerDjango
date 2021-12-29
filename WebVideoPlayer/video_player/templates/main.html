@@ -37,10 +37,10 @@
 
 <body {% if play_src == None %} onload="videoPlayerInit();load_modal();
 {% if type == "movie" %}
-load_videos();
+load_videos('{{category}}');
 {% endif %}
 {% if type == "show" %}
-load_shows();
+load_shows('{{category}}');
 {% endif %}
 {% if  type == "season" %}
 load_season('{{uuid}}');
@@ -197,9 +197,6 @@ load_modal();
 {% else %}
     {% if type == "movie" %}
         <div id="video_files"></div>
-        {% for movie in movie_list %}
-            {{movie}}
-        {% endfor %} 
     {% endif %}
     {% if type == "show" %}
         <div id="shows_files"></div>

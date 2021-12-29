@@ -125,8 +125,8 @@ function load_season(uuid){
     
 }
 
-function load_shows(){
-var url_list_dir="/utils/list_items?type=show";
+function load_shows(category){
+var url_list_dir="/utils/list_items?type=show&category="+category;
    //console.log(url_list_dir);
    $.ajax({url: url_list_dir, success: function(result){
         let img_w=250;
@@ -274,8 +274,8 @@ function loadEpisodeList(season_id){
     });
 }
 
-function load_videos(){
-   var url_list_dir="/utils/list_items?type=movie";
+function load_videos(category){
+   var url_list_dir="/utils/list_items?type=movie&category="+category;
    //console.log(url_list_dir);
    $.ajax({url: url_list_dir, success: function(result){
         let img_w=250;
