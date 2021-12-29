@@ -135,6 +135,7 @@ def index(request):
             for show in Show_db.objects.all():
                 if not show.category in categ:
                     categ.append(show.category)
+        categ = sorted(categ,key=lambda c: c.category_name)
         categ = list(map(lambda categ : categ.getDict(),categ))
         if type=="movie" or type == "show":
             movie_list = []
