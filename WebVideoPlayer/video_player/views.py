@@ -136,22 +136,13 @@ def index(request):
                 if not show.category in categ:
                     categ.append(show.category)
         categ = list(map(lambda categ : categ.getDict(),categ))
-        if type=="movie":
+        if type=="movie" or type == "show":
             movie_list = []
             c=''
             if category_path != None:
                 c = Category_db.objects.get(category_path=category_path)
-                movie_list = list(map(lambda movie : movie.getDict(),Movie_db.objects.filter(category=c.pk)))
                 c=c.category_name
-            return render(request,"main.html",{"play_src":request.GET.get("play"),"username":username,"type":type,"categ":categ,"movie_list":movie_list,"category":c})
-        elif type=="show":
-            show_list = []
-            c=''
-            if category_path != None:
-                c = Category_db.objects.get(category_path=category_path)
-                show_list = list(map(lambda show : show.getDict(),Show_db.objects.filter(category=c.pk)))
-                c=c.category_name
-            return render(request,"main.html",{"play_src":request.GET.get("play"),"username":username,"type":type,"categ":categ,"show_list":show_list,"category":c})
+            return render(request,"main.html",{"play_src":request.GET.get("play"),"username":username,"type":type,"categ":categ,"category":c})
         elif type=="season" and uuid != None:
             return render(request,"main.html",{"username":username,"type":type,"uuid":uuid,"categ":categ})
         else : 
