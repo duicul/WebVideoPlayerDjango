@@ -127,9 +127,9 @@ load_modal();
         {% if  type == "show" %}
             <a href="/entry_point?type=show&category={{cat.category_name}}">
         {% endif %}
-        <div class="badge bg-primary" style="cursor: pointer;">
+        <button type="button" class="btn btn-info">
             <h2>{{cat.category_name}}</h2>
-        </div>
+        </button>
         </a>
     {% endfor %}
     </div>
