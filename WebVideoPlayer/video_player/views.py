@@ -140,13 +140,13 @@ def index(request):
             movie_list = []
             if category_path != None:
                 c = Category_db.objects.get(category_path=category_path)
-                movie_list = list(map(lambda movie : movie.getDict(),Movie_db().objects.filter(category=c.pk)))
+                movie_list = list(map(lambda movie : movie.getDict(),Movie_db.objects.filter(category=c.pk)))
             return render(request,"main.html",{"play_src":request.GET.get("play"),"username":username,"type":type,"categ":categ,"movie_list":movie_list})
         elif type=="show":
             show_list = []
             if category_path != None:
                 c = Category_db.objects.get(category_path=category_path)
-                show_list = list(map(lambda show : show.getDict(),Show_db().objects.filter(category=c.pk)))
+                show_list = list(map(lambda show : show.getDict(),Show_db.objects.filter(category=c.pk)))
             return render(request,"main.html",{"play_src":request.GET.get("play"),"username":username,"type":type,"categ":categ,"show_list":show_list})
         elif type=="season" and uuid != None:
             return render(request,"main.html",{"username":username,"type":type,"uuid":uuid,"categ":categ})
