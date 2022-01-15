@@ -11,7 +11,6 @@ import webvtt
 from utils.models import Movie_db,Category_db,Show_db,Season_db,Episode_db
 import logging
 import json
-from  django.db.utils import IntegrityError
 import django
 from imdb import IMDb
 

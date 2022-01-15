@@ -47,7 +47,14 @@ load_season('{{uuid}}');
 {% endif %}
 " onresize="load_videos();" {% endif %}
 {% if play_src != None %}
-onload="videoPlayerInit();addJumpOnVideoEnd('/video_player/?play={{nxt_ep_uuid}}&type=episode');
+onload="videoPlayerInit();addJumpOnVideoEnd(
+{% if nxt_ep_uuid != None %}
+'/video_player/?play={{nxt_ep_uuid}}&type=episode'
+{% endif %}
+{% if nxt_ep_uuid == None %}
+''
+{% endif %}
+);
 {% if type == "episode" %}
 loadEpisodeList('{{season_id}}');
 load_modal();

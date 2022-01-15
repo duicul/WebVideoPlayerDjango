@@ -468,11 +468,12 @@ player.on('volumechange', () => {
     //console.log('volume changed: '+player.volume()+' previous value: '+window.localStorage.getItem('playerAudioVolume'));
     window.localStorage.setItem('playerAudioVolume', player.volume());
 })
-player.on('ended', function() {
-  setTimeout(function(){
-    window.location.href = url;
-}, 3000);
+if(url != undefined && url.length > 0 ){
+    player.on('ended', function() {
+        setTimeout(function(){
+            window.location.href = url;
+        }, 3000);
     //alert('videoended next:'+url);
-  
-});
+    });
+    }
 }
