@@ -21,6 +21,7 @@ from builtins import isinstance
 import psutil
 import threading
 import re
+from unicodedata import category
 logger = logging.getLogger("django")
 started_scanning = False
 process = None
@@ -118,7 +119,10 @@ def list_items(request):
             ret_movie=list(filter(lambda cat:len(cat["movies"])>0,ret_movie))
             return HttpResponse(json.dumps(ret_movie), content_type="application/json")
         elif type == "show":
-            categories=[Category_db.objects.get(category_name=category)]
+            if category == None or len(category) == 0:
+                categories=[Category_db.objects.get(category_name=category)]
+            else:
+                return HttpResponse(json.dumps([]), content_type="application/json")
             categs=[]
             for categ in categories:
                 shows=[]
