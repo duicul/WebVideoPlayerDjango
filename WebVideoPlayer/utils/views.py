@@ -120,9 +120,9 @@ def list_items(request):
             return HttpResponse(json.dumps(ret_movie), content_type="application/json")
         elif type == "show":
             if category == None or len(category) == 0:
-                categories=[Category_db.objects.get(category_name=category)]
-            else:
                 return HttpResponse(json.dumps([]), content_type="application/json")
+            else:
+                categories=[Category_db.objects.get(category_name=category)]
             categs=[]
             for categ in categories:
                 shows=[]
