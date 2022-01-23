@@ -2,7 +2,40 @@
 <html>
 
 <head>
-    <title>Web Video Player </title>
+    <title>
+    {% if type == "movie" %}
+        {% if play_src != None %}
+            {{movie_name}}
+        {% elif category != None %}
+            {{category}}
+        {% else %}
+            Web Video Player
+        {% endif %}
+
+    {% elif type == "show" %}
+        {% if category != None %}
+            {{category}}
+        {% else %}
+            Web Video Player
+        {% endif %}
+    {% elif  type == "season" %}
+        {% if uuid != None %}
+            {{season_name}}
+        {% elif category != None %}
+            {{category}}
+        {% else %}
+            Web Video Player
+        {% endif %}
+    {% elif  type == "episode" %}
+        {% if play_src != None %}
+            {{episode_name}}
+        {% else %}
+            Web Video Player
+        {% endif %}
+    {% else %}
+        Web Video Player
+    {% endif %}
+     </title>
    <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon/favicon-32x32.png"/>
     
     
