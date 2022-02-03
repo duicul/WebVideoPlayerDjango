@@ -139,7 +139,7 @@ def index(request):
         categ = list(map(lambda categ : categ.getDict(),categ))
         if type=="movie" or type == "show":
             movie_list = []
-            c=''
+            c=None
             if category_name != None:
                 c = Category_db.objects.get(category_name=category_name)
                 c=c.category_name
