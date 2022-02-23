@@ -162,8 +162,9 @@ def store_series(main_path,name,main_moive_path,out_path,img_path):
     if  not os.path.isfile(episode_desr_path) or FORCE_RETRIEVE_IMDB:
         episodes=re.findall(r"[Ee](\d+)",main_file_name)
         seasons=re.findall(r"[Ss](\d+)",main_file_name)
-        logger.info(main_file_name+" "+str(series_name)+" "+str(seasons)+" "+str(episodes))
-        episode_descr=create_description_episode(episode_desr_path,series_name,seasons,episodes)
+        seriesName = re.search(r"(.+) *(S[0-9]?[0-9]? *E[0-9]?[0-9]?)", main_file_name).group(1)
+        logger.info(main_file_name+" "+str(seriesName)+" "+str(seasons)+" "+str(episodes))
+        episode_descr=create_description_episode(episode_desr_path,seriesName,seasons,episodes)
         #print(episode_descr)  
     else:
         desc_file=open(episode_desr_path,"r")
