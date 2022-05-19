@@ -275,20 +275,23 @@ def extract_correct_subs(main_path,main_moive_path):
 
 def create_description_movie(desc_path,main_file_name):
     ia = IMDb()
-    movie_imdb = ia.search_movie(main_file_name)
     descr=[]
     movie_title=""
-    if(len(movie_imdb)>0):
-        mv=ia.get_movie(movie_imdb[0].movieID)
-        movie_title=movie_imdb[0]["title"]
-        try:
-            descr=mv["plot"]
-        except Exception as e:
-            logger.error(e)
+    try:
+        movie_imdb = ia.search_movie(main_file_name)
+        if(len(movie_imdb)>0):
+            mv=ia.get_movie(movie_imdb[0].movieID)
+            movie_title=movie_imdb[0]["title"]
             try:
-                descr=mv["synopsis"]
-            except Exception as e1:
-                logger.error(e1)
+                descr=mv["plot"]
+            except Exception as e:
+                logger.error(e)
+                try:
+                    descr=mv["synopsis"]
+                except Exception as e1:
+                    logger.error(e1)
+    except Exception as e:
+        logger.error(str(e))
     descr_html=""
     for line in descr:
         descr_html+=line+"<br/>"
@@ -305,8 +308,8 @@ def create_description_episode(desc_path,show,seasons,episodes):
     ia = IMDb()
     movie_title=""
     descr_html=""
-    movie_imdb = ia.search_movie(show)
     try:
+        movie_imdb = ia.search_movie(show)
         if(len(movie_imdb)>0):
             try:
                 mv=ia.get_movie(movie_imdb[0].movieID)
