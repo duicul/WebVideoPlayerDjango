@@ -27,6 +27,7 @@ started_scanning = False
 process = None
 # Create your views here.
 def file_upload_form(request):
+    logger.info("utils.file_upload_form "+str(request))
     username=None
     login=None
     try:
@@ -41,6 +42,7 @@ def file_upload_form(request):
     return render(request,"file_upload.html",{"uploaded":uploaded,"form":form})
 
 def list_dir(request):
+    logger.info("utils.list_dir "+str(request))
     try:
        path=request.GET.get("path")
     except:
@@ -61,6 +63,7 @@ def list_dir(request):
 
 
 def description(request):
+    logger.info("utils.description "+str(request))
     username=None
     try:
         username=request.session['username']
@@ -91,6 +94,7 @@ def description(request):
 
 
 def list_items(request):
+    logger.info("utils.list_items "+str(request))
     username=None
     try:
         username=request.session['username']
@@ -156,6 +160,7 @@ def list_items(request):
     return HttpResponse(json.dumps({}), content_type="application/json")
     
 def login(request):
+    logger.info("utils.login "+str(request))
     username=None
     password=None
     MyLoginForm=None
@@ -177,6 +182,7 @@ def login(request):
     return HttpResponseRedirect("/entry_point?login=wrong")
             
 def register(request):
+    logger.info("utils.register "+str(request))
     logged_user=None
     try:
         logged_user=request.session['username']
@@ -202,6 +208,7 @@ def register(request):
     return HttpResponseRedirect("/entry_point")
 
 def rescan_db(request):
+    logger.info("utils.rescan_db "+str(request))
     logged_user=None
     try:
         logged_user=request.session['username']
@@ -231,6 +238,7 @@ def rescan_db(request):
     return HttpResponse()
 
 def logout(request):
+    logger.info("utils.logout "+str(request))
     try:
         del request.session['username']
     except:
@@ -238,6 +246,7 @@ def logout(request):
     return HttpResponseRedirect("/entry_point")
 
 def list_users(request):
+    logger.info("utils.list_users "+str(request))
     logged_user=None
     try:
         logged_user=request.session['username']
@@ -246,12 +255,13 @@ def list_users(request):
     return HttpResponse(json.dumps([user.getDict() for user in User_db.objects.all()]), content_type="application/json")
 
 def joinprocess(process):
+    logger.info("utils.joinprocess "+str(process))
     if isinstance(process,Process):
         logger.info(" Joinning process: " + str(process.pid))
         process.join()
 
 def upload_file(request):
-    logger.info(" file upload ")
+    logger.info("utils.upload_file "+str(request))
     if request.method == 'POST':
         form = FileUploadForm(request.POST, request.FILES)
         logger.info("file upload form valid : "+str(form.is_valid()))

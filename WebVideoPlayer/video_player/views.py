@@ -17,6 +17,7 @@ import psutil
 #import video_player_utils
 # Create your views here.
 def video(request):
+    logger.info("video_player.video "+str(request))
     if 'processID' in request.session.keys():
         proc = request.session["processID"]
         logger.info('Process ID : '+str(proc))
@@ -87,6 +88,7 @@ def video(request):
     #return HttpResponse("Hello, world. You're at the polls index.")
 
 def index(request):
+    logger.info("video_player.index "+str(request))
     global process
     if 'processID' in request.session.keys():
         proc = request.session["processID"]
@@ -157,10 +159,11 @@ def file_render(request):
     return render(request,"file.html")
 
 def file_render_html5(request):
-    #print(request)
+    logger.info("video_player.file_render_html5 "+str(request))
     return render(request,"file_html5.html")
 
 def static_redirect_internal(request,path):
+    logger.info("video_player.static_redirect_internal "+str(request)+" "+str(path))
     #print(settings.DEBUG)
     username=None
     try:
@@ -173,6 +176,7 @@ def static_redirect_internal(request,path):
     return response
 
 def redirect_internal(request,path):
+    logger.info("video_player.redirect_internal "+str(request)+" "+str(path))
     username=None
     try:
         username=request.session['username']
@@ -184,6 +188,7 @@ def redirect_internal(request,path):
     return response
 
 def previous_ep(ep):
+    logger.info("video_player.previous_ep "+str(ep))
     curr_season=ep.season
     season_eps=Episode_db.objects.all().filter(season=curr_season.pk)
     prev_episode=None
@@ -220,6 +225,7 @@ def previous_ep(ep):
     return season_eps[len(season_eps)-1]
     
 def next_ep(ep):
+    logger.info("video_player.next_ep "+str(ep))
     curr_season=ep.season
     season_eps=Episode_db.objects.all().filter(season=curr_season.pk).order_by("-abs_path")
     prev_episode=None
