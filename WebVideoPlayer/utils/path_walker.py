@@ -12,7 +12,8 @@ from utils.models import Movie_db,Category_db,Show_db,Season_db,Episode_db
 import logging
 import json
 import django
-from imdb import IMDb
+import imdb
+
 
 FORCE_RETRIEVE_IMDB = False
 
@@ -274,7 +275,7 @@ def extract_correct_subs(main_path,main_moive_path):
     return subs
 
 def create_description_movie(desc_path,main_file_name):
-    ia = IMDb()
+    ia = imdb.Cinemagoer()
     descr=[]
     movie_title=""
     try:
@@ -305,7 +306,7 @@ def create_description_movie(desc_path,main_file_name):
     return descr_data
  
 def create_description_episode(desc_path,show,seasons,episodes):
-    ia = IMDb()
+    ia = imdb.Cinemagoer()
     movie_title=""
     descr_html=""
     try:

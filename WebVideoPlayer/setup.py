@@ -11,7 +11,7 @@ myCmd = 'sudo apt install nginx uwsgi uwsgi-plugin-python3'
 os.system(myCmd)
 myCmd = 'pip3 install django'
 os.system(myCmd)
-myCmd = 'pip3 install imdbPy'
+myCmd = 'pip3 install cinemagoer'
 os.system(myCmd)
 myCmd = 'pip3 install webvtt-py'
 os.system(myCmd)
