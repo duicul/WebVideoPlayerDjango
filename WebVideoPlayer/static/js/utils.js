@@ -29,11 +29,11 @@ function scrollHlsVolumeChange(event) {
         player = document.getElementById('video_hls');
         newVol = player.volume + scale;
         if (newVol > 1)
-            player.volume = 1
+            player.volume = 1;
         else if (newVol < 0)
-            player.volume = 0
+            player.volume = 0;
         else
-            player.volume = newVol
+            player.volume = newVol;
         window.localStorage.setItem('playerAudioVolume', player.volume);
     } catch (error) {
         console.log(error);
@@ -64,7 +64,7 @@ function initHlsPlayer(videoPath) {
         if (!isNaN(val)) {
             try {
                 console.log('load vol=' + vol);
-                player.volume= vol;
+                video.volume= vol;
             } catch (error) {
                 console.error(error + ' vol=' + vol);
             }
