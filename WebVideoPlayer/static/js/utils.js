@@ -48,7 +48,7 @@ function initHlsPlayer(videoPath){
         hls.loadSource(videoSrc);
         hls.attachMedia(video);
         console.log(hls);
-        document.getElementById('video_hls').addEventListener("wheel", scrollHlsVolumeChange);
+        //document.getElementById('video_hls').addEventListener("wheel", scrollHlsVolumeChange);
         //document.getElementById('video_hls').play();
     }
     else if (video.canPlayType('application/vnd.apple.mpegurl')) {
