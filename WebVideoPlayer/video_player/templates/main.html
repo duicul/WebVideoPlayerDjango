@@ -81,7 +81,7 @@ load_season('{{uuid}}');
 {% endif %}
 " onresize="load_videos();" {% endif %}
 {% if play_src != None %}
-onload="videoPlayerInit();addJumpOnVideoEnd(
+onload="videoPlayerInit();initHlsPlayer('{{play_src}}');addJumpOnVideoEnd(
 {% if nxt_ep_uuid != None %}
 '/video_player/?play={{nxt_ep_uuid}}&type=episode'
 {% endif %}
@@ -220,7 +220,7 @@ load_modal();
             </video>
             -->
             <video id="video_hls" controls="true" autoplay="true" preload="auto"></video>
-            <script>initHlsPlayer('{{play_src}}'); </script>
+            <!--<script>initHlsPlayer('{{play_src}}'); </script>-->
         </div>
         <div class="col-4"> 
             {% autoescape off %}
