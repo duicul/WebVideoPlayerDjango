@@ -500,7 +500,7 @@ function load_description(uuid,type){
    }});
 }
 
-function addJumpOnVideoEnd(url){
+function addJumpOnVideoEnd(url){/*
 let player = videojs('my-video');
 player.on('volumechange', () => {
     //console.log('volume changed: '+player.volume()+' previous value: '+window.localStorage.getItem('playerAudioVolume'));
@@ -513,5 +513,5 @@ if(url != undefined && url.length > 0 ){
         }, 3000);
     //alert('videoended next:'+url);
     });
-    }
+    }*/
 }
