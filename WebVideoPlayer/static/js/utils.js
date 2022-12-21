@@ -19,6 +19,23 @@ function videoPlayerInit(){
     }
 }
 
+function initHlsPlayer(videoPath){
+    var video = document.getElementById('video');
+    var videoSrc = videoPath;
+  
+    if (Hls.isSupported()) {
+        var hls = new Hls();
+        hls.loadSource(videoSrc);
+        hls.attachMedia(video);
+        console.log(hls);
+        //document.getElementById('video').addEventListener("wheel", scrollHlsVolumeChange);
+        document.getElementById('video').play();
+    }
+    else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        video.src = videoSrc;
+    }
+}
+
 function scrollVolumeChange(event){
     event.preventDefault();
     scale = event.deltaY * -0.001;

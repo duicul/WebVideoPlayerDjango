@@ -41,6 +41,7 @@
     
     {% load static %} 
     <script src="{% static 'js/video.min.js'%}"></script>
+    <script src="{% static 'js/hls.min.js'%}"></script>
     <script src="{% static 'js/utils.js' %}"></script>
     <link href="{% static 'css/video-js.css' %}" rel="stylesheet" />
     <link href="{% static 'css/videojs-city.css' %}" rel="stylesheet" />
@@ -215,7 +216,10 @@ load_modal();
                 To view this video please enable JavaScript, and consider upgrading to a web browser that
                 <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
                 </p>
-            </video> 
+            </video>
+            
+            <video onload="initHlsPlayer('{{play_src}}');" id="video_hls" controls="true" autoplay="true" preload="auto"></video>
+             
         </div>
         <div class="col-4"> 
             {% autoescape off %}
