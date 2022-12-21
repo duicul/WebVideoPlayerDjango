@@ -1,7 +1,7 @@
 var ids = [];
 
 function videoPlayerInit() {
-    let player = null;
+    /*let player = null;
     try {
         player = videojs('my-video');
         document.getElementById("my-video").addEventListener("wheel", scrollVolumeChange);
@@ -18,13 +18,13 @@ function videoPlayerInit() {
         } catch (error) {
             console.error(error + ' vol=' + vol);
         }
-    }
+    }*/
 }
 
 function scrollHlsVolumeChange(event) {
     event.preventDefault();
     scale = event.deltaY * -0.001;
-    console.log("scroll volume chnage " + scale)
+    //console.log("scroll volume chnage " + scale)
     try {
         player = document.getElementById('video_hls');
         newVol = player.volume + scale;
@@ -34,6 +34,7 @@ function scrollHlsVolumeChange(event) {
             player.volume = 0
         else
             player.volume = newVol
+        window.localStorage.setItem('playerAudioVolume', player.volume);
     } catch (error) {
         console.log(error);
         return;
@@ -57,6 +58,16 @@ function initHlsPlayer(videoPath) {
         } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
             console.log("Hls not Supported");
             video.src = videoSrc;
+        }
+        vol = window.localStorage.getItem('playerAudioVolume');
+        val = parseFloat(vol);
+        if (!isNaN(val)) {
+            try {
+                console.log('load vol=' + vol);
+                player.volume= vol;
+            } catch (error) {
+                console.error(error + ' vol=' + vol);
+            }
         }
     } catch (error) {
         console.log(error);
@@ -535,18 +546,12 @@ function load_description(uuid, type) {
 }
 
 function addJumpOnVideoEnd(url) {
-    /*
-    let player = videojs('my-video');
-    player.on('volumechange', () => {
-        //console.log('volume changed: '+player.volume()+' previous value: '+window.localStorage.getItem('playerAudioVolume'));
-        window.localStorage.setItem('playerAudioVolume', player.volume());
-    })
     if(url != undefined && url.length > 0 ){
-        player.on('ended', function() {
+        var vid = document.getElementById("video_hls");
+        vid.onended = function() {
             setTimeout(function(){
                 window.location.href = url;
             }, 3000);
-        //alert('videoended next:'+url);
-        });
-        }*/
+        };
+        }
 }
