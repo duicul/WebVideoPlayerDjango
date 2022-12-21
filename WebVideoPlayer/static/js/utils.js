@@ -19,6 +19,24 @@ function videoPlayerInit(){
     }
 }
 
+function scrollHlsVolumeChange(event){
+    event.preventDefault();
+    scale = event.deltaY * -0.001;
+    console.log("scroll volume chnage "+scale)
+    try{
+        player = document.getElementById('video_hls');
+        newVol = player.volume + scale;
+        if(newVol>1)
+            player.volume = 1
+        else if (newVol<0)
+            player.volume = 0
+        else
+            player.volume = newVol
+    }catch(error){
+        console.log(error);
+        return;}
+}
+
 function initHlsPlayer(videoPath){
     var video = document.getElementById('video');
     var videoSrc = videoPath;
@@ -28,8 +46,8 @@ function initHlsPlayer(videoPath){
         hls.loadSource(videoSrc);
         hls.attachMedia(video);
         console.log(hls);
-        //document.getElementById('video').addEventListener("wheel", scrollHlsVolumeChange);
-        document.getElementById('video').play();
+        document.getElementById('video_hls').addEventListener("wheel", scrollHlsVolumeChange);
+        document.getElementById('video_hls').play();
     }
     else if (video.canPlayType('application/vnd.apple.mpegurl')) {
         video.src = videoSrc;
