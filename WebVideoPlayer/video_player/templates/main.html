@@ -218,8 +218,8 @@ load_modal();
                 </p>
             </video>
             
-            <video onload="initHlsPlayer('{{play_src}}');" id="video_hls" controls="true" autoplay="true" preload="auto"></video>
-             
+            <video id="video_hls" controls="true" autoplay="true" preload="auto"></video>
+            <script>initHlsPlayer('{{play_src}}'); </script>
         </div>
         <div class="col-4"> 
             {% autoescape off %}
