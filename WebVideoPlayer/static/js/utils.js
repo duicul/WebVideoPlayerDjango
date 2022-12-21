@@ -39,9 +39,11 @@ function scrollHlsVolumeChange(event){
 
 function initHlsPlayer(videoPath){
     var video = document.getElementById('video');
+    console.log("initHlsPlayer "+videoPath);
     var videoSrc = videoPath;
   
     if (Hls.isSupported()) {
+        console.log("Hls.isSupported");
         var hls = new Hls();
         hls.loadSource(videoSrc);
         hls.attachMedia(video);
@@ -50,6 +52,7 @@ function initHlsPlayer(videoPath){
         document.getElementById('video_hls').play();
     }
     else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        console.log("Hls not Supported");
         video.src = videoSrc;
     }
 }
