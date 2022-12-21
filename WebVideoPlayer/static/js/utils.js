@@ -49,7 +49,7 @@ function initHlsPlayer(videoPath){
         hls.attachMedia(video);
         console.log(hls);
         document.getElementById('video_hls').addEventListener("wheel", scrollHlsVolumeChange);
-        document.getElementById('video_hls').play();
+        //document.getElementById('video_hls').play();
     }
     else if (video.canPlayType('application/vnd.apple.mpegurl')) {
         console.log("Hls not Supported");
