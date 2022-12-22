@@ -157,7 +157,9 @@ load_modal();
  </div>
 </nav>
 {% if  type == "movie" or type == "show" %}
-    <div class="container overflow-hidden">
+    <div class="container overflow-hidden" style="text-align: center;
+            justify-content: center;
+            align-items: center;">
         {% for cat in categ %}
             {% if  type == "movie" %}
                 <a href="/entry_point?type=movie&category={{cat.category_name}}">
