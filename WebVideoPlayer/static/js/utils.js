@@ -214,13 +214,13 @@ function load_shows(category) {
 
                     ids.push(target_id);
 
-                    ret_str += "<div id=\"" + target_id + "\" class=\"carousel slide\" data-ride=\"carousel\" style=\"background-color: lightblue;\">";
+                    ret_str += "<div id=\"" + target_id + "\" class=\"carousel slide\" data-bs-ride=\"carousel\" style=\"background-color: lightblue;\">";
                     ret_str += "<ul class=\"carousel-indicators\">";
-                    ret_str += "<li data-bs-target=\"#" + target_id + "\" data-slide-to=\"0\" class=\"active\"></li>";
+                    ret_str += "<li data-bs-target=\"#" + target_id + "\" data-bs-slide-to=\"0\" class=\"active\"></li>";
 
                     let i;
                     for (i = 1; i < slides; i++) {
-                        ret_str += "<li data-bs-target=\"#" + target_id + "\" data-slide-to=\"" + i + "\"></li>";
+                        ret_str += "<li data-bs-target=\"#" + target_id + "\" data-bs-slide-to=\"" + i + "\"></li>";
                     }
 
                     ret_str += "</ul>";
@@ -293,9 +293,9 @@ function load_shows(category) {
 
                     ret_str += "</div>";
 
-                    ret_str += "<a class=\"carousel-control-prev\" href=\"#" + target_id + "\" data-slide=\"prev\">";
+                    ret_str += "<a class=\"carousel-control-prev\" href=\"#" + target_id + "\" data-bs-slide=\"prev\">";
                     ret_str += "<span class=\"carousel-control-prev-icon\"></span></a>";
-                    ret_str += "<a class=\"carousel-control-next\" href=\"#" + target_id + "\" data-slide=\"next\">";
+                    ret_str += "<a class=\"carousel-control-next\" href=\"#" + target_id + "\" data-bs-slide=\"next\">";
                     ret_str += "<span class=\"carousel-control-next-icon\"></span></a>";
                     ret_str += "</div>";
 
@@ -364,7 +364,7 @@ function load_videos(category) {
                 slides = Math.ceil(movies.length / movies_per_slide)
                 target_id = ("demo" + parent_dir["parent_folder_name"]).replaceAll(" ", "_");
                 ids.push(target_id);
-                ret_str += "<div id=\"" + target_id + "\" class=\"carousel slide\" data-ride=\"carousel\" style=\"background-color: lightblue;\">";
+                ret_str += "<div id=\"" + target_id + "\" class=\"carousel slide\" data-bs-ride=\"carousel\" style=\"background-color: lightblue;\">";
                 ret_str += "<ul class=\"carousel-indicators\">";
                 ret_str += "<li data-bs-target=\"#" + target_id + "\" data-bs-slide-to=\"0\" class=\"active\"></li>";
 
