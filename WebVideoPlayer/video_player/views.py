@@ -45,19 +45,22 @@ def video(request):
             if type=="movie":
                 mv_db=Movie_db.objects.get(unique_id=uuid)
                 play_src=mv_db.movie_url
-                logger.info("movie subs"+str(mv_db.sub_json))
+                #logger.info("movie subs"+str(mv_db.sub_json))
                 subs=json.loads(mv_db.sub_json)
                 subs = subs.strip(']["').split(',')
-                logger.info("movie subs"+str(subs))
+                #logger.info("movie subs"+str(subs))
                 subsaux=[]
                 for sub in subs:
-                    logger.info("movie subs sub"+str(sub))
+                    #logger.info("movie subs sub"+str(sub))
                     subsaux.append((sub,os.path.basename(sub)))
                 subs=subsaux    
-                logger.info("movie subs"+str(subs))
+                #logger.info("movie subs"+str(subs))
                 movie_name=mv_db.name
                 descr = mv_db.descr
-                return render(request,"main.html",{"movie_name":movie_name,"type":type,"play_src":play_src,"username":username,"subs":subs,"description":descr})
+                resp = {"movie_name":movie_name,"type":type,"play_src":play_src,"username":username,"description":descr}
+                if len(subs)>0:
+                    resp["subs"] = subs
+                return render(request,"main.html",resp)
             elif type=="episode":
                 ep_db=Episode_db.objects.get(unique_id=uuid)
                 prv_ep=previous_ep(ep_db)
@@ -76,14 +79,14 @@ def video(request):
                 logger.info("episode subs"+str(ep_db.sub_json))
                 subs=json.loads(ep_db.sub_json)
                 subs = subs.strip(']["').split(',')
-                logger.info("episode subs"+str(subs))
+                #logger.info("episode subs"+str(subs))
                 subsaux=[]
                 for sub in list(subs):
-                    logger.info("episode subs sub"+str(sub))
+                    #logger.info("episode subs sub"+str(sub))
                     subsaux.append((sub,os.path.basename(sub)))
                 subs=subsaux
                 #subs=[(sub,os.path.basename(sub)) for sub in subs]
-                logger.info("episode subs"+str(subs))
+                #logger.info("episode subs"+str(subs))
                 season_name=str(ep_db.season.name)
                 season_id = str(ep_db.season.unique_id)
                 season_url="/entry_point?type=season&uuid="+str(ep_db.season.unique_id)
@@ -95,13 +98,19 @@ def video(request):
                     episodes=[episode.getDict() for episode in Episode_db.objects.filter(season=ep_db.season.pk).order_by('name')]
                 except Exception as e:
                     logger.error(str(traceback.format_exc()))"""
-                return render(request,"main.html",{"prv_ep_name":prv_ep_name,"prv_ep_uuid":prv_ep_uuid,"nxt_ep_name":nxt_ep_name,"nxt_ep_uuid":nxt_ep_uuid,"type":type,"play_src":play_src,"username":username,"subs":subs,"show_name":show_name,"episode_name":episode_name,"season_name":season_name,"season_url":season_url,"season_id":season_id,"description":descr,"episodes":episodes})
+                resp = {"prv_ep_name":prv_ep_name,"prv_ep_uuid":prv_ep_uuid,"nxt_ep_name":nxt_ep_name,"nxt_ep_uuid":nxt_ep_uuid,"type":type,"play_src":play_src,"username":username,"subs":subs,"show_name":show_name,"episode_name":episode_name,"season_name":season_name,"season_url":season_url,"season_id":season_id,"description":descr,"episodes":episodes}
+                if len(subs)>0:
+                    resp["subs"] = subs
+                return render(request,"main.html",resp)
             else:
                 play_src=""
                 subs=[]
         except ObjectDoesNotExist:
             pass
-        return render(request,"main.html",{"type":type,"play_src":play_src,"username":username,"subs":subs,"description":""})
+        resp = {"type":type,"play_src":play_src,"username":username,"subs":subs,"description":""}
+        if len(subs)>0:
+            resp["subs"] = subs
+        return render(request,"main.html",resp)
     #return HttpResponse("Hello, world. You're at the polls index.")
 
 def index(request):
