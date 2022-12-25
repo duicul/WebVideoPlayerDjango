@@ -46,7 +46,9 @@ def video(request):
                 mv_db=Movie_db.objects.get(unique_id=uuid)
                 play_src=mv_db.movie_url
                 subs=json.loads(mv_db.sub_json)
+                logger.info("movie subs"+str(subs))
                 subs=[(sub,os.path.basename(sub)) for sub in subs]
+                logger.info("movie subs"+str(subs))
                 movie_name=mv_db.name
                 descr = mv_db.descr
                 return render(request,"main.html",{"movie_name":movie_name,"type":type,"play_src":play_src,"username":username,"subs":subs,"description":descr})
@@ -66,7 +68,9 @@ def video(request):
                     nxt_ep_uuid=nxt_ep.unique_id
                 play_src=ep_db.movie_url
                 subs=json.loads(ep_db.sub_json)
+                logger.info("episode subs"+str(subs))
                 subs=[(sub,os.path.basename(sub)) for sub in subs]
+                logger.info("episode subs"+str(subs))
                 season_name=str(ep_db.season.name)
                 season_id = str(ep_db.season.unique_id)
                 season_url="/entry_point?type=season&uuid="+str(ep_db.season.unique_id)
