@@ -45,6 +45,7 @@ def video(request):
             if type=="movie":
                 mv_db=Movie_db.objects.get(unique_id=uuid)
                 play_src=mv_db.movie_url
+                logger.info("movie subs"+str(mv_db.sub_json))
                 subs=json.loads(mv_db.sub_json)
                 logger.info("movie subs"+str(subs))
                 subs=[(sub,os.path.basename(sub)) for sub in subs]
@@ -67,6 +68,7 @@ def video(request):
                     nxt_ep_name=nxt_ep.name
                     nxt_ep_uuid=nxt_ep.unique_id
                 play_src=ep_db.movie_url
+                logger.info("episode subs"+str(ep_db.sub_json))
                 subs=json.loads(ep_db.sub_json)
                 logger.info("episode subs"+str(subs))
                 subs=[(sub,os.path.basename(sub)) for sub in subs]

@@ -157,7 +157,7 @@ function load_season(uuid) {
                 let season_img = season["img_url"];
                 season["episodes"].forEach(function(episode) {
                     ret_str += "<div>";
-                    ret_str += "<span onclick=\"load_description('" + episode["unique_id"] + "','episode');\" style=\"cursor: pointer;\" title=\"Info\" data-toggle=\"modal\" data-target=\"#descriptionModal\">";
+                    ret_str += "<span onclick=\"load_description('" + episode["unique_id"] + "','episode');\" style=\"cursor: pointer;\" title=\"Info\" data-bs-toggle=\"modal\" data-bs-target=\"#descriptionModal\">";
                     ret_str += "<svg width=\"1em\" height=\"1em\" viewBox=\"0 0 16 16\" class=\"bi bi-info-square\" fill=\"currentColor\" xmlns=\"http://www.w3.org/2000/svg\">";
                     ret_str += "<path fill-rule=\"evenodd\" d=\"M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z\"/>";
                     ret_str += "<path fill-rule=\"evenodd\" d=\"M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z\"/>";
@@ -165,7 +165,7 @@ function load_season(uuid) {
                     ret_str += "<circle cx=\"8\" cy=\"4.5\" r=\"1\"/></svg>";
                     ret_str += "</span>";
 
-                    ret_str += "<a data-toggle=\"tooltip\" title=\"" + episode["name"] + "\" href=\"/video_player/?play=" + episode["unique_id"] + "&type=episode\">";
+                    ret_str += "<a data-bs-toggle=\"tooltip\" title=\"" + episode["name"] + "\" href=\"/video_player/?play=" + episode["unique_id"] + "&type=episode\">";
                     ret_str += "<img style=\"border-radius: 8%;cursor: pointer;\" src=\"" + season_img;
                     ret_str += "\" alt=\"" + episode["name"] + "\" width=\"" + img_w + "\" height=\"" + img_h + "\">";
                     ret_str += "</a>";
@@ -216,11 +216,11 @@ function load_shows(category) {
 
                     ret_str += "<div id=\"" + target_id + "\" class=\"carousel slide\" data-ride=\"carousel\" style=\"background-color: lightblue;\">";
                     ret_str += "<ul class=\"carousel-indicators\">";
-                    ret_str += "<li data-target=\"#" + target_id + "\" data-slide-to=\"0\" class=\"active\"></li>";
+                    ret_str += "<li data-bs-target=\"#" + target_id + "\" data-slide-to=\"0\" class=\"active\"></li>";
 
                     let i;
                     for (i = 1; i < slides; i++) {
-                        ret_str += "<li data-target=\"#" + target_id + "\" data-slide-to=\"" + i + "\"></li>";
+                        ret_str += "<li data-bs-target=\"#" + target_id + "\" data-slide-to=\"" + i + "\"></li>";
                     }
 
                     ret_str += "</ul>";
@@ -233,7 +233,7 @@ function load_shows(category) {
                         if (i >= show["seasons"].length)
                             break;
 
-                        ret_str += "<span onclick=\"load_description('" + show["seasons"][i]["unique_id"] + "','season');\" style=\"cursor: pointer;\" title=\"Info\" data-toggle=\"modal\" data-target=\"#descriptionModal\">";
+                        ret_str += "<span onclick=\"load_description('" + show["seasons"][i]["unique_id"] + "','season');\" style=\"cursor: pointer;\" title=\"Info\" data-bs-toggle=\"modal\" data-bs-target=\"#descriptionModal\">";
                         ret_str += "<svg width=\"1em\" height=\"1em\" viewBox=\"0 0 16 16\" class=\"bi bi-info-square\" fill=\"currentColor\" xmlns=\"http://www.w3.org/2000/svg\">";
                         ret_str += "<path fill-rule=\"evenodd\" d=\"M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z\"/>";
                         ret_str += "<path fill-rule=\"evenodd\" d=\"M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z\"/>";
@@ -241,7 +241,7 @@ function load_shows(category) {
                         ret_str += "<circle cx=\"8\" cy=\"4.5\" r=\"1\"/></svg>";
                         ret_str += "</span>";
 
-                        ret_str += "<a data-toggle=\"tooltip\" title=\"" + show["seasons"][i]["name"] + "\" href=\"/entry_point?type=season&uuid=" + show["seasons"][i]["unique_id"] + "\">";
+                        ret_str += "<a data-bs-toggle=\"tooltip\" title=\"" + show["seasons"][i]["name"] + "\" href=\"/entry_point?type=season&uuid=" + show["seasons"][i]["unique_id"] + "\">";
                         ret_str += "<img style=\"border-radius: 8%;cursor: pointer;\" src=\"" + show["seasons"][i]["img_url"];
                         ret_str += "\" alt=\"" + show["seasons"][i]["name"] + "\" width=\"" + img_w + "\" height=\"" + img_h + "\">";
                         ret_str += "</a>";
@@ -268,7 +268,7 @@ function load_shows(category) {
                             //ret_str+="<div>";
                             ret_str += "<span> ";
 
-                            ret_str += "<span onclick=\"load_description('" + show["seasons"][current_index]["unique_id"] + "','season');\" style=\"cursor: pointer;\" title=\"Info\" data-toggle=\"modal\" data-target=\"#descriptionModal\">";
+                            ret_str += "<span onclick=\"load_description('" + show["seasons"][current_index]["unique_id"] + "','season');\" style=\"cursor: pointer;\" title=\"Info\" data-bs-toggle=\"modal\" data-bs-target=\"#descriptionModal\">";
                             ret_str += "<svg width=\"1em\" height=\"1em\" viewBox=\"0 0 16 16\" class=\"bi bi-info-square\" fill=\"currentColor\" xmlns=\"http://www.w3.org/2000/svg\">";
                             ret_str += "<path fill-rule=\"evenodd\" d=\"M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z\"/>";
                             ret_str += "<path fill-rule=\"evenodd\" d=\"M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z\"/>";
@@ -276,7 +276,7 @@ function load_shows(category) {
                             ret_str += "<circle cx=\"8\" cy=\"4.5\" r=\"1\"/></svg>";
                             ret_str += "</span>";
 
-                            ret_str += "<a data-toggle=\"tooltip\" title=\"" + show["seasons"][current_index]["name"] + "\" href=\"/entry_point?type=season&uuid=" + show["seasons"][current_index]["unique_id"] + "\">";
+                            ret_str += "<a data-bs-toggle=\"tooltip\" title=\"" + show["seasons"][current_index]["name"] + "\" href=\"/entry_point?type=season&uuid=" + show["seasons"][current_index]["unique_id"] + "\">";
                             ret_str += "<img style=\"border-radius: 8%;cursor: pointer;\" src=\"" + show["seasons"][current_index]["img_url"];
                             ret_str += "\" alt=\"" + show["seasons"][current_index]["name"] + "\"  width=\"" + img_w + "\" height=\"" + img_h + "\">";
                             ret_str += "</a>";
@@ -322,7 +322,7 @@ function loadEpisodeList(season_id) {
                 let season_img = season["img_url"];
                 season["episodes"].forEach(function(episode) {
                     ret_str += "<div>";
-                    ret_str += "<span onclick=\"load_description('" + episode["unique_id"] + "','episode');\" style=\"cursor: pointer;\" title=\"Info\" data-toggle=\"modal\" data-target=\"#descriptionModal\">";
+                    ret_str += "<span onclick=\"load_description('" + episode["unique_id"] + "','episode');\" style=\"cursor: pointer;\" title=\"Info\" data-bs-toggle=\"modal\" data-bs-target=\"#descriptionModal\">";
                     ret_str += "<svg width=\"1em\" height=\"1em\" viewBox=\"0 0 16 16\" class=\"bi bi-info-square\" fill=\"currentColor\" xmlns=\"http://www.w3.org/2000/svg\">";
                     ret_str += "<path fill-rule=\"evenodd\" d=\"M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z\"/>";
                     ret_str += "<path fill-rule=\"evenodd\" d=\"M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z\"/>";
@@ -330,7 +330,7 @@ function loadEpisodeList(season_id) {
                     ret_str += "<circle cx=\"8\" cy=\"4.5\" r=\"1\"/></svg>";
                     ret_str += "</span>";
 
-                    ret_str += "<a data-toggle=\"tooltip\" title=\"" + episode["name"] + "\" href=\"/video_player/?play=" + episode["unique_id"] + "&type=episode\">";
+                    ret_str += "<a data-bs-toggle=\"tooltip\" title=\"" + episode["name"] + "\" href=\"/video_player/?play=" + episode["unique_id"] + "&type=episode\">";
                     ret_str += episode["name"] + " " + episode["movie_title"].replace(/(<br\/?>)/g, '') + ' ';
                     ret_str += "</a>";
                     ret_str += "</div>";
@@ -366,11 +366,11 @@ function load_videos(category) {
                 ids.push(target_id);
                 ret_str += "<div id=\"" + target_id + "\" class=\"carousel slide\" data-ride=\"carousel\" style=\"background-color: lightblue;\">";
                 ret_str += "<ul class=\"carousel-indicators\">";
-                ret_str += "<li data-target=\"#" + target_id + "\" data-slide-to=\"0\" class=\"active\"></li>";
+                ret_str += "<li data-bs-target=\"#" + target_id + "\" data-bs-slide-to=\"0\" class=\"active\"></li>";
 
                 let i;
                 for (i = 1; i < slides; i++) {
-                    ret_str += "<li data-target=\"#" + target_id + "\" data-slide-to=\"" + i + "\"></li>";
+                    ret_str += "<li data-bs-target=\"#" + target_id + "\" data-bs-slide-to=\"" + i + "\"></li>";
                 }
 
                 ret_str += "</ul>";
@@ -384,7 +384,7 @@ function load_videos(category) {
 
                     //ret_str+="<div>";
 
-                    ret_str += "<span onclick=\"load_description('" + movies[i]["unique_id"] + "','movie');\" style=\"cursor: pointer;\" title=\"Info\" data-toggle=\"modal\" data-target=\"#descriptionModal\">";
+                    ret_str += "<span onclick=\"load_description('" + movies[i]["unique_id"] + "','movie');\" style=\"cursor: pointer;\" title=\"Info\" data-bs-toggle=\"modal\" data-bs-target=\"#descriptionModal\">";
                     ret_str += "<svg width=\"1em\" height=\"1em\" viewBox=\"0 0 16 16\" class=\"bi bi-info-square\" fill=\"currentColor\" xmlns=\"http://www.w3.org/2000/svg\">";
                     ret_str += "<path fill-rule=\"evenodd\" d=\"M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z\"/>";
                     ret_str += "<path fill-rule=\"evenodd\" d=\"M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z\"/>";
@@ -392,7 +392,7 @@ function load_videos(category) {
                     ret_str += "<circle cx=\"8\" cy=\"4.5\" r=\"1\"/></svg>";
                     ret_str += "</span>";
 
-                    ret_str += "<a data-toggle=\"tooltip\" title=\"" + movies[i]["name"] + "\" href=\"/video_player/?play=" + movies[i]["unique_id"] + "&type=movie\">";
+                    ret_str += "<a data-bs-toggle=\"tooltip\" title=\"" + movies[i]["name"] + "\" href=\"/video_player/?play=" + movies[i]["unique_id"] + "&type=movie\">";
                     ret_str += "<img style=\"border-radius: 8%;cursor: pointer;\" src=\"" + movies[i]["img_url"];
                     ret_str += "\" alt=\"" + movies[i]["name"] + "\" width=\"" + img_w + "\" height=\"" + img_h + "\">";
                     ret_str += "</a>";
@@ -419,7 +419,7 @@ function load_videos(category) {
                         //ret_str+="<div>";
                         ret_str += "<span> ";
 
-                        ret_str += "<span onclick=\"load_description('" + movies[current_index]["unique_id"] + "','movie');\" style=\"cursor: pointer;\" title=\"Info\" data-toggle=\"modal\" data-target=\"#descriptionModal\">";
+                        ret_str += "<span onclick=\"load_description('" + movies[current_index]["unique_id"] + "','movie');\" style=\"cursor: pointer;\" title=\"Info\" data-bs-toggle=\"modal\" data-bs-target=\"#descriptionModal\">";
                         ret_str += "<svg width=\"1em\" height=\"1em\" viewBox=\"0 0 16 16\" class=\"bi bi-info-square\" fill=\"currentColor\" xmlns=\"http://www.w3.org/2000/svg\">";
                         ret_str += "<path fill-rule=\"evenodd\" d=\"M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z\"/>";
                         ret_str += "<path fill-rule=\"evenodd\" d=\"M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z\"/>";
@@ -427,7 +427,7 @@ function load_videos(category) {
                         ret_str += "<circle cx=\"8\" cy=\"4.5\" r=\"1\"/></svg>";
                         ret_str += "</span>";
 
-                        ret_str += "<a data-toggle=\"tooltip\" title=\"" + movies[current_index]["name"] + "\" href=\"/video_player/?play=" + movies[current_index]["unique_id"] + "&type=movie\">";
+                        ret_str += "<a data-bs-toggle=\"tooltip\" title=\"" + movies[current_index]["name"] + "\" href=\"/video_player/?play=" + movies[current_index]["unique_id"] + "&type=movie\">";
                         ret_str += "<img style=\"border-radius: 8%;cursor: pointer;\" src=\"" + movies[current_index]["img_url"];
                         ret_str += "\" alt=\"" + movies[current_index]["name"] + "\" onclick=\"present_video('" + movies[current_index]["movie_url"] + "');\" width=\"" + img_w + "\" height=\"" + img_h + "\">";
                         ret_str += "</a>";
@@ -442,9 +442,9 @@ function load_videos(category) {
                 }
 
                 ret_str += "</div>";
-                ret_str += "<a class=\"carousel-control-prev\" href=\"#" + target_id + "\" data-slide=\"prev\">";
+                ret_str += "<button class=\"carousel-control-prev\" data-bs-target=\"#" + target_id + "\" data-bs-slide=\"prev\">";
                 ret_str += "<span class=\"carousel-control-prev-icon\"></span></a>";
-                ret_str += "<a class=\"carousel-control-next\" href=\"#" + target_id + "\" data-slide=\"next\">";
+                ret_str += "<button class=\"carousel-control-next\" data-bs-target=\"#" + target_id + "\" data-bs-slide=\"next\">";
                 ret_str += "<span class=\"carousel-control-next-icon\"></span></a>";
                 ret_str += "</div>";
                 ret_str += "</div>";
