@@ -240,7 +240,7 @@ def store_movie(main_path,name,main_moive_path,out_path,img_path):
     except Movie_db.DoesNotExist as e:
         logger.error(e) 
         try:
-            movie_db=Movie_db(movie_title=movie_title,name=main_file_name,abs_path=out_path,img_url=img_path,movie_url=video_url,sub_json=json.dumps(subs),unique_id=uuid.uuid4().hex,descr=descr_html,category=category_db)
+            movie_db=Movie_db(movie_title=movie_title,name=main_file_name,abs_path=out_path,img_url=img_path,movie_url=video_url,sub_json=subs,unique_id=uuid.uuid4().hex,descr=descr_html,category=category_db)
             movie_db.save()
         except Exception as e:
             logger.error(str(e))
