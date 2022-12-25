@@ -47,7 +47,8 @@ def video(request):
                 play_src=mv_db.movie_url
                 #logger.info("movie subs"+str(mv_db.sub_json))
                 subs=json.loads(mv_db.sub_json)
-                subs = subs.strip(']["').split(',')
+                if(isinstance(subs, str)):
+                    subs = subs.strip(']["').split(',')
                 #logger.info("movie subs"+str(subs))
                 subsaux=[]
                 for sub in subs:
@@ -78,7 +79,8 @@ def video(request):
                 play_src=ep_db.movie_url
                 logger.info("episode subs"+str(ep_db.sub_json))
                 subs=json.loads(ep_db.sub_json)
-                subs = subs.strip(']["').split(',')
+                if(isinstance(subs, str)):
+                    subs = subs.strip(']["').split(',')
                 #logger.info("episode subs"+str(subs))
                 subsaux=[]
                 for sub in list(subs):
