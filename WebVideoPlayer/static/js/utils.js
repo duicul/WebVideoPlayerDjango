@@ -121,14 +121,14 @@ function load_modal() {
     modal += "<div  class=\"modal-content\">";
     modal += " <div class=\"modal-header\">";
     modal += "<div id=\"description_title\"></div>";
-    modal += "<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">";
+    modal += "<button type=\"button\" class=\"close\" data-bs-dismiss=\"modal\" aria-label=\"Close\">";
     modal += "  <span aria-hidden=\"true\">&times;</span>";
     modal += "</button>";
     modal += "</div>";
     modal += "<div class=\"modal-body\" id=\"description_body\">";
     modal += "</div>";
     //modal+="<div class=\"modal-footer\">";
-    //modal+="<button type=\"button\" class=\"btn btn-secondary\" data-dismiss=\"modal\">Close</button>";
+    //modal+="<button type=\"button\" class=\"btn btn-secondary\" data-bs-dismiss=\"modal\">Close</button>";
     // modal+="<button type=\"button\" class=\"btn btn-primary\">Save changes</button>";
     //modal+="</div>";
     modal += "</div>";

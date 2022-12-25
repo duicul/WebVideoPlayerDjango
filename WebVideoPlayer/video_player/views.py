@@ -48,7 +48,11 @@ def video(request):
                 logger.info("movie subs"+str(mv_db.sub_json))
                 subs=json.loads(mv_db.sub_json)
                 logger.info("movie subs"+str(subs))
-                subs=[(sub,os.path.basename(sub)) for sub in subs]
+                subsaux=[]
+                for sub in subs:
+                    logger.info("movie subs sub"+str(sub))
+                    subsaux.append((sub,os.path.basename(sub)))
+                subs=subsaux    
                 logger.info("movie subs"+str(subs))
                 movie_name=mv_db.name
                 descr = mv_db.descr
@@ -71,7 +75,12 @@ def video(request):
                 logger.info("episode subs"+str(ep_db.sub_json))
                 subs=json.loads(ep_db.sub_json)
                 logger.info("episode subs"+str(subs))
-                subs=[(sub,os.path.basename(sub)) for sub in subs]
+                subsaux=[]
+                for sub in subs:
+                    logger.info("episode subs sub"+str(sub))
+                    subsaux.append((sub,os.path.basename(sub)))
+                subs=subsaux
+                #subs=[(sub,os.path.basename(sub)) for sub in subs]
                 logger.info("episode subs"+str(subs))
                 season_name=str(ep_db.season.name)
                 season_id = str(ep_db.season.unique_id)
