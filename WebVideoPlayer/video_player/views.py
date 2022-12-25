@@ -46,7 +46,8 @@ def video(request):
                 mv_db=Movie_db.objects.get(unique_id=uuid)
                 play_src=mv_db.movie_url
                 logger.info("movie subs"+str(mv_db.sub_json))
-                subs=json.loads(mv_db.sub_json)
+                subs = mv_db.sub_json
+                #subs=json.loads(mv_db.sub_json)
                 logger.info("movie subs"+str(subs))
                 subsaux=[]
                 for sub in subs:
@@ -73,10 +74,11 @@ def video(request):
                     nxt_ep_uuid=nxt_ep.unique_id
                 play_src=ep_db.movie_url
                 logger.info("episode subs"+str(ep_db.sub_json))
-                subs=json.loads(ep_db.sub_json)
+                subs=ep_db.sub_json
+                #subs=json.loads(ep_db.sub_json)
                 logger.info("episode subs"+str(subs))
                 subsaux=[]
-                for sub in subs:
+                for sub in list(subs):
                     logger.info("episode subs sub"+str(sub))
                     subsaux.append((sub,os.path.basename(sub)))
                 subs=subsaux
