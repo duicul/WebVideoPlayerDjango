@@ -13,7 +13,7 @@ import logging
 import json
 import django
 import imdb
-
+import traceback
 
 FORCE_RETRIEVE_IMDB = False
 
@@ -71,11 +71,13 @@ def parse_dir(path):
                             img_path="/media/"+os.path.relpath(img_path,start=main_path).replace("\\","/")
                     else:
                             img_path="/static/img/not_found.jpg"
-                    if(series_check):
-                        store_series(main_path,name,main_moive_path,out_path,img_path)
-                    else:
-                        store_movie(main_path,name,main_moive_path,out_path,img_path)
-
+                    try:
+                        if(series_check):
+                            store_series(main_path,name,main_moive_path,out_path,img_path)
+                        else:
+                            store_movie(main_path,name,main_moive_path,out_path,img_path)
+                    except:
+                        logger.error(str(traceback.format_exc()))
 
 def store_series(main_path,name,main_moive_path,out_path,img_path):
     main_file_name=name.split(".")
@@ -163,7 +165,7 @@ def store_series(main_path,name,main_moive_path,out_path,img_path):
     if  not os.path.isfile(episode_desr_path) or FORCE_RETRIEVE_IMDB:
         episodes=re.findall(r"[Ee](\d+)",main_file_name)
         seasons=re.findall(r"[Ss](\d+)",main_file_name)
-        seriesName = re.search(r"(.+) *(S[0-9]?[0-9]? *E[0-9]?[0-9]?)", main_file_name).group(1)
+        seriesName = re.search(r"(.+) *(S[0-9]?[0-9]?.*E[0-9]?[0-9]?)", main_file_name).group(1)
         logger.info(main_file_name+" "+str(seriesName)+" "+str(seasons)+" "+str(episodes))
         episode_descr=create_description_episode(episode_desr_path,seriesName,seasons,episodes)
         #print(episode_descr)  
