@@ -37,12 +37,12 @@ def video(request):
         return HttpResponseRedirect("/entry_point")
     else:
         uuid=request.GET.get("play")
-        type=request.GET.get("type")
+        type_name=request.GET.get("type")
         logger.info("uuid "+str(uuid))
         play_src=""
         subs=[]
         try:
-            if type=="movie":
+            if type_name=="movie":
                 mv_db=Movie_db.objects.get(unique_id=uuid)
                 play_src=mv_db.movie_url
                 #logger.info("movie subs"+str(mv_db.sub_json))
@@ -58,11 +58,11 @@ def video(request):
                 #logger.info("movie subs"+str(subs))
                 movie_name=mv_db.name
                 descr = mv_db.descr
-                resp = {"movie_name":movie_name,"type":type,"play_src":play_src,"username":username,"description":descr}
+                resp = {"movie_name":movie_name,"type":type_name,"play_src":play_src,"username":username,"description":descr}
                 if len(subs)>0:
                     resp["subs"] = subs
                 return render(request,"main.html",resp)
-            elif type=="episode":
+            elif type_name=="episode":
                 ep_db=Episode_db.objects.get(unique_id=uuid)
                 prv_ep=previous_ep(ep_db)
                 nxt_ep=next_ep(ep_db)
@@ -100,7 +100,7 @@ def video(request):
                     episodes=[episode.getDict() for episode in Episode_db.objects.filter(season=ep_db.season.pk).order_by('name')]
                 except Exception as e:
                     logger.error(str(traceback.format_exc()))"""
-                resp = {"prv_ep_name":prv_ep_name,"prv_ep_uuid":prv_ep_uuid,"nxt_ep_name":nxt_ep_name,"nxt_ep_uuid":nxt_ep_uuid,"type":type,"play_src":play_src,"username":username,"subs":subs,"show_name":show_name,"episode_name":episode_name,"season_name":season_name,"season_url":season_url,"season_id":season_id,"description":descr,"episodes":episodes}
+                resp = {"prv_ep_name":prv_ep_name,"prv_ep_uuid":prv_ep_uuid,"nxt_ep_name":nxt_ep_name,"nxt_ep_uuid":nxt_ep_uuid,"type":type_name,"play_src":play_src,"username":username,"subs":subs,"show_name":show_name,"episode_name":episode_name,"season_name":season_name,"season_url":season_url,"season_id":season_id,"description":descr,"episodes":episodes}
                 if len(subs)>0:
                     resp["subs"] = subs
                 return render(request,"main.html",resp)
@@ -109,7 +109,7 @@ def video(request):
                 subs=[]
         except ObjectDoesNotExist:
             pass
-        resp = {"type":type,"play_src":play_src,"username":username,"subs":subs,"description":""}
+        resp = {"type":type_name,"play_src":play_src,"username":username,"subs":subs,"description":""}
         if len(subs)>0:
             resp["subs"] = subs
         return render(request,"main.html",resp)
@@ -141,9 +141,9 @@ def index(request):
     if(username==None):
         return render(request,"index.html",{"login":login})
     else:
-        type=None
+        type_name=None
         try:
-            type=request.GET.get("type")
+            type_name=request.GET.get("type")
         except KeyError:
             return HttpResponseRedirect("/entry_point?type=movie")
         category_name=None
@@ -157,25 +157,27 @@ def index(request):
         except KeyError:
             pass
         categ = []
-        if type=="movie":
+        if type_name=="movie":
             for movie in Movie_db.objects.all():
                 if not movie.category in categ:
                     categ.append(movie.category)
-        elif type=="show":
+        elif type_name=="show":
             for show in Show_db.objects.all():
                 if not show.category in categ:
                     categ.append(show.category)
         categ = sorted(categ,key=lambda c: c.category_name)
         categ = list(map(lambda categ : categ.getDict(),categ))
-        if type=="movie" or type == "show":
+        if type_name=="movie" or type_name == "show":
             movie_list = []
             c=None
             if category_name != None:
                 c = Category_db.objects.get(category_name=category_name)
                 c=c.category_name
-            return render(request,"main.html",{"play_src":request.GET.get("play"),"username":username,"type":type,"categ":categ,"category":c})
-        elif type=="season" and uuid != None:
-            return render(request,"main.html",{"username":username,"type":type,"uuid":uuid,"categ":categ})
+            return render(request,"main.html",{"play_src":request.GET.get("play"),"username":username,"type":type_name,"categ":categ,"category":c})
+        elif type_name=="season" and uuid != None:
+            season = Season_db.objects.get(unique_id=uuid)
+            season_name = season.name
+            return render(request,"main.html",{"username":username,"type":type_name,"uuid":uuid,"categ":categ,"season_name":season_name})
         else : 
             return HttpResponseRedirect("/entry_point?type=movie")
 
