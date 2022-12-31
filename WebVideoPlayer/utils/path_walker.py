@@ -21,6 +21,7 @@ logger = logging.getLogger("django")
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 try:
+    logger.info("path_walker creating cinemagoer instance")
     ia = imdb.Cinemagoer()
 except:
     logger.error(str(traceback.format_exc()))
@@ -284,6 +285,7 @@ def extract_correct_subs(main_path,main_moive_path):
 def create_description_movie(desc_path,main_file_name):
     global ia
     if ia == None:
+        logger.info("path_walker create_description_movie creating cinemagoer instance")
         ia = imdb.Cinemagoer()
     descr=[]
     movie_title=""
@@ -317,6 +319,7 @@ def create_description_movie(desc_path,main_file_name):
 def create_description_episode(desc_path,show,seasons,episodes):
     global ia
     if ia == None:
+        logger.info("path_walker create_description_episode creating cinemagoer instance")
         ia = imdb.Cinemagoer()
     movie_title=""
     descr_html=""
