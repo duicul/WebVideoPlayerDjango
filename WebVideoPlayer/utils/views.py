@@ -128,7 +128,7 @@ def list_items(request):
             else:
                 try:
                     categories=[Category_db.objects.get(category_name=category)]
-                except Exception e:
+                except Exception as e:
                     logger.error(str(traceback.format_exc()))
                     logger.info("Category error :"+str(e)+" categoryname: "+str(category))
                     return HttpResponse(json.dumps([]), content_type="application/json")
