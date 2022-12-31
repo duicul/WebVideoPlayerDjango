@@ -126,7 +126,12 @@ def list_items(request):
             if category == None or len(category) == 0:
                 return HttpResponse(json.dumps([]), content_type="application/json")
             else:
-                categories=[Category_db.objects.get(category_name=category)]
+                try:
+                    categories=[Category_db.objects.get(category_name=category)]
+                except Exception e:
+                    logger.error(str(traceback.format_exc()))
+                    logger.info("Category error :"+str(e)+" categoryname: "+str(category))
+                    return HttpResponse(json.dumps([]), content_type="application/json")
             categs=[]
             for categ in categories:
                 shows=[]
