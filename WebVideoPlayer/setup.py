@@ -11,11 +11,11 @@ myCmd = 'sudo apt install nginx uwsgi uwsgi-plugin-python3'
 os.system(myCmd)
 myCmd = 'pip3 install django'
 os.system(myCmd)
-myCmd = 'pip3 install cinemagoer'
+myCmd = 'pip3 install --upgrade cinemagoer'
 os.system(myCmd)
-myCmd = 'pip3 install webvtt-py'
+myCmd = 'pip3 install --upgrade webvtt-py'
 os.system(myCmd)
-myCmd = 'pip3 install psutil'
+myCmd = 'pip3 install --upgrade psutil'
 os.system(myCmd)
 myCmd = 'chmod a+w .'
 os.system(myCmd)
