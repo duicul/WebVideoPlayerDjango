@@ -20,12 +20,16 @@ FORCE_RETRIEVE_IMDB = False
 logger = logging.getLogger("django")
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+imdb_cache = {"show":{},"movie":{}}
+imdb_cache_id = {"show":{},"movie":{}}
 try:
     logger.info("path_walker creating cinemagoer instance")
     ia = imdb.Cinemagoer()
 except:
     logger.error(str(traceback.format_exc()))
     ia = None
+    
 def clean_db_tables():
     categs=Category_db.objects.all()
     for cat in categs:
@@ -290,9 +294,17 @@ def create_description_movie(desc_path,main_file_name):
     descr=[]
     movie_title=""
     try:
-        movie_imdb = ia.search_movie(main_file_name)
+        if main_file_name in imdb_cache["movie"].keys():
+            movie_imdb = imdb_cache["movie"][main_file_name]
+        else:
+            movie_imdb = ia.search_movie(main_file_name)
+            imdb_cache["movie"][main_file_name] = movie_imdb 
         if(len(movie_imdb)>0):
-            mv=ia.get_movie(movie_imdb[0].movieID)
+            if str(movie_imdb[0].movieID) in imdb_cache_id["movie"].keys():
+                mv = imdb_cache_id["movie"][str(movie_imdb[0].movieID)]
+            else:
+                mv=ia.get_movie(movie_imdb[0].movieID)
+                imdb_cache_id["movie"][str(movie_imdb[0].movieID)] = mv
             movie_title=movie_imdb[0]["title"]
             try:
                 descr=mv["plot"]
@@ -324,10 +336,18 @@ def create_description_episode(desc_path,show,seasons,episodes):
     movie_title=""
     descr_html=""
     try:
-        movie_imdb = ia.search_movie(show)
+        if show in imdb_cache["movie"].keys():
+            movie_imdb = imdb_cache["show"][show]
+        else:
+            movie_imdb = ia.search_movie(show)
+            imdb_cache["show"][show] = movie_imdb 
         if(len(movie_imdb)>0):
             try:
-                mv=ia.get_movie(movie_imdb[0].movieID)
+                if str(movie_imdb[0].movieID) in imdb_cache_id["show"].keys():
+                    mv = imdb_cache_id["show"][str(movie_imdb[0].movieID)]
+                else:
+                    mv=ia.get_movie(movie_imdb[0].movieID)
+                    imdb_cache_id["show"][str(movie_imdb[0].movieID)] = mv
                 ia.update(mv, 'episodes')
                 for season in seasons:
                     for episode in episodes:
