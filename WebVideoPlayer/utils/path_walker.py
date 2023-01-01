@@ -342,7 +342,7 @@ def create_description_episode(desc_path,show,seasons,episodes):
             movie_imdb = imdb_cache["show"][show]
         else:
             movie_imdb = ia.search_movie(show)
-            logger.info("path_walker storing in imdb cache show "+str(main_file_name))
+            logger.info("path_walker storing in imdb cache show "+str(show))
             imdb_cache["show"][show] = movie_imdb 
         if(len(movie_imdb)>0):
             try:
