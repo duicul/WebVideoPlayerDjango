@@ -298,12 +298,14 @@ def create_description_movie(desc_path,main_file_name):
             movie_imdb = imdb_cache["movie"][main_file_name]
         else:
             movie_imdb = ia.search_movie(main_file_name)
+            logger.info("path_walker storing in imdb cache movie "+str(main_file_name))
             imdb_cache["movie"][main_file_name] = movie_imdb 
         if(len(movie_imdb)>0):
             if str(movie_imdb[0].movieID) in imdb_cache_id["movie"].keys():
                 mv = imdb_cache_id["movie"][str(movie_imdb[0].movieID)]
             else:
                 mv=ia.get_movie(movie_imdb[0].movieID)
+                logger.info("path_walker storing in imdb id cache movie id "+str(movie_imdb[0].movieID))
                 imdb_cache_id["movie"][str(movie_imdb[0].movieID)] = mv
             movie_title=movie_imdb[0]["title"]
             try:
@@ -340,6 +342,7 @@ def create_description_episode(desc_path,show,seasons,episodes):
             movie_imdb = imdb_cache["show"][show]
         else:
             movie_imdb = ia.search_movie(show)
+            logger.info("path_walker storing in imdb cache show "+str(main_file_name))
             imdb_cache["show"][show] = movie_imdb 
         if(len(movie_imdb)>0):
             try:
@@ -347,6 +350,7 @@ def create_description_episode(desc_path,show,seasons,episodes):
                     mv = imdb_cache_id["show"][str(movie_imdb[0].movieID)]
                 else:
                     mv=ia.get_movie(movie_imdb[0].movieID)
+                    logger.info("path_walker storing in imdb id cache show id "+str(movie_imdb[0].movieID))
                     imdb_cache_id["show"][str(movie_imdb[0].movieID)] = mv
                 ia.update(mv, 'episodes')
                 for season in seasons:
