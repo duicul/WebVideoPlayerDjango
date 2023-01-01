@@ -338,7 +338,7 @@ def create_description_episode(desc_path,show,seasons,episodes):
     movie_title=""
     descr_html=""
     try:
-        if show in imdb_cache["movie"].keys():
+        if show in imdb_cache["show"].keys():
             movie_imdb = imdb_cache["show"][show]
         else:
             movie_imdb = ia.search_movie(show)
