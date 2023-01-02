@@ -177,7 +177,7 @@ LOGGING = {
             'level': 'INFO',
             'class': 'logging.handlers.RotatingFileHandler',
             'filename': './logs/log_file_status.log',
-            'maxBytes' : 1024,
+            'maxBytes' : 4 * 1024,
             'backupCount' : 1,
             'formatter':'Simple_Format'
         },
