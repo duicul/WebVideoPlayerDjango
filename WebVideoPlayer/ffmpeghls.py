@@ -1,8 +1,10 @@
-import ffmpeg_streaming
-video = ffmpeg_streaming.input('D:\WebVideoPlayerDjango\WebVideoPlayer\media\Borat.Subsequent.Moviefilm.2020.WEBRip.x264-ION10.mp4')
-from ffmpeg_streaming import Formats
-import sys
 import datetime
+import sys
+
+from ffmpeg_streaming import Formats
+import ffmpeg_streaming
+
+video = ffmpeg_streaming.input('D:\WebVideoPlayerDjango\WebVideoPlayer\media\Borat.Subsequent.Moviefilm.2020.WEBRip.x264-ION10.mp4')
 def monitor(ffmpeg, duration, time_, time_left, process):
     """
     Handling proccess.

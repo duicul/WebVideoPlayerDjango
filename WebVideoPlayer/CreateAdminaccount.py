@@ -3,10 +3,14 @@ Created on Oct 31, 2020
 
 @author: duicul
 '''
+import hashlib
 import os
+
 import django
 
 import WebVideoPlayer.settings
+from utils.models import User_db
+
 
 os.environ.setdefault(
     "DJANGO_SETTINGS_MODULE",
@@ -14,8 +18,6 @@ os.environ.setdefault(
 )
 django.setup()
 
-from utils.models import User_db
-import hashlib
 if __name__ == '__main__':
     username="admin"
     password="admin"

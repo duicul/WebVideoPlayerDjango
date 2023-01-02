@@ -1,7 +1,8 @@
+import cherrypy
 from waitress import serve
 
 from WebVideoPlayer.wsgi import application
-import cherrypy
+
 
 if __name__ == '__main__':
     config = {'/static/js':

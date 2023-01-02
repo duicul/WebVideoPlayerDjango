@@ -1,5 +1,7 @@
 from django.db import models
+
 import json
+
 
 # Create your models here.
 class User_db(models.Model): 

@@ -3,17 +3,20 @@ Created on Oct 28, 2020
 
 @author: duicul
 '''
-from pathlib import Path
 import os
-import re
-import uuid
-import webvtt
-from utils.models import Movie_db, Category_db, Show_db, Season_db, Episode_db
-import logging
-import json
+
 import django
 import imdb
+import webvtt
+
+import json
+import logging
+from pathlib import Path
+import re
 import traceback
+from utils.models import Movie_db, Category_db, Show_db, Season_db, Episode_db
+import uuid
+
 
 FORCE_RETRIEVE_IMDB = False
 

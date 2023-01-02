@@ -1,19 +1,24 @@
-from django.shortcuts import render
-from django.http import HttpResponse
-from django.conf import settings
-from django.http import HttpResponse
-from django.core.exceptions import PermissionDenied
-import logging
-import json
 import os
-from django.views.generic import TemplateView
-from django.http import HttpResponseRedirect
-from utils.models import Movie_db,Episode_db, Season_db, Show_db,Category_db
+
+from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import PermissionDenied
+from django.http import HttpResponse
+from django.http import HttpResponse
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
+from django.views.generic import TemplateView
+import psutil
+
+import json
+import logging
+from pathlib import Path
 import traceback 
+from utils.models import Movie_db, Episode_db, Season_db, Show_db, Category_db
+
 # Get an instance of a logger
 logger = logging.getLogger("django")
-import psutil
+BASE_DIR = Path(__file__).resolve().parent.parent
 #import video_player_utils
 # Create your views here.
 def video(request):
@@ -23,7 +28,14 @@ def video(request):
         logger.info('Process ID : '+str(proc))
         if proc!=None :
             if psutil.pid_exists(proc):
-                return render(request,"loading.html")
+                log_status_path = os.path.join(BASE_DIR, 'logs/log_file_status.log')
+                log_status=""
+                if os.path.isfile(log_status_path):
+                    f = open(log_status_path,"r")
+                    for line in f.read():
+                        log_status+= line + "<br/>" 
+                    f.close()
+                return render(request,"loading.html",{"log_status":log_status})
             else:
                 del request.session["processID"]
                 request.session.modified = True
@@ -123,7 +135,13 @@ def index(request):
         logger.info('Process ID : '+str(proc))
         if proc!=None :
             if psutil.pid_exists(proc):
-                return render(request,"loading.html")
+                log_status_path = os.path.join(BASE_DIR, 'logs/log_file_status.log')
+                log_status=""
+                if os.path.isfile(log_status_path):
+                    f = open(log_status_path,"r")
+                    log_status = f.read()
+                    f.close()
+                return render(request,"loading.html",{"log_status":log_status})
             else:
                 del request.session["processID"]
                 request.session.modified = True

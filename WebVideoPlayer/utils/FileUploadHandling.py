@@ -4,9 +4,11 @@ Created on Oct 31, 2020
 @author: duicul
 '''
 import os 
-import zipfile
+
 from WebVideoPlayer.settings import BASE_DIR
 import logging
+import zipfile
+
 logger = logging.getLogger("django")
 def handle_uploaded_file(file,file_folder):
     media_upload_dir=os.path.join(BASE_DIR,"media_upload")

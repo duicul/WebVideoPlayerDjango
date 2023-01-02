@@ -10,8 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
-from pathlib import Path
 import os
+
+from pathlib import Path
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -173,6 +175,14 @@ LOGGING = {
             'backupCount' : 20,
             'formatter':'Simple_Format'
         },
+        'statuslogging':{
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': './logs/log_file_status.log',
+            'maxBytes' : 1024,
+            'backupCount' : 0,
+            'formatter':'Simple_Format'
+        },
         'file_request': {
             'level': 'INFO',
             'class': 'logging.handlers.RotatingFileHandler',
@@ -190,7 +200,7 @@ LOGGING = {
  
     'loggers': {
         'django': {
-            'handlers': ['file', 'console'],
+            'handlers': ['file', 'console','statuslogging'],
             'level': 'DEBUG',
         },
         'django.request': {

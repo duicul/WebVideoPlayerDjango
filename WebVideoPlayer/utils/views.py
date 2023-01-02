@@ -1,27 +1,30 @@
-from django.shortcuts import render
-from django.http import HttpResponse
-import os
-import json
-import sys
-from utils.LoginForm import LoginForm
-from utils.path_walker import parse_media_dir,clean_db_tables
-from utils.models import User_db,Movie_db, Category_db, Show_db, Season_db,\
-    Episode_db
-import video_player
-from django.http import HttpResponseRedirect
+from builtins import isinstance
 import hashlib
-import logging
+from multiprocessing import Process
+import os
+import sys
+
 from django.core.exceptions import PermissionDenied
+from django.http import HttpResponse
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
+import psutil
+
+import json
+import logging
+import re
+import threading
+import traceback 
+from unicodedata import category
 from utils.FileUploadForm import FileUploadForm
 from utils.FileUploadHandling import handle_uploaded_file
+from utils.LoginForm import LoginForm
+from utils.models import User_db, Movie_db, Category_db, Show_db, Season_db, \
+    Episode_db
+from utils.path_walker import parse_media_dir, clean_db_tables
+import video_player
 from video_player.views import index
-import traceback 
-from multiprocessing import Process
-from builtins import isinstance
-import psutil
-import threading
-import re
-from unicodedata import category
+
 logger = logging.getLogger("django")
 started_scanning = False
 process = None

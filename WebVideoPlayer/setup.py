@@ -4,6 +4,12 @@ Created on Oct 27, 2020
 @author: duicul
 '''
 import os
+
+import CreateAdminaccount
+import Createnginxconfig
+import Createuwsgiconfig
+import restartServices
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 myCmd = 'mkdir '+BASE_DIR+'/logs;chmod a+w '+BASE_DIR+'/logs;'
 os.system(myCmd)
@@ -23,8 +29,6 @@ myCmd = 'chmod a+w ..'
 os.system(myCmd)
 myCmd = 'chmod a+w logs'
 os.system(myCmd)
-import Createuwsgiconfig
-import Createnginxconfig
 myCmd = 'python3 manage.py makemigrations'
 os.system(myCmd)
 myCmd = 'python3 manage.py migrate'
@@ -33,5 +37,3 @@ myCmd = 'chmod a+w ./*'
 os.system(myCmd)
 myCmd = 'chmod a+w ../*'
 os.system(myCmd)
-import restartServices
-import CreateAdminaccount
