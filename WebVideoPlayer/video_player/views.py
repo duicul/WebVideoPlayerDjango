@@ -32,7 +32,7 @@ def video(request):
                 log_status=""
                 if os.path.isfile(log_status_path):
                     f = open(log_status_path,"r")
-                    for line in f.read():
+                    for line in f.readlines():
                         log_status+= line + "<br/>" 
                     f.close()
                 return render(request,"loading.html",{"log_status":log_status})
@@ -139,7 +139,8 @@ def index(request):
                 log_status=""
                 if os.path.isfile(log_status_path):
                     f = open(log_status_path,"r")
-                    log_status = f.read()
+                    for line in f.readlines():
+                        log_status+= line + "<br/>"
                     f.close()
                 return render(request,"loading.html",{"log_status":log_status})
             else:
