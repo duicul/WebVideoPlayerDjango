@@ -119,7 +119,7 @@ def list_items(request):
         except:
             category = ''    
         if type=="movie":
-            if category == None or category == "None" or len(category) == 0:
+            if category == None or category == "None" or category == "undefined" or len(category) == 0:
                 return HttpResponse(json.dumps([]), content_type="application/json")
             else:
                 try:
@@ -133,7 +133,7 @@ def list_items(request):
             ret_movie=list(filter(lambda cat:len(cat["movies"])>0,ret_movie))
             return HttpResponse(json.dumps(ret_movie), content_type="application/json")
         elif type == "show":
-            if category == None or category == "None" or len(category) == 0:
+            if category == None or category == "None" or category == "undefined" or len(category) == 0:
                 return HttpResponse(json.dumps([]), content_type="application/json")
             else:
                 try:
