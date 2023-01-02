@@ -75,7 +75,7 @@ def filenamewithoutext(filename):
 def parse_dir(path):
     logger.info("parsing dir : " + str(path))
     main_path = path
-    exten = ['.mp4', '.avi', '.m3u8']
+    exten = ['.m3u8','.mp4', '.avi']
     for dirpath, dirnames, files in os.walk(path, followlinks=True):
         for name in files:
             for ext in exten:
@@ -102,7 +102,8 @@ def parse_dir(path):
                             store_movie(main_path, name, main_moive_path, out_path, img_path, vtt_m3u8_subPath)
                     except:
                         logger.error(str(traceback.format_exc()))
-
+                    
+                    break
 
 def store_series(main_path, name, main_moive_path, out_path, img_path, vtt_m3u8_subPath):
     main_file_name = name.split(".")
