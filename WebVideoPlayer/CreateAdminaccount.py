@@ -8,10 +8,9 @@ import os
 
 import django
 
-import WebVideoPlayer.settings
 from utils.models import User_db
 
-
+#Do  not import settings here
 os.environ.setdefault(
     "DJANGO_SETTINGS_MODULE",
     "WebVideoPlayer.settings"
