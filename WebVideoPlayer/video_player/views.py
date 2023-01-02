@@ -29,11 +29,10 @@ def video(request):
         if proc!=None :
             if psutil.pid_exists(proc):
                 log_status_path = os.path.join(BASE_DIR, 'logs/log_file_status.log')
-                log_status=""
+                log_status=[]
                 if os.path.isfile(log_status_path):
                     f = open(log_status_path,"r")
-                    for line in f.readlines():
-                        log_status+= line + "<br/>" 
+                    log_status = f.readlines()
                     f.close()
                 return render(request,"loading.html",{"log_status":log_status})
             else:
@@ -136,11 +135,10 @@ def index(request):
         if proc!=None :
             if psutil.pid_exists(proc):
                 log_status_path = os.path.join(BASE_DIR, 'logs/log_file_status.log')
-                log_status=""
+                log_status=[]
                 if os.path.isfile(log_status_path):
                     f = open(log_status_path,"r")
-                    for line in f.readlines():
-                        log_status+= line + "<br/>"
+                    log_status = f.readlines()
                     f.close()
                 return render(request,"loading.html",{"log_status":log_status})
             else:
