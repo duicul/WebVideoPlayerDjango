@@ -8,9 +8,6 @@ import os
 
 import django
 
-from utils.models import User_db
-
-#Do  not import settings here
 os.environ.setdefault(
     "DJANGO_SETTINGS_MODULE",
     "WebVideoPlayer.settings"
@@ -18,6 +15,7 @@ os.environ.setdefault(
 django.setup()
 
 if __name__ == '__main__':
+    from utils.models import User_db
     username="admin"
     password="admin"
     text_pass = hashlib.sha512(password.encode())
