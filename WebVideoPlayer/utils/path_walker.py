@@ -331,7 +331,7 @@ def create_description_movie(desc_path, main_file_name):
                 mv = ia.get_movie(movie_imdb[0].movieID)
                 logger.info("path_walker storing in imdb id cache movie id " + str(movie_imdb[0].movieID))
                 imdb_cache_id["movie"][str(movie_imdb[0].movieID)] = mv
-            logger_imdb.info("create_description_movie "+str(mv)+" "+str(mv.keys())+" "+main_file_name)
+            logger_imdb.info("create_description_movie "+str(mv)+" "+str(mv.keys())+" "+str(main_file_name))
             if "title" in movie_imdb[0].keys():
                 movie_title = movie_imdb[0]["title"]
             if "plot" in mv.keys():
@@ -380,7 +380,7 @@ def create_description_episode(desc_path, show, seasons, episodes):
                         try:
                             if 'episodes' in mv.keys() and len(mv['episodes']) > int(season) and len(mv['episodes'][int(season)]) > int(episode):
                                 ep = mv['episodes'][int(season)][int(episode)]
-                                logger_imdb.info("create_description_episode "+str(mv)+" "+str(mv.keys())+" "+show+" "+seasons+" "+episodes)
+                                logger_imdb.info("create_description_episode "+str(ep)+" "+str(ep.keys())+" "+str(show)+" "+str(seasons)+" "+str(episodes))
                                 if "title" in ep.keys():
                                     movie_title += (str(ep["title"]).replace("<br/>","") + " <br/>")
                                 if "plot" in ep.keys():
