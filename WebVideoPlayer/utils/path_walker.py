@@ -331,14 +331,12 @@ def create_description_movie(desc_path, main_file_name):
                 logger.info("path_walker storing in imdb id cache movie id " + str(movie_imdb[0].movieID))
                 imdb_cache_id["movie"][str(movie_imdb[0].movieID)] = mv
             movie_title = movie_imdb[0]["title"]
-            try:
+            if "plot" in mv.keys():
                 descr = mv["plot"]
-            except Exception as e:
-                logger.error(e)
-                try:
-                    descr = mv["synopsis"]
-                except Exception as e1:
-                    logger.error(e1)
+            elif "synopsis" in mv.keys():
+                descr = mv["synopsis"]
+            elif "plot outline" in mv.keys():
+                descr = mv["plot outline"]
     except Exception as e:
         logger.error(str(e))
     descr_html = ""
@@ -383,7 +381,12 @@ def create_description_episode(desc_path, show, seasons, episodes):
                             if 'episodes' in mv.keys() and len(mv['episodes']) > int(season) and len(mv['episodes'][int(season)]) > int(episode):
                                 ep = mv['episodes'][int(season)][int(episode)]
                                 movie_title += str(ep["title"]) + " <br/>"
-                                descr_html += str(ep["plot"]) + " <br/>"
+                                if "plot" in mv.keys():
+                                    descr_html += str(ep["plot"]) + " <br/>"
+                                elif "synopsis" in mv.keys():
+                                    descr_html += str(ep["synopsis"]) + " <br/>"
+                                elif "plot outline" in mv.keys():
+                                    descr_html += str(ep["plot outline"]) + " <br/>"
                         except Exception as e:
                             logger.error("create_description_episode " + str(e))
             except Exception as e:
