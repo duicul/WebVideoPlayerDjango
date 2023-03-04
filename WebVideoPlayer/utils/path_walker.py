@@ -381,11 +381,11 @@ def create_description_episode(desc_path, show, seasons, episodes):
                             if 'episodes' in mv.keys() and len(mv['episodes']) > int(season) and len(mv['episodes'][int(season)]) > int(episode):
                                 ep = mv['episodes'][int(season)][int(episode)]
                                 movie_title += str(ep["title"]) + " <br/>"
-                                if "plot" in mv.keys():
+                                if "plot" in ep.keys():
                                     descr_html += str(ep["plot"]) + " <br/>"
-                                elif "synopsis" in mv.keys():
+                                elif "synopsis" in ep.keys():
                                     descr_html += str(ep["synopsis"]) + " <br/>"
-                                elif "plot outline" in mv.keys():
+                                elif "plot outline" in ep.keys():
                                     descr_html += str(ep["plot outline"]) + " <br/>"
                         except Exception as e:
                             logger.error("create_description_episode " + str(e))
