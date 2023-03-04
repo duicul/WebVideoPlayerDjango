@@ -378,7 +378,7 @@ def create_description_episode(desc_path, show, seasons, episodes):
                 for season in seasons:
                     for episode in episodes:
                         try:
-                            if 'episodes' in mv.keys() and len(mv['episodes']) > int(season) and len(mv['episodes'][int(season)]) > int(episode):
+                            if 'episodes' in mv.keys() and int(season) in mv['episodes'].keys() and int(episode) in mv['episodes'][int(season)].keys() :
                                 ep = mv['episodes'][int(season)][int(episode)]
                                 logger_imdb.info("create_description_episode "+str(ep)+" "+str(ep.keys())+" "+str(show)+" "+str(seasons)+" "+str(episodes))
                                 if "title" in ep.keys():
