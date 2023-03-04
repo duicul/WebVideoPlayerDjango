@@ -342,7 +342,11 @@ def create_description_movie(desc_path, main_file_name):
                 descr = mv["plot outline"].replace("<br/>","")
     except Exception as e:
         logger.error(str(e))
-    descr_html = descr.replace("\n","<br/>") + "<br/>"
+    if isinstance(descr, str):
+        descr_html = descr.replace("\n","<br/>") + "<br/>"
+    elif isinstance(descr, list):
+        for d in descr:
+            descr_html = d.replace("\n","<br/>") + "<br/>"
     descr_data = {"descr_html":descr_html, "movie_title":movie_title, "search":main_file_name}
     
     desc_file = open(desc_path, "w")
