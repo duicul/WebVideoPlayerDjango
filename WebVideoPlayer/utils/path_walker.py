@@ -315,7 +315,7 @@ def create_description_movie(desc_path, main_file_name):
     if ia == None:
         logger.info("path_walker create_description_movie creating cinemagoer instance")
         ia = imdb.Cinemagoer()
-    descr = []
+    descr = ""
     movie_title = ""
     try:
         if main_file_name in imdb_cache["movie"].keys():
@@ -335,18 +335,19 @@ def create_description_movie(desc_path, main_file_name):
             if "title" in movie_imdb[0].keys():
                 movie_title = movie_imdb[0]["title"]
             if "plot" in mv.keys():
-                descr = mv["plot"].replace("<br/>","")
+                descr = str(mv["plot"]).replace("<br/>","")
             elif "synopsis" in mv.keys():
-                descr = mv["synopsis"].replace("<br/>","")
+                descr = str(mv["synopsis"]).replace("<br/>","")
             elif "plot outline" in mv.keys():
-                descr = mv["plot outline"].replace("<br/>","")
+                descr = str(mv["plot outline"]).replace("<br/>","")
     except Exception as e:
         logger.error(str(e))
-    if isinstance(descr, str):
-        descr_html = descr.replace("\n","<br/>") + "<br/>"
-    elif isinstance(descr, list):
+    descr_html = ""
+    if isinstance(descr, list):
         for d in descr:
-            descr_html = d.replace("\n","<br/>") + "<br/>"
+            descr_html = str(d).replace("\n","<br/>") + "<br/>"
+    else:
+        descr_html = str(descr).replace("\n","<br/>") + "<br/>"
     descr_data = {"descr_html":descr_html, "movie_title":movie_title, "search":main_file_name}
     
     desc_file = open(desc_path, "w")
