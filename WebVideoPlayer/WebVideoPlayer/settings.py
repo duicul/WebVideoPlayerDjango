@@ -179,6 +179,13 @@ LOGGING = {
             'maxBytes' :4*1024 * 1024,
             'backupCount' : 10,
             'formatter':'Simple_Format'
+        },'file_imdb': {
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': './logs/log_file_imdb.log',
+            'maxBytes' :4*1024 * 1024,
+            'backupCount' : 10,
+            'formatter':'Simple_Format'
         },
         'statuslogging':{
             'level': 'INFO',
@@ -206,6 +213,10 @@ LOGGING = {
     'loggers': {
         'django': {
             'handlers': ['file', 'console','statuslogging','file_error'],
+            'level': 'DEBUG',
+        },
+        'django_imdb': {
+            'handlers': ['file_imdb'],
             'level': 'DEBUG',
         },
         'django.request': {
