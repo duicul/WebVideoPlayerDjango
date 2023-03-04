@@ -332,11 +332,11 @@ def create_description_movie(desc_path, main_file_name):
                 imdb_cache_id["movie"][str(movie_imdb[0].movieID)] = mv
             movie_title = movie_imdb[0]["title"]
             if "plot" in mv.keys():
-                descr = mv["plot"]
+                descr = mv["plot"].replace("<br/>","")
             elif "synopsis" in mv.keys():
-                descr = mv["synopsis"]
+                descr = mv["synopsis"].replace("<br/>","")
             elif "plot outline" in mv.keys():
-                descr = mv["plot outline"]
+                descr = mv["plot outline"].replace("<br/>","")
     except Exception as e:
         logger.error(str(e))
     descr_html = ""
@@ -380,13 +380,13 @@ def create_description_episode(desc_path, show, seasons, episodes):
                         try:
                             if 'episodes' in mv.keys() and len(mv['episodes']) > int(season) and len(mv['episodes'][int(season)]) > int(episode):
                                 ep = mv['episodes'][int(season)][int(episode)]
-                                movie_title += str(ep["title"]) + " <br/>"
+                                movie_title += str(ep["title"]).replace("<br/>","") + " <br/>"
                                 if "plot" in ep.keys():
-                                    descr_html += str(ep["plot"]) + " <br/>"
+                                    descr_html += str(ep["plot"]).replace("<br/>","") + " <br/>"
                                 elif "synopsis" in ep.keys():
-                                    descr_html += str(ep["synopsis"]) + " <br/>"
+                                    descr_html += str(ep["synopsis"]).replace("<br/>","") + " <br/>"
                                 elif "plot outline" in ep.keys():
-                                    descr_html += str(ep["plot outline"]) + " <br/>"
+                                    descr_html += str(ep["plot outline"]).replace("<br/>","") + " <br/>"
                         except Exception as e:
                             logger.error("create_description_episode " + str(e))
             except Exception as e:
