@@ -340,10 +340,7 @@ def create_description_movie(desc_path, main_file_name):
                 descr = mv["plot outline"].replace("<br/>","")
     except Exception as e:
         logger.error(str(e))
-    descr_html = ""
-    for line in descr:
-        descr_html += line + "<br/>"
-    
+    descr_html = descr.replace("\n","<br/>") + "<br/>"
     descr_data = {"descr_html":descr_html, "movie_title":movie_title, "search":main_file_name}
     
     desc_file = open(desc_path, "w")
@@ -382,13 +379,13 @@ def create_description_episode(desc_path, show, seasons, episodes):
                             if 'episodes' in mv.keys() and len(mv['episodes']) > int(season) and len(mv['episodes'][int(season)]) > int(episode):
                                 ep = mv['episodes'][int(season)][int(episode)]
                                 if "title" in ep.keys():
-                                    movie_title += str(ep["title"]).replace("<br/>","") + " <br/>"
+                                    movie_title += (str(ep["title"]).replace("<br/>","") + " <br/>")
                                 if "plot" in ep.keys():
-                                    descr_html += str(ep["plot"]).replace("<br/>","") + " <br/>"
+                                    descr_html += (str(ep["plot"]).replace("<br/>","") + " <br/>")
                                 elif "synopsis" in ep.keys():
-                                    descr_html += str(ep["synopsis"]).replace("<br/>","") + " <br/>"
+                                    descr_html += (str(ep["synopsis"]).replace("<br/>","") + " <br/>")
                                 elif "plot outline" in ep.keys():
-                                    descr_html += str(ep["plot outline"]).replace("<br/>","") + " <br/>"
+                                    descr_html += (str(ep["plot outline"]).replace("<br/>","") + " <br/>")
                         except Exception as e:
                             logger.error("create_description_episode " + str(e))
             except Exception as e:
