@@ -258,6 +258,11 @@ def rescan_db(request):
     return HttpResponse()
 
 def list_media_dir(request):
+    username=None
+    try:
+        username=request.session['username']
+    except KeyError:
+        raise PermissionDenied()
     return HttpResponse(json.dumps(generateJsonTree_media_dir()), content_type="application/json")
 
 def logout(request):
