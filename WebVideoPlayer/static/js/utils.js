@@ -140,6 +140,35 @@ function load_modal() {
 
 }
 
+function load_modal_scan_dir(name,path){
+    var url_list_media_dir = "/utils/list_media_dir?level=1&path="+path;
+    $.ajax({
+        url: url_list_dir,
+        success: function(result) {
+            modalHtml = "";
+            modalHtml+= "<p> Name : "+name+"</p>";
+            modalHtml+= "<p> Path : "+path+"</p>";
+            modalHtml+= "<ul class=\"list-group\">";
+            for (i = 1; i < result.dirs.length; i++) {
+                modalHtml+= "<li class=\"list-group-item\">";
+                modalHtml+= "<p> Name : "+result.dirs[i].name+"</p>";
+                modalHtml+= "<p> Path : "+result.dirs[i].path+"</p>";
+                modalHtml+= "<ul class=\"list-group\">";
+                    for (j = 1; j < result.dirs[i].dirs.length; j++) {
+                        modalHtml+= "<li class=\"list-group-item\">";
+                        modalHtml+= "<p> Name : "+result.dirs[i].dirs[j].name+"</p>";
+                        modalHtml+= "<p> Path : "+result.dirs[i].dirs[j].path+"</p>";
+                        modalHtml+="</li>";
+                    }
+                modalHtml+="</ul>";
+                modalHtml+="</li>";
+                }
+            modalHtml+="</ul>";
+            $("#modal_list_dirs").html(result);
+        }
+        });
+}
+
 function load_season(uuid) {
     var url_list_dir = "/utils/list_items?type=season&uuid=" + uuid;
 
