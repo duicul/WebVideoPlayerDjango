@@ -182,7 +182,7 @@ function update_modal_scan_dir(name,path){
                     modalHtml+= "<p> Name : "+result.dirs[i].name+"</p>";
                     modalHtml+= "<p> Path : "+result.dirs[i].path+"</p>";
                     modalHtml+= "<ul class=\"list-group\">";
-                    if("dirs" in result.dirs[i]){
+                    if("data" in result.dirs[i] && "dirs" in result.dirs[i].data){
                             for (j = 0; j < result.dirs[i].dirs.length; j++) {
                                 console.log(result.dirs[i].dirs[j]);
                                 modalHtml+= "<li class=\"list-group-item\">";
