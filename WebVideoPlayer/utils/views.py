@@ -269,7 +269,11 @@ def list_media_dir(request):
             level = 3
     except:
         level=3
-    return HttpResponse(json.dumps(generateJsonTree_media_dir(level)), content_type="application/json")
+    try:
+        path=int(request.GET.get("path"))
+    except:
+        path=None
+    return HttpResponse(json.dumps(generateJsonTree_media_dir(level,path)), content_type="application/json")
 
 def logout(request):
     logger.info("utils.logout "+str(request))
