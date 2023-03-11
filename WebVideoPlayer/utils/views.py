@@ -129,7 +129,12 @@ def list_items(request):
                     logger.info("Category error :"+str(e)+" categoryname: "+str(category))
                     return HttpResponse(json.dumps([]), content_type="application/json")
             #print(categories[0].category_path)
-            ret_movie=[{'parent_folder_path':categ.category_path,'parent_folder_name':categ.category_name,'movies':[mv.getDict() for mv in Movie_db.objects.filter(category=categ.pk)]}  for categ in categories]
+            ret_movie = []
+            for categ in categories:
+                movies = [mv.getDict() for mv in Movie_db.objects.filter(category=categ.pk).order_by("name")]
+                #movies.sort(key=lambda x : x["name"])
+                ret_movie.append({'parent_folder_path':categ.category_path,'parent_folder_name':categ.category_name,'movies':movies})
+            #ret_movie=[{'parent_folder_path':categ.category_path,'parent_folder_name':categ.category_name,'movies':movies}  for categ in categories]
             ret_movie=list(filter(lambda cat:len(cat["movies"])>0,ret_movie))
             return HttpResponse(json.dumps(ret_movie), content_type="application/json")
         elif type == "show":
