@@ -21,7 +21,7 @@ from utils.FileUploadHandling import handle_uploaded_file
 from utils.LoginForm import LoginForm
 from utils.models import User_db, Movie_db, Category_db, Show_db, Season_db, \
     Episode_db
-from utils.path_walker import parse_media_dir, clean_db_tables,generateJsonTree_media_dir
+from utils.path_walker import parse_media_dir, clean_db_tables,generateJsonTree_media_dir,parse_sub_dir
 import video_player
 from video_player.views import index
 
@@ -234,6 +234,7 @@ def rescan_db(request):
         logged_user=request.session['username']
     except KeyError:
         raise PermissionDenied()
+    
     try:
         clean_db_tables()
         global started_scanning
@@ -248,6 +249,41 @@ def rescan_db(request):
             processThread.start()
             
             logger.info("rescan_db started scanning "+str(started_scanning))
+            started_scanning = False
+        else:
+            return HttpResponse(status=501)
+    except Exception as e:
+        logger.error(str(traceback.format_exc()))
+        return HttpResponse(status=500)
+    logger.info("scan_db")
+    return HttpResponse()
+
+def scan_db_dir(request):
+    logger.info("utils.scan_db_dir "+str(request))
+    logged_user=None
+    try:
+        logged_user=request.session['username']
+    except KeyError:
+        raise PermissionDenied()
+    try:
+        path=request.GET.get("path")
+    except:
+        path=None
+    if path == None:
+        return HttpResponse(status=501)
+    try:
+        global started_scanning
+        if started_scanning == False:
+            logger.info("scan_db_dir started scanning "+str(started_scanning))
+            started_scanning = True
+            global process
+            process = Process(target=parse_sub_dir,args=(path,))
+            process.start()
+            request.session['processID'] = process.pid
+            processThread = threading.Thread(target=joinprocess, args=(process,))  # <- note extra ','
+            processThread.start()
+            
+            logger.info("scan_db_dir started scanning "+str(started_scanning))
             started_scanning = False
         else:
             return HttpResponse(status=501)
