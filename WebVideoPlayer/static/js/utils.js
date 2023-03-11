@@ -189,7 +189,7 @@ function update_modal_scan_dir(name,path){
                 modalHtml+="</li>";
                 }
             modalHtml+="</ul>";
-            $("#scan_dir_body").html(result);
+            $("#scan_dir_body").html(modalHtml);
         }
         });
 }
