@@ -171,7 +171,7 @@ function update_modal_scan_dir(name,path){
             modalHtml+= "<p> Name : "+name+"</p>";
             modalHtml+= "<p> Path : "+path+"</p>";
             modalHtml+= "<p><button type=\"button\" class=\"btn btn-primary\" onClick=\"rescanfiles_dir('"+path+"');\"> Scan </button>";
-            modalHtml+= "<button type=\"button\" class=\"btn btn-secondary\" data-dismiss=\"modal\">Close</button></p>";
+            modalHtml+= "<button type=\"button\" class=\"btn btn-secondary\" data-bs-dismiss=\"modal\">Close</button></p>";
             modalHtml+= 
             modalHtml+= 
             $("#scan_dir_title").html(modalHtml);
