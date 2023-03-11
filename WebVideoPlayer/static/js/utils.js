@@ -140,7 +140,29 @@ function load_modal() {
 
 }
 
-function load_modal_scan_dir(name,path){
+function load_modal_scan_dir() {
+    var modal = "<div class=\"modal fade\" id=\"descriptionModal\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"exampleModalLabel\" aria-hidden=\"true\">";
+    modal += "<div style=\"width:70%;\"  class=\"modal-dialog\" role=\"document\">";
+    modal += "<div  class=\"modal-content\">";
+    modal += " <div class=\"modal-header\">";
+    modal += "<div id=\"scan_dir_title\"></div>";
+    modal += "<button type=\"button\" class=\"close\" data-bs-dismiss=\"modal\" aria-label=\"Close\">";
+    modal += "  <span aria-hidden=\"true\">&times;</span>";
+    modal += "</button>";
+    modal += "</div>";
+    modal += "<div class=\"modal-body\" id=\"scan_dir_body\">";
+    modal += "</div>";
+    //modal+="</div>";
+    modal += "</div>";
+    modal += "</div>";
+    modal += "</div>";
+
+
+    $("#modal_list_dirs").html(modal);
+
+}
+
+function update_modal_scan_dir(name,path){
     var url_list_media_dir = "/utils/list_media_dir?level=1&path="+path;
     $.ajax({
         url: url_list_media_dir,
@@ -148,6 +170,9 @@ function load_modal_scan_dir(name,path){
             modalHtml = "";
             modalHtml+= "<p> Name : "+name+"</p>";
             modalHtml+= "<p> Path : "+path+"</p>";
+            $("#scan_dir_title").html(modalHtml);
+        
+            modalHtml = "";
             modalHtml+= "<ul class=\"list-group\">";
             for (i = 1; i < result.dirs.length; i++) {
                 modalHtml+= "<li class=\"list-group-item\">";
@@ -164,7 +189,7 @@ function load_modal_scan_dir(name,path){
                 modalHtml+="</li>";
                 }
             modalHtml+="</ul>";
-            $("#modal_list_dirs").html(result);
+            $("#scan_dir_body").html(result);
         }
         });
 }
