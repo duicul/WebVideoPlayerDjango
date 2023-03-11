@@ -177,7 +177,7 @@ function update_modal_scan_dir(name,path){
             console.log(result.dirs);
             if("dirs" in result){
                 for (i = 0; i < result.dirs.length; i++) {
-                    modalHtml+= "<li class=\"list-group-item\">";
+                    modalHtml+= "<li class=\"list-group-item\" onClick=\"update_modal_scan_dir('"+result.dirs[i].name+"','"+result.dirs[i].path+"');\">";
                     console.log(result.dirs[i]);
                     modalHtml+= "<p> Name : "+result.dirs[i].name+"</p>";
                     modalHtml+= "<p> Path : "+result.dirs[i].path+"</p>";
@@ -185,7 +185,7 @@ function update_modal_scan_dir(name,path){
                     if("data" in result.dirs[i] && "dirs" in result.dirs[i].data){
                             for (j = 0; j < result.dirs[i].data.dirs.length; j++) {
                                 console.log(result.dirs[i].data.dirs[j]);
-                                modalHtml+= "<li class=\"list-group-item\">";
+                                modalHtml+= "<li class=\"list-group-item\" onClick=\"update_modal_scan_dir('"+result.dirs[i].data.dirs[j].name+"','"+result.dirs[i].data.dirs[j].path+"');\">";
                                 modalHtml+= "<p> Name : "+result.dirs[i].data.dirs[j].name+"</p>";
                                 modalHtml+= "<p> Path : "+result.dirs[i].data.dirs[j].path+"</p>";
                                 modalHtml+="</li>";
