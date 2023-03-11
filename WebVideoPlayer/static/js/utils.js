@@ -174,12 +174,15 @@ function update_modal_scan_dir(name,path){
         
             modalHtml = "";
             modalHtml+= "<ul class=\"list-group\">";
+            console.log(result.dirs);
             for (i = 1; i < result.dirs.length; i++) {
                 modalHtml+= "<li class=\"list-group-item\">";
+                console.log(result.dirs[i]);
                 modalHtml+= "<p> Name : "+result.dirs[i].name+"</p>";
                 modalHtml+= "<p> Path : "+result.dirs[i].path+"</p>";
                 modalHtml+= "<ul class=\"list-group\">";
                     for (j = 1; j < result.dirs[i].dirs.length; j++) {
+                        console.log(result.dirs[i].dirs[j]);
                         modalHtml+= "<li class=\"list-group-item\">";
                         modalHtml+= "<p> Name : "+result.dirs[i].dirs[j].name+"</p>";
                         modalHtml+= "<p> Path : "+result.dirs[i].dirs[j].path+"</p>";
