@@ -143,7 +143,7 @@ function load_modal() {
 function load_modal_scan_dir(name,path){
     var url_list_media_dir = "/utils/list_media_dir?level=1&path="+path;
     $.ajax({
-        url: url_list_dir,
+        url: url_list_media_dir,
         success: function(result) {
             modalHtml = "";
             modalHtml+= "<p> Name : "+name+"</p>";
