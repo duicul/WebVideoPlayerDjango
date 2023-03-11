@@ -270,7 +270,7 @@ def list_media_dir(request):
     except:
         level=3
     try:
-        path=int(request.GET.get("path"))
+        path=request.GET.get("path")
     except:
         path=None
     return HttpResponse(json.dumps(generateJsonTree_media_dir(level,path)), content_type="application/json")
