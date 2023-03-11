@@ -141,7 +141,7 @@ function load_modal() {
 }
 
 function load_modal_scan_dir() {
-    var modal = "<div class=\"modal fade\" id=\"descriptionModal\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"exampleModalLabel\" aria-hidden=\"true\">";
+    var modal = "<div class=\"modal fade\" id=\"scanDirModal\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"exampleModalLabel\" aria-hidden=\"true\">";
     modal += "<div style=\"width:70%;\"  class=\"modal-dialog\" role=\"document\">";
     modal += "<div  class=\"modal-content\">";
     modal += " <div class=\"modal-header\">";
