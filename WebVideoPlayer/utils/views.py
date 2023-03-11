@@ -21,7 +21,7 @@ from utils.FileUploadHandling import handle_uploaded_file
 from utils.LoginForm import LoginForm
 from utils.models import User_db, Movie_db, Category_db, Show_db, Season_db, \
     Episode_db
-from utils.path_walker import parse_media_dir, clean_db_tables
+from utils.path_walker import parse_media_dir, clean_db_tables,generateJsonTree_media_dir
 import video_player
 from video_player.views import index
 
@@ -256,6 +256,9 @@ def rescan_db(request):
         return HttpResponse(status=500)
     logger.info("scan_db")
     return HttpResponse()
+
+def list_media_dir(request):
+    return HttpResponse(json.dumps(generateJsonTree_media_dir()), content_type="application/json")
 
 def logout(request):
     logger.info("utils.logout "+str(request))
