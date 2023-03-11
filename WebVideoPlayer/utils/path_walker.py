@@ -418,7 +418,7 @@ def generateJsonTree(path,level):
                 print(file)
                 print(fullFilePath)
                 if os.path.isdir(fullFilePath):
-                    dirJson["dirs"].append({"name":file,"data":generateJsonTree(fullFilePath,level-1)})
+                    dirJson["dirs"].append({"name":file,"path":fullFilePath,"data":generateJsonTree(fullFilePath,level-1)})
                 #else:
                 #    dirJson["files"].append({"name":file,"data":generateJsonTree(fullFilePath)})
         return dirJson
