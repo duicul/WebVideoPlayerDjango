@@ -170,7 +170,7 @@ function update_modal_scan_dir(name,path){
             modalHtml = "";
             modalHtml+= "<p> Name : "+name+"</p>";
             modalHtml+= "<p> Path : "+path+"</p>";
-            modalHtml+= "<p><button type=\"button\" class=\"btn btn-primary\" onClick=\"rescanfiles('"+path+"');\"> Scan </button>";
+            modalHtml+= "<p><button type=\"button\" class=\"btn btn-primary\" onClick=\"rescanfiles_dir('"+path+"');\"> Scan </button>";
             modalHtml+= "<button type=\"button\" class=\"btn btn-secondary\" data-dismiss=\"modal\">Close</button></p>";
             modalHtml+= 
             modalHtml+= 
@@ -205,7 +205,7 @@ function update_modal_scan_dir(name,path){
         });
 }
 
-function rescanfiles(path) {
+function rescanfiles_dir(path) {
     var url_list_dir = "/utils/scan_db_dir?path="+path;
     $.ajax({
         url: url_list_dir,
