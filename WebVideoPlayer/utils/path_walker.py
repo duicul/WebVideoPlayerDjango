@@ -78,7 +78,7 @@ def filenamewithoutext(filename):
 
 def parse_dir(path):
     logger.info("parsing dir : " + str(path))
-    main_path = path
+    main_path = os.path.join(BASE_DIR, 'media')
     exten = ['.m3u8','.mp4', '.avi']
     for dirpath, dirnames, files in os.walk(path, followlinks=True):
         for name in files:
