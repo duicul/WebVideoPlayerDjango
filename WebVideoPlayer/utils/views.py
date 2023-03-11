@@ -263,7 +263,13 @@ def list_media_dir(request):
         username=request.session['username']
     except KeyError:
         raise PermissionDenied()
-    return HttpResponse(json.dumps(generateJsonTree_media_dir()), content_type="application/json")
+    try:
+        level=int(request.GET.get("level"))
+        if level >= 3:
+            level = 3
+    except:
+        level=3
+    return HttpResponse(json.dumps(generateJsonTree_media_dir(level)), content_type="application/json")
 
 def logout(request):
     logger.info("utils.logout "+str(request))

@@ -408,24 +408,25 @@ def create_description_episode(desc_path, show, seasons, episodes):
     logger.info(str(descr_data))
     return descr_data 
 
-def generateJsonTree(path):
+def generateJsonTree(path,level):
     if os.path.isdir(path):
         dirJson = {"dirs":[],"files":[]}
-        for file in os.listdir(path):
-            fullFilePath = os.path.join(path,file)
-            print(path)
-            print(file)
-            print(fullFilePath)
-            if os.path.isdir(fullFilePath):
-                dirJson["dirs"].append({"name":file,"data":generateJsonTree(fullFilePath)})
-            #else:
-            #    dirJson["files"].append({"name":file,"data":generateJsonTree(fullFilePath)})
+        if level>=0:
+            for file in os.listdir(path):
+                fullFilePath = os.path.join(path,file)
+                print(path)
+                print(file)
+                print(fullFilePath)
+                if os.path.isdir(fullFilePath):
+                    dirJson["dirs"].append({"name":file,"data":generateJsonTree(fullFilePath,level-1)})
+                #else:
+                #    dirJson["files"].append({"name":file,"data":generateJsonTree(fullFilePath)})
         return dirJson
     else:
         return {"file":path}
 
-def generateJsonTree_media_dir():
-    return generateJsonTree(os.path.join(BASE_DIR, 'media'))
+def generateJsonTree_media_dir(level):
+    return generateJsonTree(os.path.join(BASE_DIR, 'media'),level)
 
 def parse_media_dir():
     return parse_dir(os.path.join(BASE_DIR, 'media'))
