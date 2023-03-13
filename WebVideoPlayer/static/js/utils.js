@@ -39,7 +39,7 @@ function uploadSplit(){
     }
     console.log(chunks.length);
     console.log(chunks);
-    uploadFileChuncks(chunks,chunks.length,file.name,document.getElementById("uploadFilePath").value));   
+    uploadFileChuncks(chunks,chunks.length,file.name,document.getElementById("uploadFilePath").value);   
 }
 
 function uploadFileChuncks(chunks,chunks_total,filename,path){
