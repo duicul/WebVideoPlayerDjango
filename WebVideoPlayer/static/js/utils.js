@@ -101,9 +101,6 @@ function uploadSplit(){
                 }*/
             }
         });
-    };
-        
-        }
     }
 }
 function scrollHlsVolumeChange(event) {
