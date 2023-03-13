@@ -60,8 +60,8 @@ a {
                   value = "Upload Split" >
                   <strong>Upload Split</strong>
                </button>
-    <div class="progress" id="uploadProgress">
-        <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+    <div class="progress">
+        <div id="uploadProgress" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
     </div>
     <form enctype="multipart/form-data" style="width:40%;height:40%;background-color:#A495F5" name = "form" action = "{% url 'upload_file' %}" 
          method = "POST" >{% csrf_token %}
