@@ -9,7 +9,7 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 import psutil
-
+import zipfile
 import json
 import logging
 import re
@@ -61,8 +61,15 @@ def file_upload_split(request):
         fileData = uploaded_file.read()
         logger.info(fileData)
         logger.info({"name":file_name,"path":path})
-        with open(os.path.join(path,file_name), 'wb+') as f:
+        writeMode = 'ab+'
+        if "first" in request.POST.keys():
+            writeMode = "wb+"
+        with open(os.path.join(path,file_name), writeMode) as f:
                 f.write(fileData)
+        if "last" in request.POST.keys():  
+            if(file_name.name.endswith(".zip")):       
+                with zipfile.ZipFile(os.path.join(path,file_name), 'r') as zip_ref:
+                    zip_ref.extractall(path)
         return HttpResponse(json.dumps({"name":file_name,"path":path}), content_type="application/json")
         ## Finally, you know this is multipart and headers are okay, let save it. 
         """uploaded_file = request.FILES['file'] # data from request
