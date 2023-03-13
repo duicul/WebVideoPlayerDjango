@@ -62,8 +62,8 @@ function uploadSplit(){
                     
                   });
         if(uploaderror){break;}
+    }
 }
-
 function scrollHlsVolumeChange(event) {
     event.preventDefault();
     scale = event.deltaY * -0.001;
