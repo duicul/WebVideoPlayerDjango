@@ -17,6 +17,7 @@ import threading
 import traceback 
 from unicodedata import category
 from utils.FileUploadForm import FileUploadForm
+from utils.ChunckFileUpload import ChunckFileUploadForm
 from utils.FileUploadHandling import handle_uploaded_file
 from utils.LoginForm import LoginForm
 from utils.models import User_db, Movie_db, Category_db, Show_db, Season_db, \
@@ -53,12 +54,15 @@ def file_upload_split(request):
             username=request.session['username']
         except KeyError:
             raise PermissionDenied()
-        body_unicode = request.data.decode('utf-8')
-        body = json.loads(body_unicode)
-        content = body['content']
-        name = content["name"]
-        path = content["path"]
-        return HttpResponse(json.dumps({"name":name,"path":path}), content_type="application/json")
+        chunckUploadFile=None
+        if request.method == 'POST':
+            chunckUploadFile = ChunckFileUploadForm(request.POST)
+    
+        if chunckUploadFile.is_valid() and not chunckUploadFile == None:
+            name = chunckUploadFile.cleaned_data["filename"]
+            path = chunckUploadFile.cleaned_data["path"]
+            file = chunckUploadFile.cleaned_data["file"]
+            return HttpResponse(json.dumps({"name":name,"path":path}), content_type="application/json")
     except Exception as e:
         logger.error(str(traceback.format_exc()))
         raise RequestAborted(e)
