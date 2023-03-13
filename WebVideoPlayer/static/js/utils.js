@@ -51,6 +51,7 @@ function uploadFileChuncks(chunks,chunks_total,filename,path){
     $.ajaxSetup({
             headers: {
                 "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value,
+                "X-Frame-Options": "SAMEORIGIN"
             }
         });
     $.ajax({url: splitUrl,
