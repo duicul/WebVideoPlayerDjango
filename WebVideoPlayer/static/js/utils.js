@@ -54,8 +54,8 @@ function uploadSplit(){
         formData.append('file', chunks[i]);
         formData.append('filename', file.name);
         formData.append('path', document.getElementById("uploadFilePath").value);
-        /*var uploaderror = false;
-        var jqxhr = $.ajax({ url:splitUrl,
+        var uploaderror = false;
+        /*var jqxhr = $.ajax({ url:splitUrl,
                             type: 'POST',
                             data:data, 
                             success:function() {
@@ -66,8 +66,8 @@ function uploadSplit(){
                             error:function() {
                                     uploaderror = true;
                                     alert( "error" );}
-                            });
-        if(uploaderror){break;}*/
+                            });*/
+        
          $.ajax({
             xhr: function () {
                 var xhr = new XMLHttpRequest();
@@ -89,6 +89,7 @@ function uploadSplit(){
                 alert(xhr.statusText);
             },
             success: function (res) {
+                uploaderror = true;
                 alert(xhr.statusText);
                 /*if (nextChunk < self.file.size) {
                     // upload file in chunks
@@ -101,6 +102,7 @@ function uploadSplit(){
                 }*/
             }
         });
+        if(uploaderror){break;}
     }
 }
 function scrollHlsVolumeChange(event) {
