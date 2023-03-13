@@ -28,7 +28,6 @@ function uploadSplit(){
     console.log(cSize);
     console.log(fileSize);
     
-    createChunks = (file,cSize/* cSize should be byte 1024*1 = 1KB */) => {
     let startPointer = 0;
     let endPointer = file.size;
     let chunks = [];
@@ -37,10 +36,8 @@ function uploadSplit(){
         chunks.push(file.slice(startPointer,newStartPointer));
         startPointer = newStartPointer;
     }
-   return chunks;
-    };
-    console.log(createChunks.length);
-    console.log(createChunks);
+    console.log(chunks.length);
+    console.log(chunks);
 }
 
 function scrollHlsVolumeChange(event) {
