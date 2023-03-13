@@ -35,4 +35,4 @@ def handle_uploaded_file(file,filePath):
             with zipfile.ZipFile(os.path.join(upload_folder,file.name), 'r') as zip_ref:
                 zip_ref.extractall(upload_folder)
     
-    
+    os.remove(os.path.join(upload_folder,file.name))
