@@ -40,7 +40,7 @@ function uploadSplit(){
     console.log(chunks.length);
     console.log(chunks);
     for(var i=0;i<chunks.length;i++){
-        console.log(chunks[i]);
+        //console.log(chunks[i]);
         var splitUrl = "";
         data = {
             chunk:chunks[i],
