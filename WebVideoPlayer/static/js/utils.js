@@ -24,6 +24,7 @@ function videoPlayerInit() {
 function uploadSplit(){
     var file = $('#uploadedFile')[0].files[0];
     cSize = 500;
+    console.log(file);
     fileSize = file.size;
     console.log(cSize);
     console.log(fileSize);
@@ -38,6 +39,19 @@ function uploadSplit(){
     }
     console.log(chunks.length);
     console.log(chunks);
+    for(var i=0;i<1;i++){
+        var splitUrl = "";
+        data = {
+            chunk:chunks[i],
+            path:document.getElementById("uploadFilePath").value
+        }
+        var jqxhr = $.post( splitUrl, function() {
+                alert( "success" );
+                })
+                .fail(function() {
+                    alert( "error" );
+                  });
+    }
 }
 
 function scrollHlsVolumeChange(event) {

@@ -44,6 +44,21 @@ def file_upload_form(request):
     form=FileUploadForm()
     return render(request,"file_upload.html",{"uploaded":uploaded,"form":form})
 
+def file_upload_split(request):
+    logger.info("utils.file_upload_form "+str(request))
+    username=None
+    login=None
+    try:
+        username=request.session['username']
+    except KeyError:
+        raise PermissionDenied()
+    try:
+        uploaded=request.GET.get("uploaded")
+    except KeyError:
+        uploaded=None
+    form=FileUploadForm()
+    return render(request,"file_upload.html",{"uploaded":uploaded,"form":form})
+
 def list_dir(request):
     logger.info("utils.list_dir "+str(request))
     try:
