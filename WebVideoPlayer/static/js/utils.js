@@ -44,14 +44,14 @@ function uploadSplit(){
 
 function uploadFileChuncks(chunks,chunks_total,filename,path){
     var splitUrl = "/file_upload_split";
-    if(chuncks.length === 0)
+    if(chunks.length === 0)
         return;
     var formData = new FormData();
-    if(chuncks.length == chunks_total)
+    if(chunks.length == chunks_total)
     {
         formData.append('first', true);
     }
-    if(chuncks.length === 1)
+    if(chunks.length === 1)
     {
         formData.append('last', true);
     }
