@@ -26,7 +26,7 @@ a {
 </style>
 </head>
 
-<body {% if play_src == None %} onload="load_videos();" onresize="load_videos();" {% endif %}>
+<body onload="loadUploadPathFinder();">
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
  <a href="{% url 'entry_point' %}">
   <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-arrow-left" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
