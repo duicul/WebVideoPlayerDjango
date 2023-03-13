@@ -70,7 +70,6 @@ function uploadFileChuncks(chunks,chunks_total,filename,path){
                 document.getElementsByClassName('progress-bar').item(0).setAttribute('aria-valuenow',pcg);
                 document.getElementsByClassName('progress-bar').item(0).setAttribute('style','width:'+Number(pcg)+'%');
                 uploadFileChuncks(chunks,chunks_total,filename,path);
-                alert(xhr.statusText);
             }
         });
 }

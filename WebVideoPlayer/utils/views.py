@@ -58,10 +58,14 @@ def file_upload_split(request):
         file_name = request.POST['filename'] # or some 'file_name_with_path.bin'
         path = request.POST['path'] # or some 'file_name_with_path.bin'
         uploaded_file = request.FILES['file']
-        logger.info(uploaded_file)
+        fileData = uploaded_file.read()
+        logger.info(fileData)
+        logger.info({"name":file_name,"path":path})
+        with open(os.path.join(path,file_name), 'wb+') as f:
+                f.write(fileData)
         return HttpResponse(json.dumps({"name":file_name,"path":path}), content_type="application/json")
         ## Finally, you know this is multipart and headers are okay, let save it. 
-        uploaded_file = request.FILES['file'] # data from request
+        """uploaded_file = request.FILES['file'] # data from request
         
         chunckUploadFile=None
         if request.method == 'POST':
@@ -71,7 +75,7 @@ def file_upload_split(request):
             name = chunckUploadFile.cleaned_data["filename"]
             path = chunckUploadFile.cleaned_data["path"]
             file = chunckUploadFile.cleaned_data["file"]
-            return HttpResponse(json.dumps({"name":name,"path":path}), content_type="application/json")
+            return HttpResponse(json.dumps({"name":name,"path":path}), content_type="application/json")"""
     except Exception as e:
         logger.error(str(traceback.format_exc()))
         raise RequestAborted(e)
