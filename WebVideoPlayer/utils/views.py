@@ -47,7 +47,7 @@ def file_upload_form(request):
 
 def file_upload_split(request):
     try:
-        logger.info("utils.file_upload_form "+str(request))
+        logger.info("utils.file_upload_split "+str(request))
         username=None
         login=None
         try:
@@ -58,11 +58,11 @@ def file_upload_split(request):
         if request.method == 'POST':
             chunckUploadFile = ChunckFileUploadForm(request.POST)
     
-        if chunckUploadFile.is_valid() and not chunckUploadFile == None:
-            name = chunckUploadFile.cleaned_data["filename"]
-            path = chunckUploadFile.cleaned_data["path"]
-            file = chunckUploadFile.cleaned_data["file"]
-            return HttpResponse(json.dumps({"name":name,"path":path}), content_type="application/json")
+        #if chunckUploadFile.is_valid() and not chunckUploadFile == None:
+        name = chunckUploadFile.cleaned_data["filename"]
+        path = chunckUploadFile.cleaned_data["path"]
+        file = chunckUploadFile.cleaned_data["file"]
+        return HttpResponse(json.dumps({"name":name,"path":path}), content_type="application/json")
     except Exception as e:
         logger.error(str(traceback.format_exc()))
         raise RequestAborted(e)
