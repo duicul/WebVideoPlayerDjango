@@ -48,6 +48,11 @@ function uploadFileChuncks(chunks,chunks_total,filename,path){
     formData.append('file', chunks.shift());
     formData.append('filename', filename);
     formData.append('path', path);
+    $.ajaxSetup({
+            headers: {
+                "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value,
+            }
+        });
     $.ajax({url: splitUrl,
             type: 'POST',
             dataType: 'json',
