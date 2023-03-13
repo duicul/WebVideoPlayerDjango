@@ -7,5 +7,5 @@ from django import forms
 
 
 class FileUploadForm(forms.Form):
-    folder = forms.CharField(max_length=50,label="Folder ")
+    filePath = forms.CharField(max_length=50,label="FilePath ")
     file = forms.FileField(label="Select a file to upload ")
