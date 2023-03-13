@@ -51,16 +51,18 @@ function uploadSplit(){
         //document.getElementById("uploadProgress").setAttribute('aria-valuenow',50);
         //console.log(data);
         var uploaderror = false;
-        var jqxhr = $.post( splitUrl,data, function() {
-                var pcg = Math.floor(i/chunks.length*100);        
-                document.getElementsByClassName('progress-bar').item(0).setAttribute('aria-valuenow',pcg);
-                document.getElementsByClassName('progress-bar').item(0).setAttribute('style','width:'+Number(pcg)+'%');
-                })
-                .fail(function() {
-                    uploaderror = true;
-                    alert( "error" );
-                    
-                  });
+        var jqxhr = $.ajax({ url:splitUrl,
+                            type: 'POST',
+                            data:data, 
+                            success:function() {
+                                var pcg = Math.floor(i/chunks.length*100);        
+                                document.getElementsByClassName('progress-bar').item(0).setAttribute('aria-valuenow',pcg);
+                                document.getElementsByClassName('progress-bar').item(0).setAttribute('style','width:'+Number(pcg)+'%');
+                                },
+                            error:function() {
+                                    uploaderror = true;
+                                    alert( "error" );}
+                            });
         if(uploaderror){break;}
     }
 }
