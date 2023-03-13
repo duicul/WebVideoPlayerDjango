@@ -39,18 +39,21 @@ function uploadSplit(){
     }
     console.log(chunks.length);
     console.log(chunks);
-    for(var i=0;i<1;i++){
+    for(var i=0;i<chunks.length;i++){
+        console.log(chunks[i]);
         var splitUrl = "";
         data = {
             chunk:chunks[i],
+            name:file.name,
             path:document.getElementById("uploadFilePath").value
-        }
-        var jqxhr = $.post( splitUrl, function() {
+        };
+        console.log(data);
+        /*var jqxhr = $.post( splitUrl, function() {
                 alert( "success" );
                 })
                 .fail(function() {
                     alert( "error" );
-                  });
+                  });*/
     }
 }
 
