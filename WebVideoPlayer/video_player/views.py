@@ -175,11 +175,11 @@ def index(request):
             pass
         categ = []
         if type_name=="movie":
-            for movie in Movie_db.objects.all():
+            for movie in Movie_db.objects.all().order_by('name'):
                 if not movie.category in categ:
                     categ.append(movie.category)
         elif type_name=="show":
-            for show in Show_db.objects.all():
+            for show in Show_db.objects.all().order_by('name'):
                 if not show.category in categ:
                     categ.append(show.category)
         categ = sorted(categ,key=lambda c: c.category_name)
@@ -237,7 +237,7 @@ def redirect_internal(request,path):
 def previous_ep(ep):
     logger.info("video_player.previous_ep "+str(ep))
     curr_season=ep.season
-    season_eps=Episode_db.objects.all().filter(season=curr_season.pk)
+    season_eps=Episode_db.objects.all().filter(season=curr_season.pk).order_by("-abs_path")
     prev_episode=None
     curr_episode_ind=None
     
@@ -254,7 +254,7 @@ def previous_ep(ep):
         return None
     
     curr_show=curr_season.show
-    show_seasons=Season_db.objects.all().filter(show=curr_show.pk)
+    show_seasons=Season_db.objects.all().filter(show=curr_show.pk).order_by("-abs_path")
     prev_season=None
     curr_season_ind=None
     for season in show_seasons:
@@ -266,7 +266,7 @@ def previous_ep(ep):
     if curr_season_ind==None:
         return None
     
-    season_eps=Episode_db.objects.all().filter(season=curr_season_ind.pk)
+    season_eps=Episode_db.objects.all().filter(season=curr_season_ind.pk).order_by("-abs_path")
     if len(season_eps)==0:
         return None
     return season_eps[len(season_eps)-1]

@@ -36,31 +36,31 @@ except:
 
     
 def clean_db_tables():
-    categs = Category_db.objects.all()
+    categs = Category_db.objects.all().order_by("name")
     for cat in categs:
         if not os.path.isdir(cat.category_path):
             logger.info("delete category " + str(cat.category_path))
             cat.delete()
             
-    mvs = Movie_db.objects.all()
+    mvs = Movie_db.objects.all().order_by("name")
     for mv in mvs:
         if not os.path.isfile(mv.abs_path):
             logger.info("delete movie " + str(mv.abs_path))
             mv.delete()
             
-    shs = Show_db.objects.all()
+    shs = Show_db.objects.all().order_by("name")
     for sh in shs:
         if not os.path.isdir(sh.abs_path):
             logger.info("delete show " + str(sh.abs_path))
             sh.delete()
     
-    seasons = Season_db.objects.all()
+    seasons = Season_db.objects.all().order_by("name")
     for seas in seasons:
         if not os.path.isdir(seas.abs_path):
             logger.info("delete season " + str(seas.abs_path))
             seas.delete()
     
-    eps = Episode_db.objects.all()
+    eps = Episode_db.objects.all().order_by("name")
     for ep in eps:
         if not os.path.isfile(ep.abs_path):
             logger.info("delete episode " + str(ep.abs_path))
