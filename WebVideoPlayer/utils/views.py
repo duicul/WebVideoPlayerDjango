@@ -67,7 +67,7 @@ def file_upload_split(request):
         with open(os.path.join(path,file_name), writeMode) as f:
                 f.write(fileData)
         if "last" in request.POST.keys():  
-            if(file_name.name.endswith(".zip")):       
+            if(file_name.endswith(".zip")):       
                 with zipfile.ZipFile(os.path.join(path,file_name), 'r') as zip_ref:
                     zip_ref.extractall(path)
         return HttpResponse(json.dumps({"name":file_name,"path":path}), content_type="application/json")
