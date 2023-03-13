@@ -172,7 +172,7 @@ function update_modal_scan_dir(name,path){
             modalHtml+= "<p> Path : "+result.path+"</p>";
             modalHtml+= "<p><button type=\"button\" class=\"btn btn-primary\" onClick=\"rescanfiles_dir('"+path+"');\"> Scan </button>";
             modalHtml+= "<button type=\"button\" class=\"btn btn-secondary\" data-bs-dismiss=\"modal\">Close</button></p>";
-            modalHtml+= "<a onclick=\"update_modal_scan_dir('"+result.name+"','"+result.path+"/.."+"')\">";
+            modalHtml+= "<a style=\"cursor: pointer;\" onclick=\"update_modal_scan_dir('"+result.name+"','"+result.path+"/.."+"')\">";
             modalHtml+= "<svg width=\"1em\" height=\"1em\" viewBox=\"0 0 16 16\" class=\"bi bi-arrow-left\" fill=\"currentColor\" xmlns=\"http://www.w3.org/2000/svg\">";
             modalHtml+= "<path fill-rule=\"evenodd\" d=\"M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z\"/>";
             modalHtml+= "</svg> Back </a>";
@@ -185,7 +185,7 @@ function update_modal_scan_dir(name,path){
             console.log(result.dirs);
             if("dirs" in result){
                 for (i = 0; i < result.dirs.length; i++) {
-                    modalHtml+= "<li class=\"list-group-item\" onClick=\"update_modal_scan_dir('"+result.dirs[i].name+"','"+result.dirs[i].path+"');\">";
+                    modalHtml+= "<li style=\"cursor: pointer;\" class=\"list-group-item\" onClick=\"update_modal_scan_dir('"+result.dirs[i].name+"','"+result.dirs[i].path+"');\">";
                     console.log(result.dirs[i]);
                     modalHtml+= "<p> Name : "+result.dirs[i].name+"</p>";
                     modalHtml+= "<p> Path : "+result.dirs[i].path+"</p>";
@@ -193,7 +193,7 @@ function update_modal_scan_dir(name,path){
                     if("data" in result.dirs[i] && "dirs" in result.dirs[i].data){
                             for (j = 0; j < result.dirs[i].data.dirs.length; j++) {
                                 console.log(result.dirs[i].data.dirs[j]);
-                                modalHtml+= "<li class=\"list-group-item\" onClick=\"update_modal_scan_dir('"+result.dirs[i].data.dirs[j].name+"','"+result.dirs[i].data.dirs[j].path+"');\">";
+                                modalHtml+= "<li style=\"cursor: pointer;\" class=\"list-group-item\" onClick=\"update_modal_scan_dir('"+result.dirs[i].data.dirs[j].name+"','"+result.dirs[i].data.dirs[j].path+"');\">";
                                 modalHtml+= "<p> Name : "+result.dirs[i].data.dirs[j].name+"</p>";
                                 modalHtml+= "<p> Path : "+result.dirs[i].data.dirs[j].path+"</p>";
                                 modalHtml+="</li>";
@@ -236,7 +236,7 @@ function loadUploadPathFinder(name,path){
             //modalHtml+= 
             //$("#scan_dir_title").html(modalHtml);
             
-            modalHtml+= "<a onclick=\"loadUploadPathFinder('"+result.name+"','"+result.path+"/.."+"')\">";
+            modalHtml+= "<a style=\"cursor: pointer;\" onclick=\"loadUploadPathFinder('"+result.name+"','"+result.path+"/.."+"')\">";
             modalHtml+= "<svg width=\"1em\" height=\"1em\" viewBox=\"0 0 16 16\" class=\"bi bi-arrow-left\" fill=\"currentColor\" xmlns=\"http://www.w3.org/2000/svg\">";
             modalHtml+= "<path fill-rule=\"evenodd\" d=\"M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z\"/>";
             modalHtml+= "</svg> Back </a>";
@@ -245,7 +245,7 @@ function loadUploadPathFinder(name,path){
             console.log(result.dirs);
             if("dirs" in result){
                 for (i = 0; i < result.dirs.length; i++) {
-                    modalHtml+= "<li class=\"list-group-item\" onClick=\"loadUploadPathFinder('"+result.dirs[i].name+"','"+result.dirs[i].path+"');\">";
+                    modalHtml+= "<li style=\"cursor: pointer;\" class=\"list-group-item\" onClick=\"loadUploadPathFinder('"+result.dirs[i].name+"','"+result.dirs[i].path+"');\">";
                     console.log(result.dirs[i]);
                     modalHtml+= "<p> Name : "+result.dirs[i].name+"</p>";
                     modalHtml+= "<p> Path : "+result.dirs[i].path+"</p>";
@@ -253,7 +253,7 @@ function loadUploadPathFinder(name,path){
                     if("data" in result.dirs[i] && "dirs" in result.dirs[i].data){
                             for (j = 0; j < result.dirs[i].data.dirs.length; j++) {
                                 console.log(result.dirs[i].data.dirs[j]);
-                                modalHtml+= "<li class=\"list-group-item\" onClick=\"loadUploadPathFinder('"+result.dirs[i].data.dirs[j].name+"','"+result.dirs[i].data.dirs[j].path+"');\">";
+                                modalHtml+= "<li style=\"cursor: pointer;\" class=\"list-group-item\" onClick=\"loadUploadPathFinder('"+result.dirs[i].data.dirs[j].name+"','"+result.dirs[i].data.dirs[j].path+"');\">";
                                 modalHtml+= "<p> Name : "+result.dirs[i].data.dirs[j].name+"</p>";
                                 modalHtml+= "<p> Path : "+result.dirs[i].data.dirs[j].path+"</p>";
                                 modalHtml+="</li>";
