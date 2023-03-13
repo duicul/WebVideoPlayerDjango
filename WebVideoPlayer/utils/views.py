@@ -60,7 +60,7 @@ def file_upload_split(request):
         path = content["path"]
         return HttpResponse(json.dumps({"name":name,"path":path}), content_type="application/json")
     except Exception as e:
-        return RequestAborted(e)
+        raise RequestAborted(e)
 
 
 def list_dir(request):
