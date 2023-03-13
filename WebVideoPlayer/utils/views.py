@@ -4,7 +4,7 @@ from multiprocessing import Process
 import os
 import sys
 
-from django.core.exceptions import PermissionDenied
+from django.core.exceptions import PermissionDenied,RequestAborted
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
@@ -45,20 +45,22 @@ def file_upload_form(request):
     return render(request,"file_upload.html",{"uploaded":uploaded,"form":form})
 
 def file_upload_split(request):
-    logger.info("utils.file_upload_form "+str(request))
-    username=None
-    login=None
     try:
-        username=request.session['username']
-    except KeyError:
-        raise PermissionDenied()
-    body_unicode = request.body.decode('utf-8')
-    body = json.loads(body_unicode)
-    content = body['content']
-    name = content["name"]
-    path = content["path"]
-    return HttpResponse(json.dumps({"name":name,"path":path}), content_type="application/json")
-
+        logger.info("utils.file_upload_form "+str(request))
+        username=None
+        login=None
+        try:
+            username=request.session['username']
+        except KeyError:
+            raise PermissionDenied()
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
+        content = body['content']
+        name = content["name"]
+        path = content["path"]
+        return HttpResponse(json.dumps({"name":name,"path":path}), content_type="application/json")
+    except Exception as e:
+        return RequestAborted(e)
 
 
 def list_dir(request):
