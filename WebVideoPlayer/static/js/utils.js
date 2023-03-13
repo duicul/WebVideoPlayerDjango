@@ -167,7 +167,7 @@ function update_modal_scan_dir(name,path){
     $.ajax({
         url: url_list_media_dir,
         success: function(result) {
-            document.getElementById("uploadFilePath").value = result.path;
+            
             modalHtml = "";
             modalHtml+= "<p> Name : "+result.name+"</p>";
             modalHtml+= "<p> Path : "+result.path+"</p>";
@@ -228,6 +228,7 @@ function loadUploadPathFinder(name,path){
     $.ajax({
         url: url_list_media_dir,
         success: function(result) {
+            document.getElementById("uploadFilePath").value = result.path;
             modalHtml = "";
             modalHtml+= "<p> Name : "+result.name+"</p>";
             modalHtml+= "<p> Path : "+result.path+"</p>";
