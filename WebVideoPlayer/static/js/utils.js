@@ -47,7 +47,7 @@ function uploadSplit(){
             name:file.name,
             path:document.getElementById("uploadFilePath").value
         };
-        document.getElementById("uploadProgress").setAttribute('aria-valuenow',(chunks/chunks.length)*100);
+        document.getElementById("uploadProgress").setAttribute('aria-valuenow',50);
         //console.log(data);
         /*var jqxhr = $.post( splitUrl, function() {
                 alert( "success" );
