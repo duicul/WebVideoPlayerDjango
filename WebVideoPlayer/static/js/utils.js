@@ -183,17 +183,17 @@ function update_modal_scan_dir(name,path){
             
             modalHtml = "";
             modalHtml+= "<ul class=\"list-group\">";
-            console.log(result.dirs);
+            //console.log(result.dirs);
             if("dirs" in result){
                 for (i = 0; i < result.dirs.length; i++) {
                     modalHtml+= "<li style=\"cursor: pointer;\" class=\"list-group-item\" onClick=\"update_modal_scan_dir('"+result.dirs[i].name+"','"+result.dirs[i].path+"');\">";
-                    console.log(result.dirs[i]);
+                    //console.log(result.dirs[i]);
                     modalHtml+= "<p> Name : "+result.dirs[i].name+"</p>";
                     modalHtml+= "<p> Path : "+result.dirs[i].path+"</p>";
                     modalHtml+= "<ul class=\"list-group\">";
                     if("data" in result.dirs[i] && "dirs" in result.dirs[i].data){
                             for (j = 0; j < result.dirs[i].data.dirs.length; j++) {
-                                console.log(result.dirs[i].data.dirs[j]);
+                                //console.log(result.dirs[i].data.dirs[j]);
                                 modalHtml+= "<li style=\"cursor: pointer;\" class=\"list-group-item\" onClick=\"update_modal_scan_dir('"+result.dirs[i].data.dirs[j].name+"','"+result.dirs[i].data.dirs[j].path+"');\">";
                                 modalHtml+= "<p> Name : "+result.dirs[i].data.dirs[j].name+"</p>";
                                 modalHtml+= "<p> Path : "+result.dirs[i].data.dirs[j].path+"</p>";
@@ -243,17 +243,17 @@ function loadUploadPathFinder(name,path){
             modalHtml+= "</svg> Back </a>";
             
             modalHtml+= "<ul class=\"list-group\">";
-            console.log(result.dirs);
+            //console.log(result.dirs);
             if("dirs" in result){
                 for (i = 0; i < result.dirs.length; i++) {
                     modalHtml+= "<li style=\"cursor: pointer;\" class=\"list-group-item\" onClick=\"loadUploadPathFinder('"+result.dirs[i].name+"','"+result.dirs[i].path+"');\">";
-                    console.log(result.dirs[i]);
+                    //console.log(result.dirs[i]);
                     modalHtml+= "<p> Name : "+result.dirs[i].name+"</p>";
                     modalHtml+= "<p> Path : "+result.dirs[i].path+"</p>";
                     modalHtml+= "<ul class=\"list-group\">";
                     if("data" in result.dirs[i] && "dirs" in result.dirs[i].data){
                             for (j = 0; j < result.dirs[i].data.dirs.length; j++) {
-                                console.log(result.dirs[i].data.dirs[j]);
+                                //console.log(result.dirs[i].data.dirs[j]);
                                 modalHtml+= "<li style=\"cursor: pointer;\" class=\"list-group-item\" onClick=\"loadUploadPathFinder('"+result.dirs[i].data.dirs[j].name+"','"+result.dirs[i].data.dirs[j].path+"');\">";
                                 modalHtml+= "<p> Name : "+result.dirs[i].data.dirs[j].name+"</p>";
                                 modalHtml+= "<p> Path : "+result.dirs[i].data.dirs[j].path+"</p>";
