@@ -41,24 +41,26 @@ function uploadSplit(){
     console.log(chunks);
     for(var i=0;i<chunks.length;i++){
         //console.log(chunks[i]);
-        var splitUrl = "";
+        var splitUrl = "/utils/file_upload_split";
         data = {
             chunk:chunks[i],
             name:file.name,
             path:document.getElementById("uploadFilePath").value
         };
-        var pcg = Math.floor(i/chunks.length*100);        
-        document.getElementsByClassName('progress-bar').item(0).setAttribute('aria-valuenow',pcg);
-        document.getElementsByClassName('progress-bar').item(0).setAttribute('style','width:'+Number(pcg)+'%');
+        
         //document.getElementById("uploadProgress").setAttribute('aria-valuenow',50);
         //console.log(data);
-        /*var jqxhr = $.post( splitUrl, function() {
-                alert( "success" );
+        var jqxhr = $.post( splitUrl,data, function() {
+                var pcg = Math.floor(i/chunks.length*100);        
+                document.getElementsByClassName('progress-bar').item(0).setAttribute('aria-valuenow',pcg);
+                document.getElementsByClassName('progress-bar').item(0).setAttribute('style','width:'+Number(pcg)+'%');
                 })
                 .fail(function() {
+                    break;
                     alert( "error" );
-                  });*/
-    }
+                    
+                  });
+        }
 }
 
 function scrollHlsVolumeChange(event) {

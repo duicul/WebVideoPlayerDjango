@@ -52,12 +52,14 @@ def file_upload_split(request):
         username=request.session['username']
     except KeyError:
         raise PermissionDenied()
-    try:
-        uploaded=request.GET.get("uploaded")
-    except KeyError:
-        uploaded=None
-    form=FileUploadForm()
-    return render(request,"file_upload.html",{"uploaded":uploaded,"form":form})
+    body_unicode = request.body.decode('utf-8')
+    body = json.loads(body_unicode)
+    content = body['content']
+    name = content["name"]
+    path = content["path"]
+    return HttpResponse(json.dumps({"name":name,"path":path}), content_type="application/json")
+
+
 
 def list_dir(request):
     logger.info("utils.list_dir "+str(request))
