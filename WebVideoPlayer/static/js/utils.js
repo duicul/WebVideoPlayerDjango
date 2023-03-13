@@ -172,8 +172,8 @@ function update_modal_scan_dir(name,path){
             modalHtml+= "<p> Path : "+path+"</p>";
             modalHtml+= "<p><button type=\"button\" class=\"btn btn-primary\" onClick=\"rescanfiles_dir('"+path+"');\"> Scan </button>";
             modalHtml+= "<button type=\"button\" class=\"btn btn-secondary\" data-bs-dismiss=\"modal\">Close</button></p>";
-            modalHtml+= 
-            modalHtml+= 
+            //modalHtml+= 
+            //modalHtml+= 
             $("#scan_dir_title").html(modalHtml);
             
             modalHtml = "";
@@ -216,6 +216,49 @@ function rescanfiles_dir(path) {
         }
 
     });
+}
+
+function loadUploadPathFinder(name,path){
+    var url_list_media_dir = "/utils/list_media_dir?level=0&path="+path;
+    $.ajax({
+        url: url_list_media_dir,
+        success: function(result) {
+            modalHtml = "";
+            modalHtml+= "<p> Name : "+name+"</p>";
+            modalHtml+= "<p> Path : "+path+"</p>";
+            //modalHtml+= "<p><button type=\"button\" class=\"btn btn-primary\" onClick=\"rescanfiles_dir('"+path+"');\"> Scan </button>";
+            //modalHtml+= "<button type=\"button\" class=\"btn btn-secondary\" data-bs-dismiss=\"modal\">Close</button></p>";
+            //modalHtml+= 
+            //modalHtml+= 
+            //$("#scan_dir_title").html(modalHtml);
+            
+            modalHtml = "";
+            modalHtml+= "<ul class=\"list-group\">";
+            console.log(result.dirs);
+            if("dirs" in result){
+                for (i = 0; i < result.dirs.length; i++) {
+                    modalHtml+= "<li class=\"list-group-item\" onClick=\"loadUploadPathFinder('"+result.dirs[i].name+"','"+result.dirs[i].path+"');\">";
+                    console.log(result.dirs[i]);
+                    modalHtml+= "<p> Name : "+result.dirs[i].name+"</p>";
+                    modalHtml+= "<p> Path : "+result.dirs[i].path+"</p>";
+                    modalHtml+= "<ul class=\"list-group\">";
+                    if("data" in result.dirs[i] && "dirs" in result.dirs[i].data){
+                            for (j = 0; j < result.dirs[i].data.dirs.length; j++) {
+                                console.log(result.dirs[i].data.dirs[j]);
+                                modalHtml+= "<li class=\"list-group-item\" onClick=\"loadUploadPathFinder('"+result.dirs[i].data.dirs[j].name+"','"+result.dirs[i].data.dirs[j].path+"');\">";
+                                modalHtml+= "<p> Name : "+result.dirs[i].data.dirs[j].name+"</p>";
+                                modalHtml+= "<p> Path : "+result.dirs[i].data.dirs[j].path+"</p>";
+                                modalHtml+="</li>";
+                            }
+                        }
+                    modalHtml+="</ul>";
+                    modalHtml+="</li>";
+                    }
+            }
+            modalHtml+="</ul>";
+            $("#uploadPathFinder").html(modalHtml);
+        }
+        });
 }
 
 function load_season(uuid) {

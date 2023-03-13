@@ -57,7 +57,8 @@ a {
     <center>
     <form enctype="multipart/form-data" style="width:40%;height:40%;background-color:#A495F5" name = "form" action = "{% url 'upload_file' %}" 
          method = "POST" >{% csrf_token %}
-         
+         <div style = "max-width:70%;" id="uploadPathFinder">
+         </div>
          <div style = "max-width:70%;">
             <center> 
                <input type = "text" style = "width:80%;" 
