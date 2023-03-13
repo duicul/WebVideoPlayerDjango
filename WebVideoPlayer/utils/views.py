@@ -53,13 +53,14 @@ def file_upload_split(request):
             username=request.session['username']
         except KeyError:
             raise PermissionDenied()
-        body_unicode = request.body.decode('utf-8')
+        body_unicode = request.data.decode('utf-8')
         body = json.loads(body_unicode)
         content = body['content']
         name = content["name"]
         path = content["path"]
         return HttpResponse(json.dumps({"name":name,"path":path}), content_type="application/json")
     except Exception as e:
+        logger.error(str(traceback.format_exc()))
         raise RequestAborted(e)
 
 
