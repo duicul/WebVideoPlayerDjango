@@ -168,10 +168,15 @@ function update_modal_scan_dir(name,path){
         url: url_list_media_dir,
         success: function(result) {
             modalHtml = "";
-            modalHtml+= "<p> Name : "+name+"</p>";
-            modalHtml+= "<p> Path : "+path+"</p>";
+            modalHtml+= "<p> Name : "+result.name+"</p>";
+            modalHtml+= "<p> Path : "+result.path+"</p>";
             modalHtml+= "<p><button type=\"button\" class=\"btn btn-primary\" onClick=\"rescanfiles_dir('"+path+"');\"> Scan </button>";
             modalHtml+= "<button type=\"button\" class=\"btn btn-secondary\" data-bs-dismiss=\"modal\">Close</button></p>";
+            modalHtml = "";
+            modalHtml+= "<a onclick=\"update_modal_scan_dir('"+name+"','"+path+"/.."+"')\">";
+            modalHtml+= "<svg width=\"1em\" height=\"1em\" viewBox=\"0 0 16 16\" class=\"bi bi-arrow-left\" fill=\"currentColor\" xmlns=\"http://www.w3.org/2000/svg\">";
+            modalHtml+= "<path fill-rule=\"evenodd\" d=\"M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z\"/>";
+            modalHtml+= "</svg> Back </a>";
             //modalHtml+= 
             //modalHtml+= 
             $("#scan_dir_title").html(modalHtml);
@@ -224,8 +229,8 @@ function loadUploadPathFinder(name,path){
         url: url_list_media_dir,
         success: function(result) {
             modalHtml = "";
-            modalHtml+= "<p> Name : "+name+"</p>";
-            modalHtml+= "<p> Path : "+path+"</p>";
+            modalHtml+= "<p> Name : "+result.name+"</p>";
+            modalHtml+= "<p> Path : "+result.path+"</p>";
             //modalHtml+= "<p><button type=\"button\" class=\"btn btn-primary\" onClick=\"rescanfiles_dir('"+path+"');\"> Scan </button>";
             //modalHtml+= "<button type=\"button\" class=\"btn btn-secondary\" data-bs-dismiss=\"modal\">Close</button></p>";
             //modalHtml+= 
@@ -233,6 +238,11 @@ function loadUploadPathFinder(name,path){
             //$("#scan_dir_title").html(modalHtml);
             
             modalHtml = "";
+            modalHtml+= "<a onclick=\"loadUploadPathFinder('"+name+"','"+path+"/.."+"')\">";
+            modalHtml+= "<svg width=\"1em\" height=\"1em\" viewBox=\"0 0 16 16\" class=\"bi bi-arrow-left\" fill=\"currentColor\" xmlns=\"http://www.w3.org/2000/svg\">";
+            modalHtml+= "<path fill-rule=\"evenodd\" d=\"M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z\"/>";
+            modalHtml+= "</svg> Back </a>";
+            
             modalHtml+= "<ul class=\"list-group\">";
             console.log(result.dirs);
             if("dirs" in result){

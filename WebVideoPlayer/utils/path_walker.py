@@ -410,7 +410,7 @@ def create_description_episode(desc_path, show, seasons, episodes):
 
 def generateJsonTree(path,level):
     if os.path.isdir(path):
-        dirJson = {"dirs":[],"files":[]}
+        dirJson = {"dirs":[],"files":[],"name":os.path.basename(path),"path":os.path.abspath(path)}
         if level>=0:
             for file in os.listdir(path):
                 fullFilePath = os.path.join(path,file)
