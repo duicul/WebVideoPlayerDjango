@@ -23,7 +23,7 @@ function videoPlayerInit() {
 
 function uploadSplit(){
     var file = $('#uploadedFile')[0].files[0];
-    cSize = 500;
+    cSize = 500*1024;
     console.log(file);
     fileSize = file.size;
     console.log(cSize);
