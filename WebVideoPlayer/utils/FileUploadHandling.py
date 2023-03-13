@@ -10,7 +10,7 @@ import logging
 import zipfile
 
 logger = logging.getLogger("django")
-def handle_uploaded_file(file,file_folder):
+def handle_uploaded_file(file,filePath):
     media_upload_dir=os.path.join(BASE_DIR,"media_upload")
     try:
         os.mkdir(media_upload_dir)
@@ -18,10 +18,10 @@ def handle_uploaded_file(file,file_folder):
         pass
     if(file.name.endswith(".zip")):
         upload_folder=os.path.join(BASE_DIR,"media")
-        upload_folder=os.path.join(upload_folder,file_folder)
+        upload_folder=os.path.join(upload_folder,filePath)
         
     else:
-        upload_folder=os.path.join(media_upload_dir,file_folder)
+        upload_folder=os.path.join(media_upload_dir,filePath)
     logger.info("upload folder path : "+str(upload_folder))
     try:
         os.mkdir(upload_folder)

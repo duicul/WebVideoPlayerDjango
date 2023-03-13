@@ -57,34 +57,7 @@ a {
     <center>
     <form enctype="multipart/form-data" style="width:40%;height:40%;background-color:#A495F5" name = "form" action = "{% url 'upload_file' %}" 
          method = "POST" >{% csrf_token %}
-         <div style = "max-width:70%;" id="uploadPathFinder">
-         </div>
-         <div style = "max-width:70%;">
-            <center> 
-               <input type = "text" style = "width:80%;" 
-                  placeholder = "Folder name" name = "folder" required/>
-            </center>
-         </div>
-         <br>
-         <input type="hidden" id="uploadFilePath" name="filePath" value="">
-         <div style = "max-width:70%;">
-            <center> 
-               <input type = "text" style = "width:80%;" 
-                  placeholder = "Category name (leave empty if none)" name = "category" />
-            </center>
-         </div>
-         <br>
-        <div style = "max-width:70%;">
-            <center> 
-            Type:
-               <select name="Type" required>
-                    <option value="Movie">Movie</option>
-                    <option value="Season">Season</option>
-                    <option value="Show">Show</option>
-                </select>
-            </center>
-         </div>
-         <br>
+         
          <div style = "max-width:70%;">
             <center>
                 <input type="file" name="file" value="file" accept=".zip,.7z" required/>
@@ -108,7 +81,9 @@ a {
                
             </center>
          </div>
-         
+         <input type="hidden" id="uploadFilePath" name="filePath" value="">
+         <div style = "max-width:70%;" id="uploadPathFinder">
+         </div>
       </form>
    </center>
 
