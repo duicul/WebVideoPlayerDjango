@@ -55,6 +55,11 @@ a {
 </nav>
     
     <center>
+    <button onclick="uploadSplit();" style = "border:0px; background-color:#4285F4; margin-top:8%;
+                  height:35px; width:80%;" 
+                  value = "Upload Split" >
+                  <strong>Upload Split</strong>
+               </button>
     <form enctype="multipart/form-data" style="width:40%;height:40%;background-color:#A495F5" name = "form" action = "{% url 'upload_file' %}" 
          method = "POST" >{% csrf_token %}
          
@@ -70,11 +75,7 @@ a {
          <span style="color:#FF0000;">Some file upload error</span>
          <br>
          {% endifequal %}
-         <button onclick="uploadSplit();" style = "border:0px; background-color:#4285F4; margin-top:8%;
-                  height:35px; width:80%;" 
-                  value = "Upload Split" >
-                  <strong>Upload</strong>
-               </button>
+         
          <div style = "max-width:70%;">
             <center> 
             
