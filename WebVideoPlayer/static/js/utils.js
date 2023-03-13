@@ -39,7 +39,7 @@ function uploadSplit(){
     }
     console.log(chunks.length);
     console.log(chunks);
-    for(var i=0;i<chunks.length;i++){
+    for(var i=0;i<1/*chunks.length*/;i++){
         //console.log(chunks[i]);
         var splitUrl = "/utils/file_upload_split";
         data = {
@@ -69,14 +69,14 @@ function uploadSplit(){
                             });*/
         
          $.ajax({
-            xhr: function () {
+            /*xhr: function () {
                 var xhr = new XMLHttpRequest();
                 xhr.upload.addEventListener('progress', function (e) {
                    var pcg = Math.floor(i/chunks.length*100);        
                                 document.getElementsByClassName('progress-bar').item(0).setAttribute('aria-valuenow',pcg);
                                 document.getElementsByClassName('progress-bar').item(0).setAttribute('style','width:'+Number(pcg)+'%');
                     });
-                return xhr;},
+                return xhr;},*/
 
             url: splitUrl,
             type: 'POST',
@@ -86,10 +86,14 @@ function uploadSplit(){
             contentType: false,
             data: formData,
             error: function (xhr) {
+                uploaderror = true;
                 alert(xhr.statusText);
             },
             success: function (res) {
-                uploaderror = true;
+                var pcg = Math.floor(i/chunks.length*100);        
+                document.getElementsByClassName('progress-bar').item(0).setAttribute('aria-valuenow',pcg);
+                document.getElementsByClassName('progress-bar').item(0).setAttribute('style','width:'+Number(pcg)+'%');
+                
                 alert(xhr.statusText);
                 /*if (nextChunk < self.file.size) {
                     // upload file in chunks
