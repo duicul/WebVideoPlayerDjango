@@ -76,7 +76,7 @@ function uploadFileChuncks(chunks,chunks_total,filename,path){
                 alert(xhr.statusText);
             },
             success: function (res) {
-                var pcg = Math.floor((chunks_total-chunks.length)/chunks.length*100);        
+                var pcg = Math.floor((chunks_total-chunks.length)/chunks_total*100);        
                 document.getElementsByClassName('progress-bar').item(0).setAttribute('aria-valuenow',pcg);
                 document.getElementsByClassName('progress-bar').item(0).setAttribute('style','width:'+Number(pcg)+'%');
                 uploadFileChuncks(chunks,chunks_total,filename,path);
