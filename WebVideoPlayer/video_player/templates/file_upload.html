@@ -60,7 +60,7 @@ a {
          
          <div style = "max-width:70%;">
             <center>
-                <input type="file" name="file" value="file" accept=".zip" required/>
+                <input id="uploadedFile" type="file" name="file" value="file" accept=".zip" required/>
                 <label for="file"> Select a file to upload</label>
             </center>
          </div>
@@ -70,6 +70,11 @@ a {
          <span style="color:#FF0000;">Some file upload error</span>
          <br>
          {% endifequal %}
+         <button onclick="uploadSplit();" style = "border:0px; background-color:#4285F4; margin-top:8%;
+                  height:35px; width:80%;" 
+                  value = "Upload Split" >
+                  <strong>Upload</strong>
+               </button>
          <div style = "max-width:70%;">
             <center> 
             

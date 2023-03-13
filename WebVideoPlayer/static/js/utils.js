@@ -21,6 +21,28 @@ function videoPlayerInit() {
     }*/
 }
 
+function uploadSplit(){
+    var file = $('#uploadedFile')[0].files[0];
+    cSize = 500;
+    fileSize = file.size;
+    console.log(cSize);
+    console.log(fileSize);
+    
+    createChunks = (file,cSize/* cSize should be byte 1024*1 = 1KB */) => {
+    let startPointer = 0;
+    let endPointer = file.size;
+    let chunks = [];
+    while(startPointer<endPointer){
+        let newStartPointer = startPointer+cSize;
+        chunks.push(file.slice(startPointer,newStartPointer));
+        startPointer = newStartPointer;
+    }
+   return chunks;
+    };
+    console.log(createChunks.length);
+    console.log(createChunks);
+}
+
 function scrollHlsVolumeChange(event) {
     event.preventDefault();
     scale = event.deltaY * -0.001;
