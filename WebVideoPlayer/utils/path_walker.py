@@ -426,6 +426,7 @@ def generateJsonTree(path,level):
         return {"file":path}
 
 def generateJsonTree_media_dir(level,path):
+    path = os.path.abspath(path)
     if path == None or not os.path.isdir(path) or not path.startswith(os.path.join(BASE_DIR, 'media')):
         path = os.path.join(BASE_DIR, 'media')
     return generateJsonTree(path,level)
@@ -434,6 +435,7 @@ def parse_media_dir():
     return parse_dir(os.path.join(BASE_DIR, 'media'))
 
 def parse_sub_dir(path):
+    path = os.path.abspath(path)
     if path == None or not os.path.isdir(path) or not path.startswith(os.path.join(BASE_DIR, 'media')):
         return None
     parse_dir(path)
