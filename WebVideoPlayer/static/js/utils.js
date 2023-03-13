@@ -39,46 +39,16 @@ function uploadSplit(){
     }
     console.log(chunks.length);
     console.log(chunks);
-    for(var i=0;i<1/*chunks.length*/;i++){
-        //console.log(chunks[i]);
-        var splitUrl = "/utils/file_upload_split";
-        data = {
-            chunk:chunks[i],
-            name:file.name,
-            path:document.getElementById("uploadFilePath").value
-        };
-        
-        //document.getElementById("uploadProgress").setAttribute('aria-valuenow',50);
-        //console.log(data);
-        var formData = new FormData();
-        formData.append('file', chunks[i]);
-        formData.append('filename', file.name);
-        formData.append('path', document.getElementById("uploadFilePath").value);
-        var uploaderror = false;
-        /*var jqxhr = $.ajax({ url:splitUrl,
-                            type: 'POST',
-                            data:data, 
-                            success:function() {
-                                var pcg = Math.floor(i/chunks.length*100);        
-                                document.getElementsByClassName('progress-bar').item(0).setAttribute('aria-valuenow',pcg);
-                                document.getElementsByClassName('progress-bar').item(0).setAttribute('style','width:'+Number(pcg)+'%');
-                                },
-                            error:function() {
-                                    uploaderror = true;
-                                    alert( "error" );}
-                            });*/
-        
-         $.ajax({
-            /*xhr: function () {
-                var xhr = new XMLHttpRequest();
-                xhr.upload.addEventListener('progress', function (e) {
-                   var pcg = Math.floor(i/chunks.length*100);        
-                                document.getElementsByClassName('progress-bar').item(0).setAttribute('aria-valuenow',pcg);
-                                document.getElementsByClassName('progress-bar').item(0).setAttribute('style','width:'+Number(pcg)+'%');
-                    });
-                return xhr;},*/
+    uploadFileChuncks(chunks,chunks.length,file.name,document.getElementById("uploadFilePath").value));   
+}
 
-            url: splitUrl,
+function uploadFileChuncks(chunks,chunks_total,filename,path){
+    var splitUrl = "/file_upload_split";
+    var formData = new FormData();
+    formData.append('file', chunks.shift());
+    formData.append('filename', filename);
+    formData.append('path', path);
+    $.ajax({url: splitUrl,
             type: 'POST',
             dataType: 'json',
             cache: false,
@@ -90,25 +60,15 @@ function uploadSplit(){
                 alert(xhr.statusText);
             },
             success: function (res) {
-                var pcg = Math.floor(i/chunks.length*100);        
+                var pcg = Math.floor((chunks_total-chunks.length)/chunks.length*100);        
                 document.getElementsByClassName('progress-bar').item(0).setAttribute('aria-valuenow',pcg);
                 document.getElementsByClassName('progress-bar').item(0).setAttribute('style','width:'+Number(pcg)+'%');
-                
+                uploadFileChuncks(chunks,chunks_total,filename,path);
                 alert(xhr.statusText);
-                /*if (nextChunk < self.file.size) {
-                    // upload file in chunks
-                    existingPath = res.existingPath
-                    self.upload_file(nextChunk, existingPath);
-                } else {
-                    // upload complete
-                    $('.textbox').text(res.data);
-                    alert(res.data)
-                }*/
             }
         });
-        if(uploaderror){break;}
-    }
 }
+
 function scrollHlsVolumeChange(event) {
     event.preventDefault();
     scale = event.deltaY * -0.001;
