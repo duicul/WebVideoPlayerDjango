@@ -54,6 +54,15 @@ def file_upload_split(request):
             username=request.session['username']
         except KeyError:
             raise PermissionDenied()
+        
+        file_name = request.POST['filename'] # or some 'file_name_with_path.bin'
+        path = request.POST['path'] # or some 'file_name_with_path.bin'
+        uploaded_file = request.FILES['file']
+        logger.info(uploaded_file)
+        return HttpResponse(json.dumps({"name":file_name,"path":path}), content_type="application/json")
+        ## Finally, you know this is multipart and headers are okay, let save it. 
+        uploaded_file = request.FILES['file'] # data from request
+        
         chunckUploadFile=None
         if request.method == 'POST':
             chunckUploadFile = ChunckFileUploadForm(request.POST)
