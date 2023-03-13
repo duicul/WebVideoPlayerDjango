@@ -50,7 +50,11 @@ function uploadSplit(){
         
         //document.getElementById("uploadProgress").setAttribute('aria-valuenow',50);
         //console.log(data);
-        var uploaderror = false;
+        var formData = new FormData();
+        formData.append('file', chunks[i]);
+        formData.append('filename', file.name);
+        formData.append('path', document.getElementById("uploadFilePath").value);
+        /*var uploaderror = false;
         var jqxhr = $.ajax({ url:splitUrl,
                             type: 'POST',
                             data:data, 
@@ -63,7 +67,43 @@ function uploadSplit(){
                                     uploaderror = true;
                                     alert( "error" );}
                             });
-        if(uploaderror){break;}
+        if(uploaderror){break;}*/
+         $.ajax({
+            xhr: function () {
+                var xhr = new XMLHttpRequest();
+                xhr.upload.addEventListener('progress', function (e) {
+                   var pcg = Math.floor(i/chunks.length*100);        
+                                document.getElementsByClassName('progress-bar').item(0).setAttribute('aria-valuenow',pcg);
+                                document.getElementsByClassName('progress-bar').item(0).setAttribute('style','width:'+Number(pcg)+'%');
+                    });
+                return xhr;},
+
+            url: splitUrl,
+            type: 'POST',
+            dataType: 'json',
+            cache: false,
+            processData: false,
+            contentType: false,
+            data: formData,
+            error: function (xhr) {
+                alert(xhr.statusText);
+            },
+            success: function (res) {
+                alert(xhr.statusText);
+                /*if (nextChunk < self.file.size) {
+                    // upload file in chunks
+                    existingPath = res.existingPath
+                    self.upload_file(nextChunk, existingPath);
+                } else {
+                    // upload complete
+                    $('.textbox').text(res.data);
+                    alert(res.data)
+                }*/
+            }
+        });
+    };
+        
+        }
     }
 }
 function scrollHlsVolumeChange(event) {
