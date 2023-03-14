@@ -82,6 +82,21 @@ function loadBook(){
     console.log('rendition.currentLocation():', rendition.currentLocation());
 });
   console.log(displayed);
+  book.ready.all.then(function(){
+    book.generatePagination();
+    });
+    book.pageListReady.then(function(pageList) {
+    // console.log(JSON.stringify(pageList)); // Here you can save the result
+    displayed.then(function(){
+        var currentLocation = Book.getCurrentLocationCfi();
+    currentPage = book.pagination.pageFromCfi(currentLocation);
+    });
+    console.log('Total pages: ' + book.pagination.totalPages);
+});
+book.on('book:pageChanged', function(location){
+    console.log('Current page: ' + location.anchorPage);
+});
+  
   var pl = book.pagelist
   console.log(pl)
   console.log("opened "+book.opened)
