@@ -94,6 +94,11 @@ function loadBook(){
     book.ready.then(function(pageList) {
         console.log('Total pages: ' + book.pagination.totalPages);
     });
+    displayed.then(function() {
+    console.log('rendition.currentLocation():', rendition.currentLocation());
+});
+    document.getElementById("Nextbutton").addEventListener("click", function(){rendition.display(9)}); 
+    document.getElementById("Prevbutton").addEventListener("click", function(){rendition.display(8)});
   }
 </script>
 </head>
@@ -170,6 +175,7 @@ function loadBook(){
  </div>
 </nav>
 <div id="ebookarea">text area</div>
-
+<button id="Nextbutton">next</button>
+<button id="Prevbutton">prev</button>
 </body>
 </html>
