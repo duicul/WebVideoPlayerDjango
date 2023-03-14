@@ -106,8 +106,8 @@ book.on('book:pageChanged', function(location){
     displayed.then(function() {
     console.log('rendition.currentLocation():', rendition.currentLocation());
 });
-    document.getElementById("Nextbutton").addEventListener("click", function(){rendition.display(9)}); 
-    document.getElementById("Prevbutton").addEventListener("click", function(){rendition.display(8)});
+    document.getElementById("Nextbutton").addEventListener("click", function(){rendition.next()}); 
+    document.getElementById("Prevbutton").addEventListener("click", function(){rendition.prev()});
   }
 </script>
 </head>
