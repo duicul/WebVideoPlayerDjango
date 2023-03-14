@@ -82,7 +82,7 @@ function loadBook(){
     console.log('rendition.currentLocation():', rendition.currentLocation());
 });
   console.log(displayed);
-  book.ready.all.then(function(){
+  book.ready.then(function(){
     book.generatePagination();
     });
     book.pageListReady.then(function(pageList) {
