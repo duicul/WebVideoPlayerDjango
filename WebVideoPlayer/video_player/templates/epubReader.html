@@ -103,6 +103,7 @@ book.on('book:pageChanged', function(location){
   rendition.display(8)
   book.ready.then((b) => {
       console.log("Navigation "+book.navigation);
+      book.navigation.forEach(function(item){console.log("item");});
       
   });
   book.ready.then((b) => {
