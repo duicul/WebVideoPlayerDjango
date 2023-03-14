@@ -21,9 +21,9 @@ function loadBook(){
   console.log("opened "+book.opened)
   rendition.display(8)
   book.ready.then((b) => {
-      console.log("Navigation "+book.navigation);
-      book.navigation.forEach(function(item){console.log("item "+JSON.stringify(item));
-                                            tablecontentHTML+="<p class=\"p-p6\"><a href=\""+item["href"]+"\" class=\"calibre\">"+item["label"]+"</a></p>";
+      console.log("spine "+book.spine);
+      book.spine.each(function(item){console.log("item "+JSON.stringify(item));
+                                            //tablecontentHTML+="<p class=\"p-p6\"><a href=\""+item["href"]+"\" class=\"calibre\">"+item["label"]+"</a></p>";
                                             });
       
   }).then((b)=>{$("#tablecontent").html(tablecontentHTML);});
