@@ -102,6 +102,10 @@ book.on('book:pageChanged', function(location){
   console.log("opened "+book.opened)
   rendition.display(8)
   book.ready.then((b) => {
+      console.log("Navigation "+book.navigation);
+      
+  });
+  book.ready.then((b) => {
             return book.locations.generate();
         }).then(locations => {
             console.log("Total Pages?: ", locations.length);
