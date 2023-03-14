@@ -92,7 +92,7 @@ book.on('book:pageChanged', function(location){
   rendition.display(8)
   book.ready.then((b) => {
       console.log("Navigation "+book.navigation);
-      book.navigation.forEach(function(item){console.log("item "+item);});
+      book.navigation.forEach(function(item){console.log("item "+JSON.stringify(item));});
       
   });
   book.ready.then((b) => {
@@ -100,9 +100,9 @@ book.on('book:pageChanged', function(location){
         }).then(locations => {
             console.log("Total Pages?: ", locations.length);
         });
-    book.ready.then(function(pageList) {
+    /*book.ready.then(function(pageList) {
         console.log('Total pages: ' + book.pagination.totalPages);
-    });
+    });*/
     displayed.then(function() {
     console.log('rendition.currentLocation():', rendition.currentLocation());
 });
