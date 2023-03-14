@@ -91,6 +91,9 @@ function loadBook(){
         }).then(locations => {
             console.log("Total Pages?: ", locations.length);
         });
+    book.pageListReady.then(function(pageList) {
+        console.log('Total pages: ' + Book.pagination.totalPages);
+    });
   }
 </script>
 </head>
