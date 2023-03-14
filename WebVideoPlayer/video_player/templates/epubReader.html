@@ -72,6 +72,9 @@
 function loadBook(){
   console.log("random");
   var book = ePub("/media/Toshiba_drive/Heaven's%20River%20by%20Dennis%20E.%20Taylor.epub");
+  var pl = book.pagelist
+  console.log(pl)
+  console.log("opened "+book.opened)
   var rendition = book.renderTo("ebookarea", {width: 600, height: 400});
   var displayed = rendition.display();
   console.log(displayed);
