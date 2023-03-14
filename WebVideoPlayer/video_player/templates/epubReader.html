@@ -71,8 +71,8 @@
 <script>
 function loadBook(){
   console.log("random");
-  var book = ePub("/media/Toshiba_drive/Heaven's%20River%20by%20Dennis%20E.%20Taylor.epub");
-  book.open("/media/Toshiba_drive/Heaven's%20River%20by%20Dennis%20E.%20Taylor.epub")
+  var book = ePub("/media/Toshiba_drive/Heaven's%20River%20by%20Dennis%20E.%20Taylor.epub", { 'restore': true, 'sidebarReflow': true });
+  //book.open("/media/Toshiba_drive/Heaven's%20River%20by%20Dennis%20E.%20Taylor.epub")
   var pl = book.pagelist
   console.log(pl)
   console.log("opened "+book.opened)
