@@ -82,17 +82,6 @@ function loadBook(){
     console.log('rendition.currentLocation():', rendition.currentLocation());
 });
   console.log(displayed);
-  /*book.ready.then(function(){
-    book.generatePagination();
-    });
-    book.pageListReady.then(function(pageList) {
-    // console.log(JSON.stringify(pageList)); // Here you can save the result
-    displayed.then(function(){
-        var currentLocation = Book.getCurrentLocationCfi();
-    currentPage = book.pagination.pageFromCfi(currentLocation);
-    });
-    console.log('Total pages: ' + book.pagination.totalPages);
-    });*/
 book.on('book:pageChanged', function(location){
     console.log('Current page: ' + location.anchorPage);
 });
@@ -103,7 +92,7 @@ book.on('book:pageChanged', function(location){
   rendition.display(8)
   book.ready.then((b) => {
       console.log("Navigation "+book.navigation);
-      book.navigation.forEach(function(item){console.log("item");});
+      book.navigation.forEach(function(item){console.log("item "+item);});
       
   });
   book.ready.then((b) => {
