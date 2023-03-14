@@ -22,7 +22,7 @@ function loadBook(){
   rendition.display(8)
   book.ready.then((b) => {
       console.log("spine "+book.spine);
-      book.spine.each().forEach(function(item){console.log("item "+JSON.stringify(item));
+      book.spine.each((item)=>{console.log("item "+JSON.stringify(item));
                                             //tablecontentHTML+="<p class=\"p-p6\"><a href=\""+item["href"]+"\" class=\"calibre\">"+item["label"]+"</a></p>";
                                             });
       
