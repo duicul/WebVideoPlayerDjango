@@ -82,7 +82,7 @@ function loadBook(){
     console.log('rendition.currentLocation():', rendition.currentLocation());
 });
   console.log(displayed);
-  book.ready.then(function(){
+  /*book.ready.then(function(){
     book.generatePagination();
     });
     book.pageListReady.then(function(pageList) {
@@ -92,7 +92,7 @@ function loadBook(){
     currentPage = book.pagination.pageFromCfi(currentLocation);
     });
     console.log('Total pages: ' + book.pagination.totalPages);
-});
+    });*/
 book.on('book:pageChanged', function(location){
     console.log('Current page: ' + location.anchorPage);
 });
