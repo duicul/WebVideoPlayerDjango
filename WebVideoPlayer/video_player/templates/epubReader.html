@@ -42,6 +42,7 @@
     {% load static %} 
     <!--<script src="{% static 'js/video.min.js'%}"></script>-->
     <script src="{% static 'js/hls.min.js'%}"></script>
+    <script src="{% static 'js/ebookutils.js' %}"></script>
     <script src="{% static 'js/utils.js' %}"></script>
     <script src="{% static 'js/jszip.min.js' %}"></script>
     <script src="{% static 'js/epub.min.js' %}"></script>
@@ -68,48 +69,6 @@
     }
 </style>
     
-<script>
-function loadBook(){
-  console.log("random");
-  var book = ePub("/media/Toshiba_drive/Heaven's%20River%20by%20Dennis%20E.%20Taylor.epub", { 'restore': true, 'sidebarReflow': true });
-  //book.open("/media/Toshiba_drive/Heaven's%20River%20by%20Dennis%20E.%20Taylor.epub")
-  var pl = book.pagelist
-  console.log(pl)
-  console.log("opened "+book.opened)
-  var rendition = book.renderTo("ebookarea", { flow: 'paginated',width: 600, height: 400});
-  var displayed = rendition.display();
-  displayed.then(function() {
-    console.log('rendition.currentLocation():', rendition.currentLocation());
-});
-  console.log(displayed);
-book.on('book:pageChanged', function(location){
-    console.log('Current page: ' + location.anchorPage);
-});
-  
-  var pl = book.pagelist
-  console.log(pl)
-  console.log("opened "+book.opened)
-  rendition.display(8)
-  book.ready.then((b) => {
-      console.log("Navigation "+book.navigation);
-      book.navigation.forEach(function(item){console.log("item "+JSON.stringify(item));});
-      
-  });
-  book.ready.then((b) => {
-            return book.locations.generate();
-        }).then(locations => {
-            console.log("Total Pages?: ", locations.length);
-        });
-    /*book.ready.then(function(pageList) {
-        console.log('Total pages: ' + book.pagination.totalPages);
-    });*/
-    displayed.then(function() {
-    console.log('rendition.currentLocation():', rendition.currentLocation());
-});
-    document.getElementById("Nextbutton").addEventListener("click", function(){rendition.next()}); 
-    document.getElementById("Prevbutton").addEventListener("click", function(){rendition.prev()});
-  }
-</script>
 </head>
 
 <body onload="loadBook();">
@@ -184,7 +143,9 @@ book.on('book:pageChanged', function(location){
  </div>
 </nav>
 <div id="ebookarea">text area</div>
+
 <button id="Nextbutton">next</button>
 <button id="Prevbutton">prev</button>
+<div id="tablecontent"></div>
 </body>
 </html>
