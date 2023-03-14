@@ -76,7 +76,7 @@ function loadBook(){
   var pl = book.pagelist
   console.log(pl)
   console.log("opened "+book.opened)
-  var rendition = book.renderTo("ebookarea", { method: "continuous",flow: 'paginated',width: 600, height: 400});
+  var rendition = book.renderTo("ebookarea", { flow: 'paginated',width: 600, height: 400});
   var displayed = rendition.display();
   displayed.then(function() {
     console.log('rendition.currentLocation():', rendition.currentLocation());
