@@ -27,6 +27,7 @@ urlpatterns = [
     path('video_player/', include('video_player.urls')),
     #path('admin/', admin.site.urls),
     path('login', utils.views.login,name="login"),
+    path('epubReader', utils.views.epubReader,name="epubReader"),
     path('logout',utils.views.logout,name="logout"),
     path('register',utils.views.register,name="register"),
     path('list_users',utils.views.list_users,name="list_users"),

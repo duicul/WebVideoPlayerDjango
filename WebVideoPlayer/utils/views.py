@@ -271,6 +271,17 @@ def register(request):
         #print("register "+str(username)+" "+str(password)+" "+encrypt_pass)
     return HttpResponseRedirect("/entry_point")
 
+def epubReader(request):
+    logger.info("utils.register "+str(request))
+    logged_user=None
+    try:
+        logged_user=request.session['username']
+    except KeyError:
+        raise PermissionDenied() 
+    username=None
+    password=None
+    return render(request,"epubReader.html")
+
 def rescan_db(request):
     logger.info("utils.rescan_db "+str(request))
     logged_user=None
