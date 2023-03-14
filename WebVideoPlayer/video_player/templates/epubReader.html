@@ -82,6 +82,11 @@ function loadBook(){
   var pl = book.pagelist
   console.log(pl)
   console.log("opened "+book.opened)
+  book.ready.then((book) => {
+            return this.book.locations.generate();
+        }).then(locations => {
+            console.log("Total Pages?: ", locations.length);
+        });
   }
 </script>
 </head>
