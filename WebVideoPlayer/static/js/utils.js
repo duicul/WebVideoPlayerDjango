@@ -112,7 +112,7 @@ function initHlsPlayer(videoPath) {
 
         if (Hls.isSupported()) {
             console.log("Hls.isSupported");
-            var hls = new Hls();
+            var hls = new Hls({capLevelToPlayerSize:true});
             hls.loadSource(videoSrc);
             hls.attachMedia(video);
             console.log(hls);
@@ -142,7 +142,7 @@ function scrollVolumeChange(event) {
     scale = event.deltaY * -0.001;
     //console.log("scroll volume chnage "+scale)
     try {
-        player = videojs('my-video');
+        player = videojs('my-video',{aspectRatio:"16:9"});
         player.volume(player.volume() + scale);
     } catch (error) {
         return;
