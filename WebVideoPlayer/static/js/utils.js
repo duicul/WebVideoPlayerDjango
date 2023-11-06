@@ -110,12 +110,12 @@ function loadDescriptionPanel(){
 }
 
 function editDescription(){
-    var descrptionOld = $("#descriptionData").innerText();
+    var descrptionOld = $("#descriptionData").text();
     console.log(descrptionOld);
     var descrtxtArea = "<textarea id=\"descriptionTextArea\">";
     descrtxtArea+=descrptionOld;
     descrtxtArea+="</textarea>";
-    $("#descriptionData").innerText(descrtxtArea);
+    $("#descriptionData").text(descrtxtArea);
     var descriptionPanel = "<button type=\"button\" class=\"btn btn-primary\" onclick='saveDescription()'>Save Description</button>";
     $("#descriptionButtons").html(descriptionPanel);
 }
