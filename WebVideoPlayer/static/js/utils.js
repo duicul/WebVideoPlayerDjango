@@ -104,6 +104,27 @@ function scrollHlsVolumeChange(event) {
     }
 }
 
+function loadDescriptionPanel(){
+    var descriptionPanel = "<button type=\"button\" class=\"btn btn-primary\" onclick='editDescription()'>Edit Description</button>";
+    $("#descriptionButtons").html(descriptionPanel);
+}
+
+function editDescription(){
+    var descrptionOld = $("#descriptionData").val();
+    var descrtxtArea = "<textarea id=\"descriptionTextArea\"";
+    descrtxtArea+=descrptionOld;
+    descrtxtArea+="</textarea>";
+    $("#descriptionData").html(descrtxtArea);
+    var descriptionPanel = "<button type=\"button\" class=\"btn btn-primary\" onclick='saveDescription()'>Save Description</button>";
+    $("#descriptionButtons").html(descriptionPanel);
+}
+
+function saveDescription(){
+    var descrptionOld = $("#descriptionTextArea").val();
+    console.log(descrptionOld);
+    window.location.reload(true);
+}
+
 function initHlsPlayer(videoPath) {
     try {
         var video = document.getElementById('video_hls');

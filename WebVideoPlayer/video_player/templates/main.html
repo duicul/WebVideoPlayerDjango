@@ -81,7 +81,7 @@ load_season('{{uuid}}');
 {% endif %}
 " onresize="load_videos();" {% endif %}
 {% if play_src != None %}
-onload="videoPlayerInit();initHlsPlayer('{{play_src}}');addJumpOnVideoEnd(
+onload="videoPlayerInit();loadDescriptionPanel();initHlsPlayer('{{play_src}}');addJumpOnVideoEnd(
 {% if nxt_ep_uuid != None %}
 '/video_player/?play={{nxt_ep_uuid}}&type=episode'
 {% endif %}
@@ -237,8 +237,9 @@ load_modal();load_modal_scan_dir();
             </video>
         </div>
         <div class="col-4"> 
+            <div id = "descriptionButtons"></div>>
             {% autoescape off %}
-                {{description}}
+               <div id = "descriptionData">{{description}}</div>> 
             {% endautoescape %}
         </div>
     </div>
