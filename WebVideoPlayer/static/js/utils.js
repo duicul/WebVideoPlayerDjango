@@ -111,7 +111,7 @@ function loadDescriptionPanel(){
 
 function editDescription(){
     var descrptionOld = $("#descriptionData").val();
-    var descrtxtArea = "<textarea id=\"descriptionTextArea\"";
+    var descrtxtArea = "<textarea id=\"descriptionTextArea\">";
     descrtxtArea+=descrptionOld;
     descrtxtArea+="</textarea>";
     $("#descriptionData").html(descrtxtArea);
