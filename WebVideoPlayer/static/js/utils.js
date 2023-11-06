@@ -115,7 +115,7 @@ function editDescription(){
     var descrtxtArea = "<textarea id=\"descriptionTextArea\">";
     descrtxtArea+=descrptionOld;
     descrtxtArea+="</textarea>";
-    $("#descriptionData").text(descrtxtArea);
+    $("#descriptionData").html(descrtxtArea);
     var descriptionPanel = "<button type=\"button\" class=\"btn btn-primary\" onclick='saveDescription()'>Save Description</button>";
     $("#descriptionButtons").html(descriptionPanel);
 }
