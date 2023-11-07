@@ -391,6 +391,7 @@ def joinprocess(process):
         process.join()
 
 def editDescriptionText(request):
+    logger.info("utils.editDescriptionText "+str(request))
     try:
         descr_html = request.POST['descr_html']
         main_path = request.POST['abs_path']
