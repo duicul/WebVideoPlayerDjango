@@ -132,7 +132,7 @@ function saveDescription(descr_path){
             }
         });*/
     var url_edit = "/utils/edit_description";
-    $.ajax({url: splitUrl,
+    $.ajax({url: url_edit,
             type: 'POST',
             dataType: 'json',
             cache: false,
