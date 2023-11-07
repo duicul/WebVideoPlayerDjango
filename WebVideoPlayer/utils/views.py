@@ -25,7 +25,7 @@ from utils.models import User_db, Movie_db, Category_db, Show_db, Season_db, \
 from utils.path_walker import parse_media_dir, clean_db_tables,generateJsonTree_media_dir,parse_sub_dir
 import video_player
 from video_player.views import index
-
+from pathlib import Path
 logger = logging.getLogger("django")
 started_scanning = False
 process = None
@@ -389,6 +389,26 @@ def joinprocess(process):
         logger.info(" Joinning process: " + str(process.pid))
         process.join()
 
+def editDescriptionText(request):
+    descr_html = request.POST['descr_html']
+    main_path = request.POST['abs_path']
+    main_path = Path(main_path)
+    main_path = main_path.parent.absolute()
+    main_path = main_path.parent.absolute()
+    
+    desc_file = open(os.path.join(main_path,"descr.json"), "r")
+    try:
+        desc_data = json.load(desc_file)
+    except:
+        pass
+    desc_file.close()
+    
+    desc_data["descr_html"]=descr_html
+    
+    desc_file = open(os.path.join(main_path,"descr.json"), "w")
+    json.dump(desc_data, desc_file)
+    desc_file.close()
+    
 def upload_file(request):
     logger.info("utils.upload_file "+str(request))
     if request.method == 'POST':

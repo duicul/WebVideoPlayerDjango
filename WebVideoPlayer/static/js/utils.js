@@ -122,8 +122,31 @@ function editDescription(descr_path){
 
 function saveDescription(descr_path){
     var descrptionOld = $("#descriptionTextArea").val();
-    console.log(descrptionOld);
-    window.location.reload(true);
+    var formData = new FormData();
+    formData.append('abs_path', descr_path);
+    formData.append('descr_html', descrptionOld);
+    $.ajaxSetup({
+            headers: {
+                "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value,
+                "X-Frame-Options": "DENY"
+            }
+        });
+    var url_edit = "/utils/edit_description";
+    $.ajax({url: splitUrl,
+            type: 'POST',
+            dataType: 'json',
+            cache: false,
+            processData: false,
+            contentType: false,
+            data: formData,
+            error: function (xhr) {
+                uploaderror = true;
+                alert(xhr.statusText);
+            },
+            success: function (res) {
+                window.location.reload(true);
+            }
+        });
 }
 
 function initHlsPlayer(videoPath) {

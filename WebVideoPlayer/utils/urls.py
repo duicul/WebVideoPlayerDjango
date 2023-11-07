@@ -10,4 +10,5 @@ urlpatterns = [
     path('scan_video_db', views.rescan_db, name='scan_video_db'),
     path('scan_db_dir', views.scan_db_dir, name='scan_db_dir'),
     path('list_media_dir', views.list_media_dir, name='list_media_dir'),
+    path('edit_description', views.editDescriptionText,name="edit_description"),
 ]
