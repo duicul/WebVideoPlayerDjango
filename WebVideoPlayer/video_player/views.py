@@ -69,7 +69,7 @@ def video(request):
                 #logger.info("movie subs"+str(subs))
                 movie_name=mv_db.name
                 descr = mv_db.descr
-                resp = {"movie_name":movie_name,"type":type_name,"play_src":play_src,"username":username,"description":descr}
+                resp = {"movie_name":movie_name,"abs_path":mv_db.abs_path,"type":type_name,"play_src":play_src,"username":username,"description":descr}
                 if len(subs)>0:
                     resp["subs"] = subs
                 return render(request,"main.html",resp)
@@ -111,7 +111,7 @@ def video(request):
                     episodes=[episode.getDict() for episode in Episode_db.objects.filter(season=ep_db.season.pk).order_by('name')]
                 except Exception as e:
                     logger.error(str(traceback.format_exc()))"""
-                resp = {"prv_ep_name":prv_ep_name,"prv_ep_uuid":prv_ep_uuid,"nxt_ep_name":nxt_ep_name,"nxt_ep_uuid":nxt_ep_uuid,"type":type_name,"play_src":play_src,"username":username,"subs":subs,"show_name":show_name,"episode_name":episode_name,"season_name":season_name,"season_url":season_url,"season_id":season_id,"description":descr,"episodes":episodes}
+                resp = {"prv_ep_name":prv_ep_name,"abs_path":ep_db.abs_path,"prv_ep_uuid":prv_ep_uuid,"nxt_ep_name":nxt_ep_name,"nxt_ep_uuid":nxt_ep_uuid,"type":type_name,"play_src":play_src,"username":username,"subs":subs,"show_name":show_name,"episode_name":episode_name,"season_name":season_name,"season_url":season_url,"season_id":season_id,"description":descr,"episodes":episodes}
                 if len(subs)>0:
                     resp["subs"] = subs
                 return render(request,"main.html",resp)

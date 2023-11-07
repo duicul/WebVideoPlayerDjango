@@ -109,18 +109,18 @@ function loadDescriptionPanel(){
     $("#descriptionButtons").html(descriptionPanel);
 }
 
-function editDescription(){
+function editDescription(descr_path){
     var descrptionOld = $("#descriptionData").text();
     console.log(descrptionOld);
     var descrtxtArea = "<textarea id=\"descriptionTextArea\">";
     descrtxtArea+=descrptionOld;
     descrtxtArea+="</textarea>";
     $("#descriptionData").html(descrtxtArea);
-    var descriptionPanel = "<button type=\"button\" class=\"btn btn-primary\" onclick='saveDescription()'>Save Description</button>";
+    var descriptionPanel = "<button type=\"button\" class=\"btn btn-primary\" onclick=\"saveDescription('"+descr_path+""')\">Save Description</button>";
     $("#descriptionButtons").html(descriptionPanel);
 }
 
-function saveDescription(){
+function saveDescription(descr_path){
     var descrptionOld = $("#descriptionTextArea").val();
     console.log(descrptionOld);
     window.location.reload(true);
