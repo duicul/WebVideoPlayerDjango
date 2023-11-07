@@ -26,6 +26,7 @@ from utils.path_walker import parse_media_dir, clean_db_tables,generateJsonTree_
 import video_player
 from video_player.views import index
 from pathlib import Path
+import traceback
 logger = logging.getLogger("django")
 started_scanning = False
 process = None
@@ -390,24 +391,27 @@ def joinprocess(process):
         process.join()
 
 def editDescriptionText(request):
-    descr_html = request.POST['descr_html']
-    main_path = request.POST['abs_path']
-    main_path = Path(main_path)
-    main_path = main_path.parent.absolute()
-    main_path = main_path.parent.absolute()
-    
-    desc_file = open(os.path.join(main_path,"descr.json"), "r")
     try:
-        desc_data = json.load(desc_file)
-    except:
-        pass
-    desc_file.close()
-    
-    desc_data["descr_html"]=descr_html
-    
-    desc_file = open(os.path.join(main_path,"descr.json"), "w")
-    json.dump(desc_data, desc_file)
-    desc_file.close()
+        descr_html = request.POST['descr_html']
+        main_path = request.POST['abs_path']
+        main_path = Path(main_path)
+        main_path = main_path.parent.absolute()
+        main_path = main_path.parent.absolute()
+        
+        desc_file = open(os.path.join(main_path,"descr.json"), "r")
+        try:
+            desc_data = json.load(desc_file)
+        except:
+            pass
+        desc_file.close()
+        
+        desc_data["descr_html"]=descr_html
+        
+        desc_file = open(os.path.join(main_path,"descr.json"), "w")
+        json.dump(desc_data, desc_file)
+        desc_file.close()
+    except Exception as e:
+        return HttpResponse(json.dumps({"error":str(traceback.format_exc())}), content_type="application/json",status=500)
     
 def upload_file(request):
     logger.info("utils.upload_file "+str(request))
