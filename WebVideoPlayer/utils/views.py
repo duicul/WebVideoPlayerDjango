@@ -411,6 +411,7 @@ def editDescriptionText(request):
         desc_file = open(os.path.join(main_path,"descr.json"), "w")
         json.dump(desc_data, desc_file)
         desc_file.close()
+        return HttpResponse(json.dumps(desc_data), content_type="application/json")
     except Exception as e:
         return HttpResponse(json.dumps({"error":str(traceback.format_exc())}), content_type="application/json",status=500)
     
