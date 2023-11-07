@@ -237,9 +237,11 @@ load_modal();load_modal_scan_dir();
             </video>
         </div>
         <div class="col-4"> 
+        <form enctype="multipart/form-data" name = "form" method = "POST" >{% csrf_token %}
             <div id = "descriptionButtons">
                 <button type="button" class="btn btn-primary" onclick="editDescription('{{abs_path}}')">Edit Description</button>
             </div>
+        </form>
             {% autoescape off %}
                <div id = "descriptionData">{{description}}</div>
             {% endautoescape %}

@@ -125,12 +125,12 @@ function saveDescription(descr_path){
     var formData = new FormData();
     formData.append('abs_path', descr_path);
     formData.append('descr_html', descrptionOld);
-    /*$.ajaxSetup({
+    $.ajaxSetup({
             headers: {
                 "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value,
                 "X-Frame-Options": "DENY"
             }
-        });*/
+        });
     var url_edit = "/utils/edit_description";
     $.ajax({url: url_edit,
             type: 'POST',
