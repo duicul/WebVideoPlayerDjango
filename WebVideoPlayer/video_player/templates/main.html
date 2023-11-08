@@ -239,11 +239,7 @@ load_modal();load_modal_scan_dir();
         <div class="col-4"> 
         <form enctype="multipart/form-data" name = "form" method = "POST" >{% csrf_token %}
             <div id = "descriptionButtons">
-                <button type="button" class="btn btn-primary" onclick="editDescription('{{abs_path}}','
-                {% if  type == "episode" %}
-                    {{movie_title}}
-                {% endif %}
-                ')">Edit Description</button>
+                <button type="button" class="btn btn-primary" onclick="editDescription('{{abs_path}}','{% if  type == "episode" %}{{movie_title}}{% endif %}')">Edit Description</button>
             </div>
         </form>
             {% autoescape off %}
