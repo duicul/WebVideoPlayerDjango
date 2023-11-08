@@ -394,6 +394,7 @@ def editDescriptionText(request):
     logger.info("utils.editDescriptionText "+str(request))
     try:
         descr_html = request.POST['descr_html']
+        descrptionTitle = request.POST['descrptionTitle']
         main_path = request.POST['abs_path']
         main_path = Path(main_path)
         main_path = main_path.parent.absolute()
@@ -407,7 +408,7 @@ def editDescriptionText(request):
         desc_file.close()
         
         desc_data["descr_html"]=descr_html
-        
+        desc_data["movie_title"]=descrptionTitle
         desc_file = open(os.path.join(main_path,"descr.json"), "w")
         json.dump(desc_data, desc_file)
         desc_file.close()

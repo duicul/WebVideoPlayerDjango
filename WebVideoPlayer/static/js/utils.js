@@ -109,22 +109,25 @@ function loadDescriptionPanel(){
     $("#descriptionButtons").html(descriptionPanel);
 }
 
-function editDescription(descr_path){
+function editDescription(descr_path,episode_name){
     var descrptionOld = $("#descriptionData").text();
     console.log(descrptionOld);
-    var descrtxtArea = "<textarea id=\"descriptionTextArea\">";
+    var descrtxtArea = "<div class=\"input-group mb-3\"><input type=\"text\" id=\"descriptionTextTitle\" class=\"form-control\" value=\""+episode_name+"\"></div>";
+    descrtxtArea += "<div class=\"input-group\"><div class=\"input-group-prepend\"><span class=\"input-group-text\">Description text</span></div><textarea id=\"descriptionTextArea\">";
     descrtxtArea+=descrptionOld;
-    descrtxtArea+="</textarea>";
+    descrtxtArea+="</textarea></div>";
     $("#descriptionData").html(descrtxtArea);
-    var descriptionPanel = "<button type=\"button\" class=\"btn btn-primary\" onclick=\"saveDescription('"+descr_path+"')\">Save Description</button>";
+    var descriptionPanel = "<button type=\"button\" class=\"btn btn-primary\" onclick=\"saveDescription('"+descr_path+"','"+episode_name+"')\">Save Description</button>";
     $("#descriptionButtons").html(descriptionPanel);
 }
 
-function saveDescription(descr_path){
+function saveDescription(descr_path,episode_name){
     var descrptionOld = $("#descriptionTextArea").val();
+    var descrptionTitle = $("#descriptionTextTitle").val();
     var formData = new FormData();
     formData.append('abs_path', descr_path);
     formData.append('descr_html', descrptionOld);
+    formData.append('descrptionTitle', descrptionTitle);
     $.ajaxSetup({
             headers: {
                 "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value,
