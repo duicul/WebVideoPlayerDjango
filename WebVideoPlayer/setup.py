@@ -15,13 +15,13 @@ myCmd = 'mkdir '+BASE_DIR+'/logs;chmod a+w '+BASE_DIR+'/logs;'
 os.system(myCmd)
 myCmd = 'sudo apt install nginx uwsgi uwsgi-plugin-python3'
 os.system(myCmd)
-myCmd = 'pip install django'
+myCmd = 'pip --break-system-packages install django'
 os.system(myCmd)
-myCmd = 'pip install cinemagoer'
+myCmd = 'pip --break-system-packages install cinemagoer'
 os.system(myCmd)
-myCmd = 'pip install webvtt-py'
+myCmd = 'pip --break-system-packages install webvtt-py'
 os.system(myCmd)
-myCmd = 'pip install psutil'
+myCmd = 'pip --break-system-packages install psutil'
 os.system(myCmd)
 myCmd = 'chmod a+w .'
 os.system(myCmd)
