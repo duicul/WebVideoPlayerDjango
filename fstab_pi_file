@@ -1,6 +1,13 @@
 proc            /proc           proc    defaults          0       0
 PARTUUID=[]  /boot/firmware  vfat    defaults          0       2
 PARTUUID=[]  /               ext4    defaults,noatime  0       1
-UUID=[UUID_HDD] /home/WebVideoPlayerDjango/WebVideoPlayer/media/SEAGATE exfat defaults,auto,users,rw,nofail,noatime,uid=pi,gid=pi 0 0
+
+UUID=[UUID_HDD] /home/WebVideoPlayerDjango/WebVideoPlayer/media/SEAGATE exfat defaults,auto,users,rw,nofail,noatime,uid=pi,fmask=0117,dmask=0007  0 0
+ 
+ # file permission -> 1 -> rw group and user, all 7 -> none
+ # directory permission -> 0-> rwx group and user, all 7 -> none
+ # www-data part of group pi
+ 
+ #UUID=[UUID_HDD] /home/WebVideoPlayerDjango/WebVideoPlayer/media/SEAGATE exfat defaults,auto,users,rw,nofail,noatime,uid=www-data 0 0
 # a swapfile is not a swap partition, no line here
 #   use  dphys-swapfile swap[on|off]  for that
