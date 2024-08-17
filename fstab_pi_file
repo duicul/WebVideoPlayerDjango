@@ -1,0 +1,6 @@
+proc            /proc           proc    defaults          0       0
+PARTUUID=[]  /boot/firmware  vfat    defaults          0       2
+PARTUUID=[]  /               ext4    defaults,noatime  0       1
+UUID=[UUID_HDD] /home/WebVideoPlayerDjango/WebVideoPlayer/media/SEAGATE exfat defaults,auto,users,rw,nofail,noatime,uid=pi,gid=pi 0 0
+# a swapfile is not a swap partition, no line here
+#   use  dphys-swapfile swap[on|off]  for that
