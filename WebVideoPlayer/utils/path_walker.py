@@ -412,7 +412,7 @@ def generateJsonTree(path,level):
     if os.path.isdir(path):
         dirJson = {"dirs":[],"files":[],"name":os.path.basename(path),"path":os.path.abspath(path)}
         if level>=0:
-            for file in os.listdir(path):
+            for file in sorted(os.listdir(path)):
                 fullFilePath = os.path.join(path,file)
                 print(path)
                 print(file)
