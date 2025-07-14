@@ -235,6 +235,18 @@ def redirect_internal(request,path):
     logger.info("redirect_internal static = "+str(response['X-Accel-Redirect']))
     return response
 
+def redirect_internal_3dprinter(request,path):
+    logger.info("video_player.redirect_internal_3dprinter "+str(request)+" "+str(path))
+    username=None
+    try:
+        username=request.session['username']
+    except KeyError:
+        raise PermissionDenied()
+    response = HttpResponse()
+    response['X-Accel-Redirect'] = '/3dprinter-internal/' + path
+    logger.info("3dprinter_internal static = "+str(response['X-Accel-Redirect']))
+    return response
+
 def previous_ep(ep):
     logger.info("video_player.previous_ep "+str(ep))
     curr_season=ep.season
