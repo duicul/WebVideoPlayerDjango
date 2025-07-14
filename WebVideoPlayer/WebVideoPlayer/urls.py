@@ -35,10 +35,10 @@ urlpatterns = [
     path('upload_file', utils.views.upload_file,name="upload_file"),
     path('file_upload_form', utils.views.file_upload_form,name="file_upload_form"),
     path('file_upload_split', utils.views.file_upload_split,name="file_upload_split"),
+    path('3dprinter/<path:path>', video_player.views.redirect_internal_3dprinter,name="redirect_internal_3dprinter")
 ]
 if(not settings.DEBUG):
     urlpatterns.append(path('media/<path:path>', video_player.views.redirect_internal,name="redirect_internal"))
-    urlpatterns.append(path('3dprinter/<path:path>', video_player.views.redirect_internal_3dprinter,name="redirect_internal_3dprinter"))
     #urlpatterns.append(path('static/<path:path>', video_player.views.static_redirect_internal,name="redirect_static"))
 if settings.DEBUG:
     urlpatterns +=  static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
