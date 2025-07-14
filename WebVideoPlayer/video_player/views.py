@@ -235,7 +235,7 @@ def redirect_internal(request,path):
     logger.info("redirect_internal static = "+str(response['X-Accel-Redirect']))
     return response
 
-def redirect_internal_3dprinter(request):
+def redirect_internal_3dprinter(request,path=None):
     logger.info("video_player.redirect_internal_3dprinter "+str(request))
     username=None
     try:
@@ -243,7 +243,7 @@ def redirect_internal_3dprinter(request):
     except KeyError:
         raise PermissionDenied()
     response = HttpResponse()
-    response['X-Accel-Redirect'] = '/3dprinter-internal/'
+    response['X-Accel-Redirect'] = 'https://127.0.0.1:7701/3dprinter-internal/'+str(path) if path is not None else ""
     logger.info("3dprinter_internal static = "+str(response['X-Accel-Redirect']))
     return response
 
