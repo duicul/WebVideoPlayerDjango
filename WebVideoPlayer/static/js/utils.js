@@ -382,44 +382,57 @@ function loadUploadPathFinder(name,path){
         });
 }
 
+function escapeHtmlText(value) {
+    return $("<div>").text(value == null ? "" : String(value)).html();
+}
+
 function load_season(uuid) {
     var url_list_dir = "/utils/list_items?type=season&uuid=" + uuid;
 
     $.ajax({
         url: url_list_dir,
         success: function(result) {
-            let img_w = 250;
-            let img_h = 250;
-            let ret_str = "";
-            ret_str += "<div class=\"row\">";
-            ret_str += "<div class=\"col-2\"></div>";
-            ret_str += "<div class=\"col-8\">";
+            let ret_str = "<div class=\"episode-list\">";
 
             result.forEach(function(season) {
                 let season_img = season["img_url"];
                 season["episodes"].forEach(function(episode) {
-                    ret_str += "<div>";
-                    ret_str += "<span onclick=\"load_description('" + episode["unique_id"] + "','episode');\" style=\"cursor: pointer;\" title=\"Info\" data-bs-toggle=\"modal\" data-bs-target=\"#descriptionModal\">";
+                    let episodeId = encodeURIComponent(episode["unique_id"]);
+                    let episodeName = escapeHtmlText(episode["name"]);
+                    let episodeTitle = escapeHtmlText(
+                        ((episode["name"] || "") + " " + (episode["movie_title"] || ""))
+                        .replace(/<br\s*\/?>/gi, " ")
+                        .trim()
+                    );
+                    let episodeDescription = (episode["description"] || "")
+                        .replace(/<br\s*\/?>/gi, " ")
+                        .replace(/\s+/g, " ")
+                        .trim();
+
+                    ret_str += "<article class=\"episode-card\">";
+                    ret_str += "<button class=\"episode-info-trigger\" type=\"button\" onclick=\"load_description('" + episodeId + "','episode');\" title=\"Full description\" aria-label=\"Show full description\" data-bs-toggle=\"modal\" data-bs-target=\"#descriptionModal\">";
                     ret_str += "<svg width=\"1em\" height=\"1em\" viewBox=\"0 0 16 16\" class=\"bi bi-info-square\" fill=\"currentColor\" xmlns=\"http://www.w3.org/2000/svg\">";
                     ret_str += "<path fill-rule=\"evenodd\" d=\"M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z\"/>";
                     ret_str += "<path fill-rule=\"evenodd\" d=\"M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z\"/>";
                     ret_str += "<path d=\"M8.93 6.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588z\"/>";
                     ret_str += "<circle cx=\"8\" cy=\"4.5\" r=\"1\"/></svg>";
-                    ret_str += "</span>";
+                    ret_str += "</button>";
 
-                    ret_str += "<a data-bs-toggle=\"tooltip\" title=\"" + episode["name"] + "\" href=\"/video_player/?play=" + episode["unique_id"] + "&type=episode\">";
-                    ret_str += "<img style=\"border-radius: 8%;cursor: pointer;\" src=\"" + season_img;
-                    ret_str += "\" alt=\"" + episode["name"] + "\" width=\"" + img_w + "\" height=\"" + img_h + "\">";
+                    ret_str += "<a class=\"episode-poster\" data-bs-toggle=\"tooltip\" title=\"" + episodeName + "\" href=\"/video_player/?play=" + episodeId + "&type=episode\">";
+                    ret_str += "<img src=\"" + escapeHtmlText(season_img);
+                    ret_str += "\" alt=\"" + episodeName + "\">";
                     ret_str += "</a>";
-                    ret_str += "<span>" + episode["name"] + " " + episode["movie_title"] + " </span>";
-                    ret_str += "</div>";
+                    ret_str += "<div class=\"episode-card-copy\">";
+                    ret_str += "<h2 class=\"episode-card-title\"><a href=\"/video_player/?play=" + episodeId + "&type=episode\">" + episodeTitle + "</a></h2>";
+                    if (episodeDescription) {
+                        ret_str += "<p class=\"episode-summary\">" + escapeHtmlText(episodeDescription) + "</p>";
+                    }
+                    ret_str += "</div></article>";
 
 
                 });
 
             });
-            ret_str += "</div>";
-            ret_str += "<div class=\"col-2\"></div>";
             ret_str += "</div>";
 
             $("#season_files").html(ret_str);

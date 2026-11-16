@@ -166,14 +166,10 @@ def store_series(main_path, name, main_moive_path, out_path, img_path, vtt_m3u8_
     logger.info(show_db.getDict())
     
     season_descr_path = os.path.join(season_path, "descr.json")
-    if  not os.path.isfile(season_descr_path) or FORCE_RETRIEVE_IMDB:
-        season_descr = create_description_movie(season_descr_path, season_name)
-    else:
-        desc_file = open(season_descr_path, "r")
-        try:
-            season_descr = json.load(desc_file)["descr_html"]
-        except:
-            pass 
+    season_descr_data = load_or_retrieve_description(
+        season_descr_path,
+        lambda: create_description_movie(season_descr_path, season_name))
+    season_descr = season_descr_data["descr_html"]
     try:
         season_db = Season_db.objects.get(abs_path=season_path)
         season_db.name = season_name
@@ -192,19 +188,15 @@ def store_series(main_path, name, main_moive_path, out_path, img_path, vtt_m3u8_
     logger.info(season_db.getDict())
 
     episode_desr_path = os.path.join(main_moive_path, "descr.json")
-    episode_descr = None
-    if os.path.isfile(episode_desr_path) and not FORCE_RETRIEVE_IMDB:
-        try:
-            with open(episode_desr_path, "r") as desc_file:
-                episode_descr = json.load(desc_file)
-        except Exception as e:
-            logger.error(e)
-    if not isinstance(episode_descr, dict) or not episode_descr.get("descr_html"):
+    def retrieve_episode_description():
         episodes = re.findall(r"[Ee](\d+)", main_file_name)
         seasons = re.findall(r"[Ss](\d+)", main_file_name)
         seriesName = re.search(r"(.+) *(S[0-9]?[0-9]?.*E[0-9]?[0-9]?)", main_file_name).group(1)
         logger.info(main_file_name + " " + str(seriesName) + " " + str(seasons) + " " + str(episodes))
-        episode_descr = create_description_episode(episode_desr_path, seriesName, seasons, episodes)
+        return create_description_episode(episode_desr_path, seriesName, seasons, episodes)
+
+    episode_descr = load_or_retrieve_description(
+        episode_desr_path, retrieve_episode_description)
             
     subs = json.dumps(extract_correct_subs(main_path, main_moive_path, vtt_m3u8_subPath))    
     logger.info("extract_correct_subs episode " + str(subs))
@@ -251,11 +243,8 @@ def store_movie(main_path, name, main_moive_path, out_path, img_path, vtt_m3u8_s
        
     logger.info("path_walker : " + str(main_file_name))
     desc_path = os.path.join(main_moive_path, "descr.json")
-    if not os.path.isfile(desc_path) or FORCE_RETRIEVE_IMDB:
-        desc_data = create_description_movie(desc_path, main_file_name)   
-    else:
-        desc_file = open(desc_path, "r") 
-        desc_data = json.load(desc_file)
+    desc_data = load_or_retrieve_description(
+        desc_path, lambda: create_description_movie(desc_path, main_file_name))
     descr_html = desc_data["descr_html"]
     movie_title = desc_data["movie_title"]
     try:
@@ -307,6 +296,24 @@ def extract_correct_subs(main_path, main_moive_path, vtt_m3u8_subPath):
         subs.append(os.path.relpath(os.path.join(subs_path, vtt_m3u8_subPath), start=main_path))
     subs = list(map(lambda sub_url:"/media/" + str(sub_url), filter(lambda sub:"vtt" in sub, subs)))
     return subs
+
+
+def load_or_retrieve_description(desc_path, retrieve_description):
+    if not FORCE_RETRIEVE_IMDB:
+        try:
+            with open(desc_path, "r", encoding="utf-8") as desc_file:
+                desc_data = json.load(desc_file)
+        except FileNotFoundError:
+            pass
+        except (OSError, json.JSONDecodeError) as e:
+            logger.warning("Unable to read description file %s: %s", desc_path, e)
+        else:
+            if isinstance(desc_data, dict):
+                description = desc_data.get("descr_html")
+                if isinstance(description, str) and description.strip():
+                    return desc_data
+
+    return retrieve_description()
 
 
 def create_description_movie(desc_path, main_file_name):
@@ -386,18 +393,21 @@ def create_description_episode(desc_path, show, seasons, episodes):
                                 ep = mv['episodes'][int(season)][int(episode)]
                                 if not any(ep.get(info) for info in ("plot", "synopsis", "plot outline")):
                                     try:
-                                        ia.update(ep, "plot")
+                                        ia.update(ep, 'plot')
                                     except Exception as e:
                                         logger.error("create_description_episode " + str(e))
                                 logger_imdb.info("create_description_episode "+str(ep)+" "+str(ep.keys())+" "+str(show)+" "+str(seasons)+" "+str(episodes))
                                 if "title" in ep.keys():
                                     movie_title += (str(ep["title"]).replace("<br/>","") + " <br/>")
-                                if "plot" in ep.keys():
-                                    descr_html += (str(ep["plot"]).replace("<br/>","") + " <br/>")
-                                elif "synopsis" in ep.keys():
-                                    descr_html += (str(ep["synopsis"]).replace("<br/>","") + " <br/>")
-                                elif "plot outline" in ep.keys():
-                                    descr_html += (str(ep["plot outline"]).replace("<br/>","") + " <br/>")
+                                plot = ep.get("plot") or ep.get("synopsis") or ep.get("plot outline")
+                                if plot:
+                                    if isinstance(plot, list):
+                                        descr_html += "".join(
+                                            str(item).replace("<br/>", "") + " <br/>"
+                                            for item in plot
+                                        )
+                                    else:
+                                        descr_html += str(plot).replace("<br/>", "") + " <br/>"
                         except Exception as e:
                             logger.error("create_description_episode " + str(e))
             except Exception as e:

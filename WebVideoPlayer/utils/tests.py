@@ -1,39 +1,82 @@
+from django.test import SimpleTestCase
+from unittest.mock import Mock, patch
+import json
 import os
 import tempfile
-from types import SimpleNamespace
-from unittest.mock import patch
-
-from django.test import SimpleTestCase
 
 from utils import path_walker
 
 
-class CreateDescriptionEpisodeTests(SimpleTestCase):
-    def test_fetches_episode_plot_when_episodes_list_does_not_include_it(self):
-        episode = {"title": "The Episode"}
-        series = {"episodes": {1: {2: episode}}}
-        imdb_client = SimpleNamespace(
-            search_movie=lambda show: [SimpleNamespace(movieID="123")],
-            get_movie=lambda movie_id: series,
-        )
+class DescriptionCacheTests(SimpleTestCase):
+    def test_missing_or_empty_description_is_retrieved_again(self):
+        cached_values = ({}, {"movie_title": "Cached title"}, {"descr_html": "  "})
+        retrieved = {"descr_html": "IMDb description", "movie_title": "IMDb title"}
 
-        def update(movie, info):
-            if info == "plot":
-                movie["plot"] = ["The episode plot"]
+        with tempfile.TemporaryDirectory() as temp_dir:
+            desc_path = os.path.join(temp_dir, "descr.json")
+            for cached_value in cached_values:
+                with self.subTest(cached_value=cached_value):
+                    with open(desc_path, "w", encoding="utf-8") as desc_file:
+                        json.dump(cached_value, desc_file)
+                    retrieve = Mock(return_value=retrieved)
 
-        imdb_client.update = update
+                    with patch.object(path_walker, "FORCE_RETRIEVE_IMDB", False):
+                        result = path_walker.load_or_retrieve_description(
+                            desc_path, retrieve)
 
-        with patch.object(path_walker, "ia", imdb_client), \
-                patch.dict(path_walker.imdb_cache["show"], {}, clear=True), \
-                patch.dict(path_walker.imdb_cache_id["show"], {}, clear=True):
-            result = path_walker.create_description_episode(
-                self.make_desc_path(), "Example Show", ["01"], ["02"]
-            )
+                    self.assertEqual(result, retrieved)
+                    retrieve.assert_called_once_with()
 
-        self.assertIn("The episode plot", result["descr_html"])
-        self.assertIn("The Episode", result["movie_title"])
+    def test_nonempty_description_uses_cache(self):
+        cached_value = {"descr_html": "Cached description"}
+        retrieve = Mock()
 
-    def make_desc_path(self):
-        directory = tempfile.TemporaryDirectory()
-        self.addCleanup(directory.cleanup)
-        return os.path.join(directory.name, "descr.json")
+        with tempfile.TemporaryDirectory() as temp_dir:
+            desc_path = os.path.join(temp_dir, "descr.json")
+            with open(desc_path, "w", encoding="utf-8") as desc_file:
+                json.dump(cached_value, desc_file)
+
+            with patch.object(path_walker, "FORCE_RETRIEVE_IMDB", False):
+                result = path_walker.load_or_retrieve_description(desc_path, retrieve)
+
+        self.assertEqual(result, cached_value)
+        retrieve.assert_not_called()
+
+
+class IMDbEpisodeDescriptionTests(SimpleTestCase):
+    def test_episode_plot_is_loaded_before_description_is_read(self):
+        class IMDbObject(dict):
+            def __init__(self, movie_id, *args, **kwargs):
+                super().__init__(*args, **kwargs)
+                self.movieID = movie_id
+
+        episode = IMDbObject("episode-id", {"title": "Pilot"})
+        show = IMDbObject("show-id")
+
+        class FakeIMDb:
+            def search_movie(self, title):
+                return [IMDbObject("show-id", {"title": title})]
+
+            def get_movie(self, movie_id):
+                return show
+
+            def update(self, movie, info):
+                if info == "episodes":
+                    movie["episodes"] = {1: {2: episode}}
+                elif info == "plot":
+                    movie["plot"] = ["Episode plot"]
+                else:
+                    raise AssertionError("Unexpected IMDb info request: %s" % info)
+
+        with tempfile.TemporaryDirectory() as temp_dir:
+            desc_path = os.path.join(temp_dir, "descr.json")
+            with patch.object(path_walker, "ia", FakeIMDb()), \
+                    patch.object(path_walker, "imdb_cache", {"show": {}, "movie": {}}), \
+                    patch.object(path_walker, "imdb_cache_id", {"show": {}, "movie": {}}):
+                description = path_walker.create_description_episode(
+                    desc_path, "Example Show", ["1"], ["2"])
+
+            self.assertEqual(description["movie_title"], "Pilot <br/>")
+            self.assertEqual(description["descr_html"], "Episode plot <br/>")
+            with open(desc_path, encoding="utf-8") as desc_file:
+                self.assertEqual(json.load(desc_file), description)

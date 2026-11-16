@@ -215,7 +215,10 @@ def list_items(request):
                 return HttpResponse(json.dumps({}), content_type="application/json")
             seasons=[]
             for season in Season_db.objects.filter(unique_id=uuid).order_by('name'):
-                episodes=[episode.getDict() for episode in Episode_db.objects.filter(season=season.pk).order_by('name')]
+                episodes=[
+                    dict(episode.getDict(), description=episode.descr)
+                    for episode in Episode_db.objects.filter(season=season.pk).order_by('name')
+                ]
                 season=season.getDict()
                 season["episodes"]=episodes
                 seasons.append(season)
