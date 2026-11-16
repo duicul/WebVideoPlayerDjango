@@ -258,6 +258,82 @@ body.login-page {
     opacity: 0.85;
 }
 
+#season_files .episode-list {
+    display: grid;
+    gap: 1rem;
+}
+
+#season_files .episode-card {
+    position: relative;
+    display: grid;
+    grid-template-columns: clamp(120px, 18vw, 190px) minmax(0, 1fr);
+    gap: 1.35rem;
+    align-items: center;
+    padding: 1rem;
+    border: 1px solid var(--app-border);
+    border-radius: var(--app-radius);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.015));
+}
+
+#season_files .episode-info-trigger {
+    position: absolute;
+    z-index: 1;
+    top: 1.5rem;
+    left: 1.5rem;
+    display: grid;
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    place-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    background: rgba(11, 14, 20, 0.82);
+    color: #fff;
+}
+
+#season_files .episode-info-trigger:hover {
+    background: var(--app-accent-strong);
+}
+
+#season_files .episode-poster {
+    display: block;
+    overflow: hidden;
+    border-radius: 14px;
+}
+
+#season_files .episode-poster img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 2 / 3;
+}
+
+#season_files .episode-card-copy {
+    min-width: 0;
+    align-self: start;
+    padding: 0.4rem 0;
+}
+
+#season_files .episode-card-title {
+    margin: 0 0 0.65rem;
+    color: var(--app-text);
+    font-size: clamp(1.05rem, 2vw, 1.35rem);
+    font-weight: 700;
+    line-height: 1.35;
+}
+
+#season_files .episode-summary {
+    display: -webkit-box;
+    overflow: hidden;
+    margin: 0;
+    color: var(--app-muted);
+    font-size: 0.94rem;
+    line-height: 1.65;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+}
+
 .episode-navigation {
     align-items: center;
     margin: 1.5rem 0 1rem;
@@ -340,6 +416,33 @@ body.login-page {
     color: #b6bfcb;
     line-height: 1.7;
     overflow-wrap: anywhere;
+}
+
+.app-page #descriptionModal .modal-content {
+    border: 1px solid var(--app-border);
+    border-radius: var(--app-radius);
+    background: var(--app-surface);
+    color: var(--app-text);
+}
+
+.app-page #descriptionModal .modal-header {
+    border-bottom-color: var(--app-border);
+}
+
+.app-page #description_title {
+    color: var(--app-text);
+    font-weight: 700;
+}
+
+.app-page #description_body {
+    color: #cdd5e0;
+    line-height: 1.7;
+}
+
+.app-page #descriptionModal .close {
+    color: var(--app-muted);
+    opacity: 1;
+    text-shadow: none;
 }
 
 .episode-playlist {
@@ -550,6 +653,21 @@ body.login-page {
 
     .player-layout {
         grid-template-columns: minmax(0, 1fr);
+    }
+
+    #season_files .episode-card {
+        grid-template-columns: 105px minmax(0, 1fr);
+        gap: 0.9rem;
+        padding: 0.75rem;
+    }
+
+    #season_files .episode-info-trigger {
+        top: 1.15rem;
+        left: 1.15rem;
+    }
+
+    #season_files .episode-summary {
+        font-size: 0.86rem;
     }
 }
 
