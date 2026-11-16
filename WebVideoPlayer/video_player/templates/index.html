@@ -7,6 +7,7 @@
     
     
     {% load static %} 
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="{% static 'css/video-js.css' %}" rel="stylesheet" />
     <script src="{% static 'js/video.js'%}"></script>
     <script src="{% static 'js/utils.js' %}"></script>
@@ -16,60 +17,43 @@
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">-->
     <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/app-ui.css' %}">
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
     <meta content="utf-8" http-equiv="encoding">
-    <style type="text/css">
-a {
-  color: inherit; /* blue colors for links too */
-  text-decoration: inherit; /* no underline */
-}
-</style>
 </head>
 
-<body style="text-align:center;">
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
- Web Video Player
+<body class="login-page">
+<nav class="navbar navbar-expand-lg app-navbar login-navbar">
+ <a class="navbar-brand" href="{% url 'entry_point' %}">
+    <span class="brand-mark" aria-hidden="true">▶</span>
+    Web Video Player
+ </a>
 </nav>
-    <!--<div style="margin-left:40%;">-->
-    <center>
-   <form style="width:40%;height:40%;background-color:#A495F5" name = "form" action = "{% url 'login' %}" 
+   <main class="login-shell">
+   <form class="login-card" name="form" action="{% url 'login' %}"
          method = "POST" >{% csrf_token %}
-         
-         <div style = "max-width:70%;">
-            <center> 
-               <input type = "text" style = "width:80%;" 
-                  placeholder = "Username" name = "username" required />
-            </center>
+         <div class="login-heading">
+            <p class="eyebrow">YOUR PERSONAL MEDIA LIBRARY</p>
+            <h1>Welcome back</h1>
+            <p>Sign in to pick up where you left off.</p>
          </div>
-            
-         <br>
-         
-         <div style = "max-width:70%;">
-            <center>
-               <input type = "password" style = "width:80%;" 
-                  placeholder = "Password" name = "password" required/>
-            </center>
+         <div class="form-group">
+            <label for="login-username">Username</label>
+            <input id="login-username" class="form-control" type="text"
+               placeholder="Username" name="username" autocomplete="username" required />
          </div>
-            
-         <br>
+         <div class="form-group">
+            <label for="login-password">Password</label>
+            <input id="login-password" class="form-control" type="password"
+               placeholder="Password" name="password" autocomplete="current-password" required/>
+         </div>
          {% if login == "wrong" %}
-         <span style="color:#FF0000;">Wrong password</span>
-         <br>
+         <p class="login-error" role="alert">Wrong password. Please try again.</p>
          {% endif %}
-         <div style = "max-width:70%;">
-            <center> 
-            
-               <button style = "border:0px; background-color:#4285F4; margin-top:8%;
-                  height:35px; width:80%;" type = "submit" 
-                  value = "Login" >
-                  <strong>Login</strong>
-               </button>
-               
-            </center>
-         </div>
-         
-      </form>  
-       </center>
-    </div>
+         <button class="btn btn-primary login-submit" type="submit" value="Login">
+            Sign in
+         </button>
+      </form>
+   </main>
 </body>
 </html>
