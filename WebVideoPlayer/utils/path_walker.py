@@ -192,20 +192,19 @@ def store_series(main_path, name, main_moive_path, out_path, img_path, vtt_m3u8_
     logger.info(season_db.getDict())
 
     episode_desr_path = os.path.join(main_moive_path, "descr.json")
-    if  not os.path.isfile(episode_desr_path) or FORCE_RETRIEVE_IMDB:
+    episode_descr = None
+    if os.path.isfile(episode_desr_path) and not FORCE_RETRIEVE_IMDB:
+        try:
+            with open(episode_desr_path, "r") as desc_file:
+                episode_descr = json.load(desc_file)
+        except Exception as e:
+            logger.error(e)
+    if not isinstance(episode_descr, dict) or not episode_descr.get("descr_html"):
         episodes = re.findall(r"[Ee](\d+)", main_file_name)
         seasons = re.findall(r"[Ss](\d+)", main_file_name)
         seriesName = re.search(r"(.+) *(S[0-9]?[0-9]?.*E[0-9]?[0-9]?)", main_file_name).group(1)
         logger.info(main_file_name + " " + str(seriesName) + " " + str(seasons) + " " + str(episodes))
         episode_descr = create_description_episode(episode_desr_path, seriesName, seasons, episodes)
-        # print(episode_descr)  
-    else:
-        desc_file = open(episode_desr_path, "r")
-        try:
-            episode_descr = json.load(desc_file)
-        except Exception as e:
-            logger.error(e)
-            episode_descr = ""
             
     subs = json.dumps(extract_correct_subs(main_path, main_moive_path, vtt_m3u8_subPath))    
     logger.info("extract_correct_subs episode " + str(subs))
@@ -385,6 +384,11 @@ def create_description_episode(desc_path, show, seasons, episodes):
                         try:
                             if 'episodes' in mv.keys() and int(season) in mv['episodes'].keys() and int(episode) in mv['episodes'][int(season)].keys() :
                                 ep = mv['episodes'][int(season)][int(episode)]
+                                if not any(ep.get(info) for info in ("plot", "synopsis", "plot outline")):
+                                    try:
+                                        ia.update(ep, "plot")
+                                    except Exception as e:
+                                        logger.error("create_description_episode " + str(e))
                                 logger_imdb.info("create_description_episode "+str(ep)+" "+str(ep.keys())+" "+str(show)+" "+str(seasons)+" "+str(episodes))
                                 if "title" in ep.keys():
                                     movie_title += (str(ep["title"]).replace("<br/>","") + " <br/>")
