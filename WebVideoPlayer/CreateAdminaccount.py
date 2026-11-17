@@ -16,6 +16,8 @@ django.setup()
 
 if __name__ == '__main__':
     from utils.models import User_db
+    instance = User_db.objects.get(id="admin")
+    instance.delete()
     username="admin"
     password="admin"
     text_pass = hashlib.sha512(password.encode())

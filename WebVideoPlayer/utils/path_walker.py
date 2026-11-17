@@ -393,7 +393,7 @@ def create_description_episode(desc_path, show, seasons, episodes):
                                 ep = mv['episodes'][int(season)][int(episode)]
                                 if not any(ep.get(info) for info in ("plot", "synopsis", "plot outline")):
                                     try:
-                                        ia.update(ep, 'plot')
+                                        ep = ia.get_movie(ep.movieID)
                                     except Exception as e:
                                         logger.error("create_description_episode " + str(e))
                                 logger_imdb.info("create_description_episode "+str(ep)+" "+str(ep.keys())+" "+str(show)+" "+str(seasons)+" "+str(episodes))

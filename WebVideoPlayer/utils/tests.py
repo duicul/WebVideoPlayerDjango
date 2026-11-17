@@ -3,6 +3,7 @@ from unittest.mock import Mock, patch
 import json
 import os
 import tempfile
+from unittest import skipUnless
 
 from utils import path_walker
 
@@ -51,6 +52,8 @@ class IMDbEpisodeDescriptionTests(SimpleTestCase):
                 self.movieID = movie_id
 
         episode = IMDbObject("episode-id", {"title": "Pilot"})
+        episode_details = IMDbObject(
+            "episode-id", {"title": "Pilot", "plot": ["Episode plot"]})
         show = IMDbObject("show-id")
 
         class FakeIMDb:
@@ -58,13 +61,15 @@ class IMDbEpisodeDescriptionTests(SimpleTestCase):
                 return [IMDbObject("show-id", {"title": title})]
 
             def get_movie(self, movie_id):
-                return show
+                if movie_id == "show-id":
+                    return show
+                if movie_id == "episode-id":
+                    return episode_details
+                raise AssertionError("Unexpected IMDb movie ID: %s" % movie_id)
 
             def update(self, movie, info):
                 if info == "episodes":
                     movie["episodes"] = {1: {2: episode}}
-                elif info == "plot":
-                    movie["plot"] = ["Episode plot"]
                 else:
                     raise AssertionError("Unexpected IMDb info request: %s" % info)
 
@@ -80,3 +85,21 @@ class IMDbEpisodeDescriptionTests(SimpleTestCase):
             self.assertEqual(description["descr_html"], "Episode plot <br/>")
             with open(desc_path, encoding="utf-8") as desc_file:
                 self.assertEqual(json.load(desc_file), description)
+
+
+@skipUnless(
+    os.environ.get("RUN_LIVE_IMDB_TESTS") == "1",
+    "Set RUN_LIVE_IMDB_TESTS=1 to run live Cinemagoer tests.",
+)
+class LiveIMDbEpisodeDescriptionTests(SimpleTestCase):
+    def test_breaking_bad_episode_synopsis_is_retrieved_from_imdb(self):
+        with tempfile.TemporaryDirectory() as temp_dir:
+            desc_path = os.path.join(temp_dir, "descr.json")
+            with patch.object(path_walker, "ia", path_walker.imdb.Cinemagoer()), \
+                    patch.object(path_walker, "imdb_cache", {"show": {}, "movie": {}}), \
+                    patch.object(path_walker, "imdb_cache_id", {"show": {}, "movie": {}}):
+                description = path_walker.create_description_episode(
+                    desc_path, "Breaking Bad", ["1"], ["1"])
+
+        self.assertTrue(description["movie_title"].strip())
+        self.assertTrue(description["descr_html"].strip())
