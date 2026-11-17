@@ -8,6 +8,7 @@ import os
 import django
 import imdb
 import webvtt
+from utils import tvmaze
 
 import json
 import logging
@@ -196,7 +197,7 @@ def store_series(main_path, name, main_moive_path, out_path, img_path, vtt_m3u8_
         return create_description_episode(episode_desr_path, seriesName, seasons, episodes)
 
     episode_descr = load_or_retrieve_description(
-        episode_desr_path, retrieve_episode_description)
+        episode_desr_path, retrieve_episode_description, expected_source="tvmaze")
             
     subs = json.dumps(extract_correct_subs(main_path, main_moive_path, vtt_m3u8_subPath))    
     logger.info("extract_correct_subs episode " + str(subs))
@@ -298,7 +299,7 @@ def extract_correct_subs(main_path, main_moive_path, vtt_m3u8_subPath):
     return subs
 
 
-def load_or_retrieve_description(desc_path, retrieve_description):
+def load_or_retrieve_description(desc_path, retrieve_description, expected_source=None):
     if not FORCE_RETRIEVE_IMDB:
         try:
             with open(desc_path, "r", encoding="utf-8") as desc_file:
@@ -310,7 +311,10 @@ def load_or_retrieve_description(desc_path, retrieve_description):
         else:
             if isinstance(desc_data, dict):
                 description = desc_data.get("descr_html")
-                if isinstance(description, str) and description.strip():
+                source_matches = (
+                    expected_source is None or desc_data.get("source") == expected_source
+                )
+                if source_matches and isinstance(description, str) and description.strip():
                     return desc_data
 
     return retrieve_description()
@@ -364,57 +368,21 @@ def create_description_movie(desc_path, main_file_name):
 
  
 def create_description_episode(desc_path, show, seasons, episodes):
-    global ia
-    if ia == None:
-        logger.info("path_walker create_description_episode creating cinemagoer instance")
-        ia = imdb.Cinemagoer()
     movie_title = ""
     descr_html = ""
     try:
-        if show in imdb_cache["show"].keys():
-            movie_imdb = imdb_cache["show"][show]
-        else:
-            movie_imdb = ia.search_movie(show)
-            logger.info("path_walker storing in imdb cache show " + str(show))
-            imdb_cache["show"][show] = movie_imdb 
-        if(len(movie_imdb) > 0):
-            try:
-                if str(movie_imdb[0].movieID) in imdb_cache_id["show"].keys():
-                    mv = imdb_cache_id["show"][str(movie_imdb[0].movieID)]
-                else:
-                    mv = ia.get_movie(movie_imdb[0].movieID)
-                    logger.info("path_walker storing in imdb id cache show id " + str(movie_imdb[0].movieID))
-                    imdb_cache_id["show"][str(movie_imdb[0].movieID)] = mv
-                ia.update(mv, 'episodes')
-                for season in seasons:
-                    for episode in episodes:
-                        try:
-                            if 'episodes' in mv.keys() and int(season) in mv['episodes'].keys() and int(episode) in mv['episodes'][int(season)].keys() :
-                                ep = mv['episodes'][int(season)][int(episode)]
-                                if not any(ep.get(info) for info in ("plot", "synopsis", "plot outline")):
-                                    try:
-                                        ep = ia.get_movie(ep.movieID)
-                                    except Exception as e:
-                                        logger.error("create_description_episode " + str(e))
-                                logger_imdb.info("create_description_episode "+str(ep)+" "+str(ep.keys())+" "+str(show)+" "+str(seasons)+" "+str(episodes))
-                                if "title" in ep.keys():
-                                    movie_title += (str(ep["title"]).replace("<br/>","") + " <br/>")
-                                plot = ep.get("plot") or ep.get("synopsis") or ep.get("plot outline")
-                                if plot:
-                                    if isinstance(plot, list):
-                                        descr_html += "".join(
-                                            str(item).replace("<br/>", "") + " <br/>"
-                                            for item in plot
-                                        )
-                                    else:
-                                        descr_html += str(plot).replace("<br/>", "") + " <br/>"
-                        except Exception as e:
-                            logger.error("create_description_episode " + str(e))
-            except Exception as e:
-                logger.error("create_description_episode " + str(e))
+        for episode in tvmaze.get_episode_summaries(show, seasons, episodes):
+            if episode["title"]:
+                movie_title += episode["title"] + " <br/>"
+            descr_html += episode["summary"]
     except Exception as e:
         logger.error("create_description_episode " + str(e))
-    descr_data = {"descr_html":descr_html, "movie_title":movie_title, "search":show + " " + str(seasons) + " " + str(episodes)}
+    descr_data = {
+        "descr_html": descr_html,
+        "movie_title": movie_title,
+        "search": show + " " + str(seasons) + " " + str(episodes),
+        "source": "tvmaze",
+    }
     
     desc_file = open(desc_path, "w")
     
