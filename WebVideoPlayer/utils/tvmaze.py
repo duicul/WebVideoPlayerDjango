@@ -1,4 +1,5 @@
 import html
+from functools import lru_cache
 from html.parser import HTMLParser
 import json
 import logging
@@ -39,7 +40,8 @@ def _summary_as_html(summary):
     return html.escape(text) + (" <br/>" if text else "")
 
 
-def get_episode_summaries(show, seasons, episodes):
+@lru_cache(maxsize=128)
+def _get_show_episodes(show):
     query = urlencode({"q": show, "embed": "episodes"})
     request = Request(
         "{}/singlesearch/shows?{}".format(TVMAZE_API_URL, query),
@@ -51,11 +53,15 @@ def get_episode_summaries(show, seasons, episodes):
     except HTTPError as error:
         if error.code == 404:
             logger.info("TVMaze did not find a show matching %s", show)
-            return []
+            return ()
         raise
 
     embedded = show_data.get("_embedded", {})
-    show_episodes = embedded.get("episodes", [])
+    return tuple(embedded.get("episodes", []))
+
+
+def get_episode_summaries(show, seasons, episodes):
+    show_episodes = _get_show_episodes(show)
     requested = {
         (int(season), int(episode))
         for season in seasons

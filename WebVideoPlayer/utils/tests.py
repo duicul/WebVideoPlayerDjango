@@ -85,6 +85,10 @@ class TVMazeEpisodeDescriptionTests(SimpleTestCase):
 
 
 class TVMazeClientTests(SimpleTestCase):
+    def setUp(self):
+        tvmaze._get_show_episodes.cache_clear()
+        self.addCleanup(tvmaze._get_show_episodes.cache_clear)
+
     def test_episode_search_returns_matching_summary_as_safe_html(self):
         response_data = {
             "name": "Example Show",
@@ -121,6 +125,25 @@ class TVMazeClientTests(SimpleTestCase):
         self.assertIn("api.tvmaze.com/singlesearch/shows?", request.full_url)
         self.assertIn("q=Example+Show", request.full_url)
         self.assertEqual(open_url.call_args[1]["timeout"], tvmaze.REQUEST_TIMEOUT)
+
+    def test_episode_search_reuses_show_response(self):
+        response_data = {
+            "_embedded": {
+                "episodes": [
+                    {"season": 1, "number": 1, "name": "Pilot", "summary": "<p>One</p>"},
+                    {"season": 1, "number": 2, "name": "Second", "summary": "<p>Two</p>"},
+                ],
+            },
+        }
+        response = BytesIO(json.dumps(response_data).encode("utf-8"))
+
+        with patch.object(tvmaze, "urlopen", return_value=response) as open_url:
+            first = tvmaze.get_episode_summaries("Cached Example", ["1"], ["1"])
+            second = tvmaze.get_episode_summaries("Cached Example", ["1"], ["2"])
+
+        open_url.assert_called_once()
+        self.assertEqual(first[0]["title"], "Pilot")
+        self.assertEqual(second[0]["title"], "Second")
 
     def test_unknown_show_returns_no_episode_descriptions(self):
         error = HTTPError(
